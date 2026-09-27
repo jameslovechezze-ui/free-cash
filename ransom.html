@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Security Notice</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    background:#101010;
+    color:#eee;
+    font-family:Arial,sans-serif
+}
+
+.warning{
+    background:#700000;
+    border-bottom:3px solid #f22;
+    padding:18px;
+    text-align:center
+}
+
+.warning h1{
+    margin:0;
+    color:#ff4444
+}
+
+.main{
+    width:94%;
+    max-width:1100px;
+    margin:auto;
+    padding:18px 0 50px
+}
+
+.timer{
+    text-align:center;
+    color:#ff3333;
+    font-size:42px;
+    font-weight:bold;
+    margin-bottom:15px
+}
+
+.payment{
+    background:#202020;
+    border:1px solid #555;
+    padding:20px;
+    border-radius:8px
+}
+
+.payment h2{
+    color:#ffd700
+}
+
+.amount{
+    text-align:center;
+    font-size:30px;
+    font-weight:bold
+}
+
+.progress{
+    height:24px;
+    background:#444;
+    border-radius:8px;
+    overflow:hidden;
+    margin-top:15px
+}
+
+.progressBar{
+    width:0%;
+    height:100%;
+    background:#00bd50;
+    transition:.2s
+}
+
+.explorer{
+    margin-top:20px;
+    background:#1d1d1d;
+    border:1px solid #555;
+    border-radius:8px;
+    overflow:hidden
+}
+
+.explorerTitle{
+    background:#333;
+    padding:14px;
+    font-weight:bold
+}
+
+.folders{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    padding:12px;
+    background:#171717
+}
+
+.folder{
+    background:#303030;
+    border:1px solid #555;
+    padding:12px;
+    border-radius:5px;
+    cursor:pointer
+}
+
+.folder:hover{
+    background:#444
+}
+
+.files{
+    padding:15px;
+    min-height:300px
+}
+
+.file{
+    display:inline-block;
+    width:140px;
+    min-height:90px;
+    margin:5px;
+    padding:12px;
+    background:#292929;
+    border:1px solid #555;
+    border-radius:6px;
+    text-align:center;
+    cursor:pointer;
+    user-select:none
+}
+
+.file:hover{
+    background:#3a3a3a
+}
+
+.file.selected{
+    border:2px solid #00aaff;
+    background:#123344
+}
+
+.decoy{
+    color:#aaa
+}
+
+.special{
+    color:#ffd700
+}
+
+.pageButtons{
+    text-align:center;
+    margin-top:15px
+}
+
+.pageButtons button,
+.verifyButton{
+    padding:10px 18px;
+    margin:4px;
+    background:#0666a8;
+    color:white;
+    border:0;
+    border-radius:5px;
+    cursor:pointer
+}
+
+.dropBox{
+    margin-top:20px;
+    padding:30px;
+    border:3px dashed #008cff;
+    border-radius:8px;
+    text-align:center;
+    background:#151515;
+    cursor:pointer
+}
+
+.dropBox.active{
+    background:#00344d
+}
+
+.verification{
+    display:none;
+    margin-top:20px;
+    padding:25px;
+    background:#252525;
+    border:2px solid #ff9900;
+    border-radius:8px
+}
+
+.verification input{
+    width:100%;
+    max-width:450px;
+    padding:12px;
+    background:#111;
+    color:white;
+    border:1px solid #777;
+    border-radius:5px
+}
+
+.success{
+    display:none;
+    margin-top:20px;
+    padding:30px;
+    text-align:center;
+    background:#003d15;
+    border:2px solid #00ff55
+}
+
+.code{
+    background:#000;
+    padding:18px;
+    max-width:400px;
+    margin:15px auto;
+    font-size:24px;
+    letter-spacing:3px
+}
+
+.failure{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:#050000;
+    z-index:999;
+    text-align:center;
+    padding-top:25vh
+}
+
+.failure h1{
+    color:red;
+    font-size:50px
+}
+
+@media(max-width:600px){
+    .timer{font-size:34px}
+    .file{width:calc(50% - 16px)}
+    .warning h1{font-size:22px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="warning">
+    <h1>⚠ YOUR FILES HAVE BEEN LOCKED ⚠</h1>
+    <p>Fictional ARG simulation — no real files are touched.</p>
+</div>
+
+<div class="main">
+
+<div class="timer">
+    <span id="timer">15:00</span>
+</div>
+
+<div class="payment">
+    <h2>💎 PAYMENT REQUIRED</h2>
+
+    <p>Collect and submit 500 diamonds.</p>
+
+    <div class="amount">
+        💎 <span id="paid">0</span> / 500
+    </div>
+
+    <div class="progress">
+        <div class="progressBar" id="progressBar"></div>
+    </div>
+</div>
+
+<div class="explorer">
+
+    <div class="explorerTitle">
+        📁 File Explorer
+    </div>
+
+    <div class="folders">
+
+        <div class="folder" onclick="openFolder('Documents')">
+            📁 Documents
+        </div>
+
+        <div class="folder" onclick="openFolder('Downloads')">
+            📁 Downloads
+        </div>
+
+        <div class="folder" onclick="openFolder('Pictures')">
+            📁 Pictures
+        </div>
+
+        <div class="folder" onclick="openFolder('Games')">
+            📁 Games
+        </div>
+
+        <div class="folder" onclick="openFolder('System')">
+            📁 System
+        </div>
+
+        <div class="folder" onclick="openFolder('Archives')">
+            📁 Archives
+        </div>
+
+    </div>
+
+    <div class="files" id="files">
+        <p>Select a folder.</p>
+    </div>
+
+    <div class="pageButtons">
+        <button onclick="previousPage()">◀ Previous</button>
+        <span id="pageNumber">Page 1</span>
+        <button onclick="nextPage()">Next ▶</button>
+    </div>
+
+</div>
+
+<div class="dropBox" id="dropBox">
+    <h2>💎 PAYMENT AREA</h2>
+    <p>PC: drag a diamond here.</p>
+    <p>Mobile: tap a diamond, then tap here.</p>
+</div>
+
+<div class="verification" id="verification">
+
+    <h2>🔎 PAYMENT VERIFICATION</h2>
+
+    <p>
+        Payment received. Find
+        <b>Payment_Verification.txt</b>
+        in Documents.
+    </p>
+
+    <input
+        id="verificationInput"
+        placeholder="Enter verification code"
+    >
+
+    <br>
+
+    <button class="verifyButton" onclick="verifyPayment()">
+        VERIFY
+    </button>
+
+</div>
+
+<div class="success" id="success">
+
+    <h1>✅ PAYMENT VERIFIED</h1>
+
+    <p>RANSOM SETTLED.</p>
+
+    <p>Your access code:</p>
+
+    <div class="code">
+        RANSOM-500-PAID
+    </div>
+
+</div>
+
+</div>
+
+<div class="failure" id="failure">
+
+    <h1>TIME'S UP</h1>
+
+    <p>Payment failed.</p>
+
+    <button onclick="location.reload()">
+        TRY AGAIN
+    </button>
+
+</div>
+
+<script>
+
+const TOTAL = 500;
+
+let paid = 0;
+
+let selected = null;
+
+let currentFolder = null;
+
+let currentPage = 1;
+
+let completed = new Set();
+
+let timeLeft = 15 * 60;
+
+
+/* TIMER */
+
+function updateTimer(){
+
+    let m = Math.floor(timeLeft / 60);
+    let s = timeLeft % 60;
+
+    s = String(s).padStart(2,"0");
+
+    document.getElementById("timer").textContent =
+        m + ":" + s;
+
+    if(timeLeft <= 0){
+
+        clearInterval(timer);
+
+        document.getElementById("failure")
+            .style.display = "block";
+
+        return;
+    }
+
+    timeLeft--;
+}
+
+const timer = setInterval(updateTimer,1000);
+
+
+/* FOLDER RANGES */
+
+const folders = {
+
+    Documents:[1,100],
+
+    Downloads:[101,200],
+
+    Pictures:[201,300],
+
+    Games:[301,400],
+
+    System:[401,450],
+
+    Archives:[451,500]
+
+};
+
+
+/* OPEN FOLDER */
+
+function openFolder(name){
+
+    currentFolder = name;
+    currentPage = 1;
+
+    renderFiles();
+}
+
+
+/* RENDER FILES */
+
+function renderFiles(){
+
+    const box =
+        document.getElementById("files");
+
+    box.innerHTML = "";
+
+    if(!currentFolder){
+
+        box.innerHTML =
+            "<p>Select a folder.</p>";
+
+        return;
+    }
+
+    let range =
+        folders[currentFolder];
+
+    let start = range[0];
+    let end = range[1];
+
+    let pageStart =
+        start + (currentPage - 1) * 20;
+
+    let pageEnd =
+        Math.min(pageStart + 19,end);
+
+
+    for(let i=pageStart;i<=pageEnd;i++){
+
+        let id = "diamond-" + i;
+
+        if(completed.has(id)) continue;
+
+        createDiamond(box,i);
+    }
+
+
+    if(
+        currentFolder === "Documents" &&
+        currentPage === 1
+    ){
+
+        createVerificationFile(box);
+    }
+
+
+    document.getElementById("pageNumber")
+        .textContent =
+        "Page " + currentPage;
+}
+
+
+/* CREATE DIAMOND */
+
+function createDiamond(box,number){
+
+    let file =
+        document.createElement("div");
+
+    file.className = "file";
+
+    file.id =
+        "diamond-" + number;
+
+    file.draggable = true;
+
+    file.innerHTML =
+        "💎<br>" +
+        "Diamond_" + number + ".dat" +
+        "<br><small>VALUE: 1</small>";
+
+
+    file.onclick = function(){
+
+        selected =
+            file.id;
+
+        document
+            .querySelectorAll(".file")
+            .forEach(x =>
+                x.classList.remove("selected")
+            );
+
+        file.classList.add("selected");
+    };
+
+
+    file.ondragstart =
+        function(event){
+
+            event.dataTransfer.setData(
+                "diamond",
+                file.id
+            );
+        };
+
+
+    box.appendChild(file);
+}
+
+
+/* VERIFICATION FILE */
+
+function createVerificationFile(box){
+
+    let file =
+        document.createElement("div");
+
+    file.className =
+        "file special";
+
+    file.innerHTML =
+        "📄<br>" +
+        "Payment_Verification.txt";
+
+    file.onclick =
+        function(){
+
+            alert(
+                "PAYMENT VERIFICATION\n\n" +
+                "Code: VERIFY-500"
+            );
+        };
+
+    box.appendChild(file);
+}
+
+
+/* PAGE CONTROLS */
+
+function nextPage(){
+
+    if(!currentFolder) return;
+
+    let end =
+        folders[currentFolder][1];
+
+    let start =
+        folders[currentFolder][0];
+
+    let maxPages =
+        Math.ceil(
+            (end - start + 1) / 20
+        );
+
+    if(currentPage < maxPages){
+
+        currentPage++;
+
+        renderFiles();
+    }
+}
+
+
+function previousPage(){
+
+    if(currentPage > 1){
+
+        currentPage--;
+
+        renderFiles();
+    }
+}
+
+
+/* DRAG AND DROP */
+
+const dropBox =
+    document.getElementById("dropBox");
+
+
+dropBox.addEventListener(
+    "dragover",
+    function(e){
+
+        e.preventDefault();
+
+        dropBox.classList.add("active");
+    }
+);
+
+
+dropBox.addEventListener(
+    "dragleave",
+    function(){
+
+        dropBox.classList.remove("active");
+    }
+);
+
+
+dropBox.addEventListener(
+    "drop",
+    function(e){
+
+        e.preventDefault();
+
+        dropBox.classList.remove("active");
+
+        let id =
+            e.dataTransfer.getData("diamond");
+
+        deposit(id);
+    }
+);
+
+
+/* MOBILE */
+
+dropBox.onclick = function(){
+
+    if(!selected){
+
+        alert(
+            "Tap a diamond first."
+        );
+
+        return;
+    }
+
+    deposit(selected);
+
+    selected = null;
+};
+
+
+/* DEPOSIT */
+
+function deposit(id){
+
+    if(!id) return;
+
+    if(completed.has(id)) return;
+
+    completed.add(id);
+
+    paid++;
+
+    document.getElementById("paid")
+        .textContent = paid;
+
+    document.getElementById("progressBar")
+        .style.width =
+        (paid / TOTAL * 100) + "%";
+
+
+    if(paid === 100){
+
+        alert(
+            "PAYMENT ACCEPTED.\n\n100 / 500"
+        );
+    }
+
+    if(paid === 250){
+
+        alert(
+            "HALF PAYMENT RECEIVED.\n\n250 / 500"
+        );
+    }
+
+    if(paid === 400){
+
+        alert(
+            "FINAL PAYMENT APPROACHING.\n\n400 / 500"
+        );
+    }
+
+
+    renderFiles();
+
+
+    if(paid >= TOTAL){
+
+        completePayment();
+    }
+}
+
+
+/* PAYMENT COMPLETE */
+
+function completePayment(){
+
+    clearInterval(timer);
+
+    document.getElementById(
+        "verification"
+    ).style.display = "block";
+
+    alert(
+        "PAYMENT COMPLETE.\n\n" +
+        "VERIFYING PAYMENT..."
+    );
+}
+
+
+/* VERIFY */
+
+function verifyPayment(){
+
+    let code =
+        document.getElementById(
+            "verificationInput"
+        ).value
+        .trim()
+        .toUpperCase();
+
+
+    if(code === "VERIFY-500"){
+
+        document.getElementById(
+            "verification"
+        ).style.display = "none";
+
+        document.getElementById(
+            "success"
+        ).style.display = "block";
+
+    }else{
+
+        alert(
+            "PAYMENT VERIFICATION FAILED."
+        );
+    }
+}
+
+</script>
+
+</body>
+</html>
