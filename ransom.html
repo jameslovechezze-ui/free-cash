@@ -1,6 +1,8 @@
 /* =====================================================
-   POPUP VARIABLES
+   POPUP VARIABLES & INITIALIZATION
 ===================================================== */
+// Waktu awal hitung mundur dalam detik (Contoh: 10 menit = 600 detik)
+let timeLeft = 600; 
 
 let popupOpen = false;
 let popupType = 0;
@@ -8,612 +10,240 @@ let popupVariant = 0;
 
 let popupTimer = null;
 let moveTimer = null;
-
+let countdownTimer = null;
 
 /* =====================================================
-   TYPE 1
+   TEXT LISTS FOR POPUPS
 ===================================================== */
-
 const type1 = [
-
     "PAY NOW",
-
     "Your files have been ENCRYPTED",
-
     "Ransom is HUNGRY",
-
     "DON'T LET THE RANSOM LEFT WITH NO WEALTH",
-
     "your MINE, DON'T YOU JUST LEAVE ME HERE EASILY"
-
 ];
-
-
-/* =====================================================
-   TYPE 2
-===================================================== */
 
 const type2 = [
-
     ...type1,
-
     "HE IS WATCHING",
-
     "YOU FAILED TO KEEP HER PROMISED"
-
 ];
-
-
-/* =====================================================
-   TYPE 3
-   ALL PREVIOUS TEXT + TYPE 3 TEXT
-===================================================== */
 
 const type3 = [
-
     ...type1,
-
     "HE IS WATCHING",
-
     "YOU FAILED TO KEEP HER PROMISED",
-
     "TIME OUT",
-
     "PREPARE. THE. LOST",
-
     "DON'T YOU FEEL BAD FOR HER? SHE. IS. CRYING. NOW."
-
 ];
 
-
 /* =====================================================
-   PHASE
+   CORE LOGIC & PHASES
 ===================================================== */
-
 function phase() {
-
     if (timeLeft > 8 * 60) {
-
-        return 1;
-
+        return 1; // Lebih dari 8 menit
     }
-
     if (timeLeft > 3 * 60) {
-
-        return 2;
-
+        return 2; // Antara 3 sampai 8 menit
     }
-
-    return 3;
+    return 3; // Kurang dari 3 menit
 }
-
-
-/* =====================================================
-   RANDOM TEXT
-===================================================== */
 
 function randomText(list) {
-
-    return list[
-        Math.floor(
-            Math.random() * list.length
-        )
-    ];
+    return list[Math.floor(Math.random() * list.length)];
 }
 
-
 /* =====================================================
-   RANDOM POSITION
+   POPUP POSITIONING
 ===================================================== */
-
 function randomPopupPosition() {
+    const popup = document.getElementById("popup");
+    if (!popup) return;
 
-    const popup =
-        document.getElementById("popup");
+    const x = 12 + Math.random() * 76;
+    const y = 15 + Math.random() * 70;
 
-    const x =
-        12 + Math.random() * 76;
-
-    const y =
-        15 + Math.random() * 70;
-
-    popup.style.left =
-        x + "%";
-
-    popup.style.top =
-        y + "%";
-
-    popup.style.transform =
-        "translate(-50%, -50%)";
+    popup.style.left = x + "%";
+    popup.style.top = y + "%";
+    popup.style.transform = "translate(-50%, -50%)";
 }
-
-
-/* =====================================================
-   TYPE 3 POSITION
-   STAYS AROUND THE TIMER
-===================================================== */
 
 function timerPopupPosition() {
+    const popup = document.getElementById("popup");
+    if (!popup) return;
 
-    const popup =
-        document.getElementById("popup");
-
-    popup.style.left =
-        "50%";
-
-    popup.style.top =
-        "115px";
-
-    popup.style.transform =
-        "translate(-50%, -50%)";
+    popup.style.left = "50%";
+    popup.style.top = "115px";
+    popup.style.transform = "translate(-50%, -50%)";
 }
 
-
 /* =====================================================
-   SHOW POPUP
+   SHOW POPUP CONTROL
 ===================================================== */
-
 function showPopup() {
-
-    if (
-        popupOpen ||
-        timeLeft <= 0
-    ) {
-
+    if (popupOpen || timeLeft <= 0) {
         return;
-
     }
-
 
     popupOpen = true;
-
     popupType = phase();
-
     popupVariant = 0;
 
+    const overlay = document.getElementById("overlay");
+    const text = document.getElementById("popupText");
 
-    const overlay =
-        document.getElementById("overlay");
-
-    const text =
-        document.getElementById("popupText");
-
+    if (!overlay || !text) return;
 
     clearInterval(moveTimer);
 
-
-    /* ================================================
-       TYPE 1
-       ================================================ */
-
+    /* --- TYPE 1 --- */
     if (popupType === 1) {
-
         randomPopupPosition();
-
-        text.textContent =
-            randomText(type1);
-
+        text.textContent = randomText(type1);
         popupVariant = 1;
     }
-
-
-    /* ================================================
-       TYPE 2
-       ================================================ */
-
+    /* --- TYPE 2 --- */
     else if (popupType === 2) {
-
         randomPopupPosition();
+        text.textContent = randomText(type2);
 
-        text.textContent =
-            randomText(type2);
-
-
-        /*
-           50% normal Type 2
-           50% bouncing Type 2
-        */
-
+        // 50% kemungkinan bergerak/memantul
         if (Math.random() < 0.5) {
-
             popupVariant = 2;
-
-            /*
-               Normal Type 2:
-               stays where it appeared.
-            */
-
-        }
-
-        else {
-
+        } else {
             popupVariant = 3;
-
-            /*
-               Type 2B:
-               bounces around the screen.
-            */
-
             startType2Bounce();
-
         }
     }
-
-
-    /* ================================================
-       TYPE 3
-       ================================================ */
-
+    /* --- TYPE 3 --- */
     else {
-
         timerPopupPosition();
-
-        text.textContent =
-            randomText(type3);
-
+        text.textContent = randomText(type3);
         popupVariant = 4;
-
-        document.body.classList.add(
-            "type3"
-        );
-
+        document.body.classList.add("type3");
     }
 
-
-    overlay.style.display =
-        "block";
+    overlay.style.display = "block";
 }
 
-
 /* =====================================================
-   TYPE 2B
-   BOUNCES AROUND SCREEN
+   TYPE 2B BOUNCING MOVEMENT
 ===================================================== */
-
 function startType2Bounce() {
-
     clearInterval(moveTimer);
 
+    const popup = document.getElementById("popup");
+    if (!popup) return;
 
-    const popup =
-        document.getElementById("popup");
+    let x = parseFloat(popup.style.left) || 50;
+    let y = parseFloat(popup.style.top) || 50;
 
+    let vx = 0.8 + Math.random() * 0.8;
+    let vy = 0.5 + Math.random() * 0.6;
 
-    let x =
-        parseFloat(
-            popup.style.left
-        );
+    if (Math.random() < 0.5) vx *= -1;
+    if (Math.random() < 0.5) vy *= -1;
 
-    let y =
-        parseFloat(
-            popup.style.top
-        );
+    moveTimer = setInterval(function() {
+        if (!popupOpen || popupType !== 2) {
+            clearInterval(moveTimer);
+            return;
+        }
 
+        x += vx;
+        y += vy;
 
-    let vx =
-        0.8 +
-        Math.random() * 0.8;
+        // Memantul dari tepi layar
+        if (x >= 88) { x = 88; vx *= -1; }
+        if (x <= 12) { x = 12; vx *= -1; }
+        if (y >= 84) { y = 84; vy *= -1; }
+        if (y <= 14) { y = 14; vy *= -1; }
 
-    let vy =
-        0.5 +
-        Math.random() * 0.6;
-
-
-    if (
-        Math.random() < 0.5
-    ) {
-
-        vx *= -1;
-
-    }
-
-
-    if (
-        Math.random() < 0.5
-    ) {
-
-        vy *= -1;
-
-    }
-
-
-    moveTimer =
-        setInterval(
-            function() {
-
-                if (
-                    !popupOpen ||
-                    popupType !== 2
-                ) {
-
-                    return;
-
-                }
-
-
-                x += vx;
-
-                y += vy;
-
-
-                /*
-                   Bounce off screen edges.
-                */
-
-                if (x >= 88) {
-
-                    x = 88;
-
-                    vx *= -1;
-
-                }
-
-
-                if (x <= 12) {
-
-                    x = 12;
-
-                    vx *= -1;
-
-                }
-
-
-                if (y >= 84) {
-
-                    y = 84;
-
-                    vy *= -1;
-
-                }
-
-
-                if (y <= 14) {
-
-                    y = 14;
-
-                    vy *= -1;
-
-                }
-
-
-                popup.style.left =
-                    x + "%";
-
-                popup.style.top =
-                    y + "%";
-
-                popup.style.transform =
-                    "translate(-50%, -50%)";
-
-            },
-
-            25
-        );
+        popup.style.left = x + "%";
+        popup.style.top = y + "%";
+        popup.style.transform = "translate(-50%, -50%)";
+    }, 25);
 }
 
-
 /* =====================================================
-   CLOSE POPUP
-   ONLY OK CLOSES IT
+   CLOSE & SCHEDULE CONTROL
 ===================================================== */
-
 function closePopup() {
-
     popupOpen = false;
-
     popupType = 0;
-
     popupVariant = 0;
 
+    clearInterval(moveTimer);
+    document.body.classList.remove("type3");
 
-    clearInterval(
-        moveTimer
-    );
-
-
-    document.body.classList.remove(
-        "type3"
-    );
-
-
-    document.getElementById(
-        "overlay"
-    ).style.display =
-        "none";
-
+    const overlay = document.getElementById("overlay");
+    if (overlay) overlay.style.display = "none";
 
     schedulePopup();
 }
 
-
-/* =====================================================
-   POPUP CLICK
-   DOES NOT CLOSE IT
-===================================================== */
-
-document.getElementById(
-    "popup"
-).addEventListener(
-    "click",
-    function(event) {
-
-        event.stopPropagation();
-
-    }
-);
-
-
-/* =====================================================
-   ONLY OK CLOSES POPUP
-===================================================== */
-
-document.getElementById(
-    "ok"
-).addEventListener(
-    "click",
-    function(event) {
-
-        event.stopPropagation();
-
-        closePopup();
-
-    }
-);
-
-
-/* =====================================================
-   POPUP FREQUENCY
-===================================================== */
-
 function schedulePopup() {
-
-    clearTimeout(
-        popupTimer
-    );
-
+    clearTimeout(popupTimer);
 
     if (timeLeft <= 0) {
-
         return;
-
     }
 
-
-    const p =
-        phase();
-
-
+    const p = phase();
     let delay;
 
-
     if (p === 1) {
-
-        /*
-           Type 1
-           5–12 seconds
-        */
-
-        delay =
-            5000 +
-            Math.random() * 7000;
-
+        delay = 5000 + Math.random() * 7000;
+    } else if (p === 2) {
+        delay = 4000 + Math.random() * 5000;
+    } else {
+        const progress = 1 - timeLeft / (3 * 60);
+        delay = Math.max(1800, 5000 - progress * 3200);
     }
 
-    else if (p === 2) {
-
-        /*
-           Type 2
-           4–9 seconds
-        */
-
-        delay =
-            4000 +
-            Math.random() * 5000;
-
-    }
-
-    else {
-
-        /*
-           Type 3
-           Gets increasingly frequent.
-        */
-
-        const progress =
-            1 -
-            timeLeft /
-            (3 * 60);
-
-
-        delay =
-            Math.max(
-                1800,
-                5000 -
-                progress * 3200
-            );
-    }
-
-
-    popupTimer =
-        setTimeout(
-            showPopup,
-            delay
-        );
+    // MEMPERBAIKI KODE YANG TERPOTONG
+    popupTimer = setTimeout(showPopup, delay);
 }
-
 
 /* =====================================================
-   TIMER
+   EVENT LISTENERS & SYSTEM START
 ===================================================== */
-
-function updateTimer() {
-
-    /*
-       TYPE 3 ACTUALLY STOPS
-       THE COUNTDOWN.
-    */
-
-    if (
-        popupOpen &&
-        popupType === 3
-    ) {
-
-        updateDisplay();
-
-        return;
-
-    }
-
-
-    if (!timerRunning) {
-
-        return;
-
-    }
-
-
-    timeLeft--;
-
-
-    if (timeLeft < 0) {
-
-        timeLeft = 0;
-
-    }
-
-
-    updateDisplay();
-
-
-    if (
-        timeLeft <= 30 &&
-        timeLeft > 0
-    ) {
-
-        document.getElementById(
-            "timer"
-        ).classList.add(
-            "danger"
-        );
-
-    }
-
-
-    if (
-        timeLeft === 0
-    ) {
-
-        timerRunning = false;
-
-        clearInterval(timer);
-
-        clearTimeout(popupTimer);
-
-        clearInterval(moveTimer);
-
-        document.getElementById(
-            "failure"
-        ).style.display =
-            "block";
-    }
+// Mencegah popup tertutup saat isi popup di-klik
+const popupEl = document.getElementById("popup");
+if (popupEl) {
+    popupEl.addEventListener("click", function(event) {
+        event.stopPropagation();
+    });
 }
+
+// Tombol OK untuk menutup popup
+const okBtn = document.getElementById("ok");
+if (okBtn) {
+    okBtn.addEventListener("click", function(event) {
+        event.stopPropagation();
+        closePopup();
+    });
+}
+
+// Fungsi internal untuk menjalankan hitung mundur waktu
+function startTimerSystem() {
+    countdownTimer = setInterval(function() {
+        if (timeLeft > 0) {
+            timeLeft--;
+            
+            // Opsional: Jika kamu punya elemen teks timer di HTML, kamu bisa update di sini
+            // contoh: document.getElementById("timerDisplay").textContent = timeLeft;
+            
+        } else {
+            clearInterval(countdownTimer);
+            clearTimeout(popupTimer);
+            clearInterval(moveTimer);
+        }
+    }, 1000);
+}
+
+// MENJALANKAN SISTEM PERTAMA KALI
+startTimerSystem();
+schedulePopup();
