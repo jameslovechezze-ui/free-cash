@@ -3,50 +3,85 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Security Notice</title>
+<title>Ransom-Banner</title>
 
 <style>
 * {
     box-sizing: border-box;
 }
 
-body {
+html, body {
     margin: 0;
+    width: 100%;
+    min-height: 100%;
     background: #101010;
     color: #eee;
     font-family: Arial, sans-serif;
 }
 
-.warning {
+body {
+    overflow-x: hidden;
+}
+
+/* HEADER */
+
+header {
+    width: 100%;
+    min-height: 105px;
     background: #700000;
     border-bottom: 3px solid #ff2222;
-    padding: 18px;
+    padding: 18px 24px;
     text-align: center;
 }
 
-.warning h1 {
+header h1 {
     margin: 0;
     color: #ff4444;
 }
 
-.main {
-    width: 94%;
-    max-width: 1100px;
-    margin: auto;
-    padding: 18px 0 50px;
+/* MAIN */
+
+main {
+    width: 100%;
+    min-height: calc(100vh - 105px);
+    padding: 18px 24px 40px;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        360px;
+
+    grid-template-rows:
+        auto
+        auto
+        minmax(0, 1fr)
+        auto;
+
+    gap: 16px;
 }
 
-.timer {
+/* TIMER */
+
+#timer {
+    grid-column: 1 / -1;
+
     text-align: center;
-    color: #ff3333;
-    font-size: 42px;
+
+    font-size: 64px;
     font-weight: bold;
-    margin-bottom: 15px;
+
+    color: #ff3333;
+
+    margin: 0;
+    padding: 8px 0;
+
+    text-shadow:
+        0 0 14px rgba(255, 0, 0, 0.45);
 }
 
-.timer.danger {
-    animation: timerFlash 0.5s infinite alternate;
+#timer.danger {
+    animation: timerFlash 0.45s infinite alternate;
 }
 
 @keyframes timerFlash {
@@ -59,15 +94,24 @@ body {
     }
 }
 
-.payment {
+/* PANELS */
+
+.panel {
     background: #202020;
     border: 1px solid #555;
-    padding: 20px;
     border-radius: 8px;
+    padding: 20px;
+
+    box-shadow:
+        0 4px 18px rgba(0,0,0,0.3);
 }
 
-.payment h2 {
-    color: #ffd700;
+/* PAYMENT */
+
+.paymentPanel {
+    grid-column: 2;
+    grid-row: 2 / 4;
+    height: 100%;
 }
 
 .amount {
@@ -84,38 +128,34 @@ body {
     margin-top: 15px;
 }
 
-.progressBar {
+#bar {
     width: 0%;
     height: 100%;
     background: #00bd50;
     transition: 0.2s;
 }
 
-.explorer {
-    margin-top: 20px;
-    background: #1d1d1d;
-    border: 1px solid #555;
-    border-radius: 8px;
-    overflow: hidden;
-}
+/* FILE EXPLORER */
 
-.explorerTitle {
-    background: #333;
-    padding: 14px;
-    font-weight: bold;
+.explorerPanel {
+    grid-column: 1;
+    grid-row: 2 / 4;
+
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
 }
 
 .folders {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    padding: 12px;
-    background: #171717;
 }
 
 .folder {
     background: #303030;
-    border: 1px solid #555;
+    border: 1px solid #666;
     padding: 12px;
     border-radius: 5px;
     cursor: pointer;
@@ -125,21 +165,28 @@ body {
     background: #444;
 }
 
-.files {
-    padding: 15px;
-    min-height: 300px;
+#files {
+    flex: 1;
+    min-height: 250px;
+    margin-top: 15px;
+    overflow: auto;
 }
 
 .file {
     display: inline-block;
-    width: 140px;
+
+    width: 145px;
     min-height: 90px;
+
     margin: 5px;
     padding: 12px;
+
     background: #292929;
     border: 1px solid #555;
     border-radius: 6px;
+
     text-align: center;
+
     cursor: pointer;
     user-select: none;
 }
@@ -149,285 +196,309 @@ body {
 }
 
 .file.selected {
-    border: 2px solid #00aaff;
+    border: 2px solid #0099ff;
     background: #123344;
 }
 
-.special {
-    color: #ffd700;
-}
+/* BUTTONS */
 
-.pageButtons {
-    text-align: center;
-    margin-top: 15px;
-}
-
-.pageButtons button,
-.verifyButton {
+button {
     padding: 10px 18px;
     margin: 4px;
+
     background: #0666a8;
     color: white;
+
     border: 0;
     border-radius: 5px;
+
     cursor: pointer;
 }
 
-.dropBox {
-    margin-top: 20px;
-    padding: 30px;
+button:hover {
+    background: #087fcf;
+}
+
+/* PAYMENT AREA */
+
+#drop {
+    grid-column: 1;
+    grid-row: 4;
+
+    min-height: 120px;
+
     border: 3px dashed #008cff;
-    border-radius: 8px;
+
     text-align: center;
-    background: #151515;
+
+    padding: 28px;
+
+    border-radius: 8px;
+
     cursor: pointer;
+
+    background: #151515;
 }
 
-.dropBox.active {
+#drop.active {
     background: #00344d;
 }
 
-.verification {
+/* VERIFICATION */
+
+#verification,
+#success {
     display: none;
-    margin-top: 20px;
-    padding: 25px;
-    background: #252525;
-    border: 2px solid #ff9900;
-    border-radius: 8px;
+
+    grid-column: 2;
+    grid-row: 4;
+
+    margin: 0;
 }
 
-.verification input {
-    width: 100%;
-    max-width: 450px;
+input {
     padding: 12px;
+
+    width: 100%;
+    max-width: 400px;
+
     background: #111;
     color: white;
+
     border: 1px solid #777;
     border-radius: 5px;
 }
 
-.success {
-    display: none;
-    margin-top: 20px;
-    padding: 30px;
-    text-align: center;
-    background: #003d15;
-    border: 2px solid #00ff55;
-}
+/* TIME OUT */
 
-.code {
-    background: #000;
-    padding: 18px;
-    max-width: 400px;
-    margin: 15px auto;
-    font-size: 24px;
-    letter-spacing: 3px;
-}
-
-.failure {
+#failure {
     display: none;
+
     position: fixed;
     inset: 0;
-    background: #050000;
+
     z-index: 9999;
+
+    background: #050000;
+
     text-align: center;
+
     padding-top: 25vh;
 }
 
-.failure h1 {
+#failure h1 {
     color: red;
     font-size: 50px;
 }
 
-/* =========================
-   RANSOM POPUP
-========================= */
+/* RANSOM POPUP */
 
-.popupOverlay {
+#overlay {
     display: none;
+
     position: fixed;
     inset: 0;
+
     z-index: 5000;
-    background: rgba(0, 0, 0, 0.18);
-    pointer-events: all;
+
+    background: rgba(0,0,0,0.18);
 }
 
-.ransomPopup {
+#popup {
     position: absolute;
+
     width: 330px;
+
     background: #101010;
+
     border: 3px solid #ff2222;
+
     border-radius: 7px;
+
     box-shadow:
-        0 0 15px rgba(255, 0, 0, 0.7),
-        0 0 40px rgba(255, 0, 0, 0.25);
+        0 0 18px rgba(255,0,0,0.7);
+
     overflow: hidden;
-}
 
-.popupTitle {
-    background: #9d0000;
-    padding: 10px;
-    font-weight: bold;
-    color: white;
-}
-
-.popupText {
-    padding: 25px 18px;
-    text-align: center;
-    font-size: 18px;
-    min-height: 80px;
-}
-
-.popupButton {
-    display: block;
-    margin: 0 auto 18px;
-    padding: 9px 35px;
-    border: 0;
-    border-radius: 4px;
-    background: #e00000;
-    color: white;
-    font-weight: bold;
     cursor: pointer;
 }
 
-.popupButton:hover {
+#popupTitle {
+    background: #9d0000;
+
+    padding: 10px;
+
+    font-weight: bold;
+
+    color: white;
+}
+
+#popupText {
+    min-height: 90px;
+
+    padding: 22px 15px;
+
+    text-align: center;
+
+    font-size: 18px;
+}
+
+#ok {
+    display: block;
+
+    margin: 0 auto 18px;
+
+    background: #e00000;
+
+    cursor: pointer;
+}
+
+#ok:hover {
     background: #ff2222;
 }
 
-.type3Active {
-    animation: redPulse 0.35s infinite alternate;
+/* TYPE 3 */
+
+.type3 {
+    animation:
+        redPulse 0.3s infinite alternate;
 }
 
 @keyframes redPulse {
+
     from {
-        box-shadow: inset 0 0 0 rgba(255, 0, 0, 0);
+        box-shadow:
+            inset 0 0 0 rgba(255,0,0,0);
     }
 
     to {
-        box-shadow: inset 0 0 70px rgba(255, 0, 0, 0.15);
+        box-shadow:
+            inset 0 0 70px rgba(255,0,0,0.15);
     }
 }
 
-@media(max-width:600px) {
-    .timer {
-        font-size: 34px;
+/* MOBILE */
+
+@media(max-width:800px) {
+
+    main {
+        display: block;
+        padding: 12px;
     }
 
-    .file {
-        width: calc(50% - 16px);
+    #timer {
+        font-size: 46px;
+        margin-bottom: 12px;
     }
 
-    .warning h1 {
-        font-size: 22px;
+    .panel,
+    #drop,
+    #verification,
+    #success {
+        margin-bottom: 12px;
     }
 
-    .ransomPopup {
-        width: 280px;
+    .paymentPanel,
+    .explorerPanel {
+        min-height: auto;
+    }
+
+    #files {
+        min-height: 250px;
     }
 }
 </style>
 </head>
 
+
 <body>
 
-<div class="warning">
-    <h1>⚠ YOUR FILES HAVE BEEN LOCKED ⚠</h1>
+
+<header>
+
+    <h1>
+        ⚠ YOUR FILES HAVE BEEN LOCKED ⚠
+    </h1>
 
     <p>
         Fictional ARG simulation — no real files are touched.
     </p>
-</div>
+
+</header>
 
 
-<div class="main" id="main">
+<main>
+
 
     <!-- TIMER -->
 
-    <div class="timer">
-        <span id="timer">13:00</span>
-    </div>
-
-
-    <!-- PAYMENT -->
-
-    <div class="payment">
-
-        <h2>💎 PAYMENT REQUIRED</h2>
-
-        <p>
-            Collect and submit 500 diamonds.
-        </p>
-
-        <div class="amount">
-            💎
-            <span id="paid">0</span>
-            / 500
-        </div>
-
-        <div class="progress">
-
-            <div
-                class="progressBar"
-                id="progressBar">
-            </div>
-
-        </div>
-
+    <div id="timer">
+        13:00
     </div>
 
 
     <!-- FILE EXPLORER -->
 
-    <div class="explorer">
+    <div class="panel explorerPanel">
 
-        <div class="explorerTitle">
+        <h2>
             📁 File Explorer
-        </div>
+        </h2>
 
         <div class="folders">
 
             <div
                 class="folder"
                 onclick="openFolder('Documents')">
+
                 📁 Documents
+
             </div>
 
             <div
                 class="folder"
                 onclick="openFolder('Downloads')">
+
                 📁 Downloads
+
             </div>
 
             <div
                 class="folder"
                 onclick="openFolder('Pictures')">
+
                 📁 Pictures
+
             </div>
 
             <div
                 class="folder"
                 onclick="openFolder('Games')">
+
                 📁 Games
+
             </div>
 
             <div
                 class="folder"
                 onclick="openFolder('System')">
+
                 📁 System
+
             </div>
 
             <div
                 class="folder"
                 onclick="openFolder('Archives')">
+
                 📁 Archives
+
             </div>
 
         </div>
 
 
-        <div
-            class="files"
-            id="files">
+        <div id="files">
 
             <p>
                 Select a folder.
@@ -436,13 +507,13 @@ body {
         </div>
 
 
-        <div class="pageButtons">
+        <div style="text-align:center">
 
             <button onclick="previousPage()">
                 ◀ Previous
             </button>
 
-            <span id="pageNumber">
+            <span id="page">
                 Page 1
             </span>
 
@@ -455,11 +526,56 @@ body {
     </div>
 
 
-    <!-- PAYMENT AREA -->
+    <!-- PAYMENT -->
 
-    <div
-        class="dropBox"
-        id="dropBox">
+    <div class="panel paymentPanel">
+
+        <h2>
+            💎 PAYMENT REQUIRED
+        </h2>
+
+        <p>
+            Collect and submit 500 diamonds.
+        </p>
+
+
+        <div class="amount">
+
+            💎
+
+            <span id="paid">
+                0
+            </span>
+
+            / 500
+
+        </div>
+
+
+        <div class="progress">
+
+            <div id="bar"></div>
+
+        </div>
+
+
+        <hr>
+
+
+        <h3>
+            Ransom-Banner Status
+        </h3>
+
+        <p>
+            Payment is required before the timer expires.
+        </p>
+
+    </div>
+
+
+    <!-- PAYMENT DROP -->
+
+    <div id="drop">
 
         <h2>
             💎 PAYMENT AREA
@@ -479,7 +595,7 @@ body {
     <!-- VERIFICATION -->
 
     <div
-        class="verification"
+        class="panel"
         id="verification">
 
         <h2>
@@ -487,24 +603,18 @@ body {
         </h2>
 
         <p>
-            Payment received.
-            Find
-            <b>Payment_Verification.txt</b>
-            in Documents.
+            Enter the verification code from
+            Payment_Verification.txt.
         </p>
 
         <input
-            id="verificationInput"
+            id="code"
             placeholder="Enter verification code">
 
         <br>
 
-        <button
-            class="verifyButton"
-            onclick="verifyPayment()">
-
+        <button onclick="verify()">
             VERIFY
-
         </button>
 
     </div>
@@ -513,7 +623,7 @@ body {
     <!-- SUCCESS -->
 
     <div
-        class="success"
+        class="panel"
         id="success">
 
         <h1>
@@ -524,44 +634,31 @@ body {
             RANSOM SETTLED.
         </p>
 
-        <p>
-            Your access code:
-        </p>
-
-        <div class="code">
+        <div class="amount">
             RANSOM-500-PAID
         </div>
 
     </div>
 
-</div>
+
+</main>
 
 
 <!-- RANSOM POPUP -->
 
-<div
-    class="popupOverlay"
-    id="popupOverlay">
+<div id="overlay">
 
-    <div
-        class="ransomPopup"
-        id="ransomPopup">
+    <div id="popup">
 
-        <div class="popupTitle">
+        <div id="popupTitle">
             Ransom-Banner
         </div>
 
-        <div
-            class="popupText"
-            id="popupText">
+        <div id="popupText">
         </div>
 
-        <button
-            class="popupButton"
-            id="popupButton">
-
+        <button id="ok">
             Ok
-
         </button>
 
     </div>
@@ -569,11 +666,9 @@ body {
 </div>
 
 
-<!-- FAILURE -->
+<!-- TIME OUT -->
 
-<div
-    class="failure"
-    id="failure">
+<div id="failure">
 
     <h1>
         TIME'S UP
@@ -592,48 +687,72 @@ body {
 
 <script>
 
-/* =========================================
-   MAIN VARIABLES
-========================================= */
+/* =====================================================
+   TIMER
+===================================================== */
 
 const TOTAL = 500;
 
-/*
-   THE TIMER IS 13 MINUTES.
-*/
-
 let timeLeft = 13 * 60;
+
+let timerRunning = true;
+
+
+/* =====================================================
+   PAYMENT
+===================================================== */
 
 let paid = 0;
 
 let selected = null;
 
+let completed = new Set();
+
+
+/* =====================================================
+   FOLDERS
+===================================================== */
+
+const folders = {
+
+    Documents: [1,100],
+
+    Downloads: [101,200],
+
+    Pictures: [201,300],
+
+    Games: [301,400],
+
+    System: [401,450],
+
+    Archives: [451,500]
+
+};
+
 let currentFolder = null;
 
 let currentPage = 1;
 
-let completed = new Set();
 
-let popupActive = false;
+/* =====================================================
+   POPUP VARIABLES
+===================================================== */
 
-let currentPopupType = 0;
+let popupOpen = false;
 
-let popupTimeout = null;
+let popupType = 0;
 
-let popupMoveInterval = null;
+let popupTimer = null;
 
-let lastPopupPhase = 0;
+let moveTimer = null;
 
 
-/* =========================================
-   POPUP TEXT
-========================================= */
-
-/* TYPE 1:
+/* =====================================================
+   TYPE 1
    13:00 → 8:00
-*/
+===================================================== */
 
-const type1Messages = [
+const type1 = [
 
     "PAY NOW",
 
@@ -648,13 +767,14 @@ const type1Messages = [
 ];
 
 
-/* TYPE 2:
+/* =====================================================
+   TYPE 2
    8:00 → 3:00
-*/
+===================================================== */
 
-const type2Messages = [
+const type2 = [
 
-    ...type1Messages,
+    ...type1,
 
     "HE IS WATCHING",
 
@@ -663,13 +783,14 @@ const type2Messages = [
 ];
 
 
-/* TYPE 3:
+/* =====================================================
+   TYPE 3
    3:00 → 0:00
-*/
+===================================================== */
 
-const type3Messages = [
+const type3 = [
 
-    ...type2Messages,
+    ...type2,
 
     "TIME OUT",
 
@@ -680,70 +801,66 @@ const type3Messages = [
 ];
 
 
-/* =========================================
-   RANDOM MESSAGE
-========================================= */
+/* =====================================================
+   PHASE
+===================================================== */
 
-function randomMessage(pool) {
-
-    return pool[
-        Math.floor(
-            Math.random() * pool.length
-        )
-    ];
-
-}
-
-
-/* =========================================
-   GET CURRENT PHASE
-========================================= */
-
-function getPhase() {
+function phase() {
 
     if (timeLeft > 8 * 60) {
-
         return 1;
-
     }
 
     if (timeLeft > 3 * 60) {
-
         return 2;
-
     }
 
     return 3;
-
 }
 
 
-/* =========================================
+/* =====================================================
+   RANDOM TEXT
+===================================================== */
+
+function randomText(list) {
+
+    return list[
+        Math.floor(
+            Math.random() * list.length
+        )
+    ];
+}
+
+
+/* =====================================================
    SHOW POPUP
-========================================= */
+===================================================== */
 
-function showPopup(type) {
+function showPopup() {
 
-    if (popupActive) {
+    if (
+        popupOpen ||
+        timeLeft <= 0
+    ) {
         return;
     }
 
-    popupActive = true;
 
-    currentPopupType = type;
+    popupOpen = true;
+
+    popupType = phase();
 
 
     const overlay =
         document.getElementById(
-            "popupOverlay"
+            "overlay"
         );
-
 
     const popup =
         document.getElementById(
-            "ransomPopup"
+            "popup"
         );
-
 
     const text =
         document.getElementById(
@@ -751,48 +868,11 @@ function showPopup(type) {
         );
 
 
-    let message;
+    if (popupType === 1) {
 
+        text.textContent =
+            randomText(type1);
 
-    if (type === 1) {
-
-        message =
-            randomMessage(
-                type1Messages
-            );
-
-    }
-
-    else if (type === 2) {
-
-        message =
-            randomMessage(
-                type2Messages
-            );
-
-    }
-
-    else {
-
-        message =
-            randomMessage(
-                type3Messages
-            );
-
-    }
-
-
-    text.textContent =
-        message;
-
-
-    overlay.style.display =
-        "block";
-
-
-    /* TYPE 1 = STATIONARY */
-
-    if (type === 1) {
 
         popup.style.left =
             "50%";
@@ -801,130 +881,141 @@ function showPopup(type) {
             "50%";
 
         popup.style.transform =
-            "translate(-50%, -50%)";
+            "translate(-50%,-50%)";
 
     }
 
 
-    /* TYPE 2 = MOVING */
+    if (popupType === 2) {
 
-    if (type === 2) {
+        text.textContent =
+            randomText(type2);
 
-        startMovingPopup(
-            false
+        startMovement(false);
+
+    }
+
+
+    if (popupType === 3) {
+
+        text.textContent =
+            randomText(type3);
+
+        document.body.classList.add(
+            "type3"
         );
 
-    }
-
-
-    /* TYPE 3 = EVERYTHING COMBINED */
-
-    if (type === 3) {
-
-        document.body.classList
-            .add("type3Active");
-
-        startMovingPopup(
-            true
-        );
+        startMovement(true);
 
     }
 
+
+    overlay.style.display =
+        "block";
 }
 
 
-/* =========================================
+/* =====================================================
    CLOSE POPUP
-========================================= */
+   CLICKING ANYWHERE ON POPUP CLOSES IT
+===================================================== */
 
 function closePopup() {
 
-    popupActive = false;
+    popupOpen = false;
 
-    currentPopupType = 0;
+    popupType = 0;
 
 
     document.getElementById(
-        "popupOverlay"
+        "overlay"
     ).style.display =
         "none";
 
 
-    document.body.classList
-        .remove("type3Active");
-
-
-    clearInterval(
-        popupMoveInterval
+    document.body.classList.remove(
+        "type3"
     );
 
 
-    popupMoveInterval =
-        null;
+    clearInterval(
+        moveTimer
+    );
 
 
-    /*
-       After closing the popup,
-       schedule another popup for
-       the current phase.
-    */
-
-    scheduleNextPopup();
-
+    schedulePopup();
 }
 
 
-/* =========================================
-   POPUP BUTTON
-========================================= */
+/*
+   THIS MAKES THE WHOLE POPUP CLICKABLE.
+
+   You don't have to precisely hit "Ok".
+*/
 
 document.getElementById(
-    "popupButton"
+    "popup"
 ).addEventListener(
     "click",
-    closePopup
+    function() {
+
+        closePopup();
+
+    }
 );
 
 
-/* =========================================
-   MOVING POPUP
-========================================= */
+/*
+   Prevent the button's click from
+   causing any weird duplicate behavior.
+*/
 
-function startMovingPopup(
-    finalPhase
-) {
+document.getElementById(
+    "ok"
+).addEventListener(
+    "click",
+    function(event) {
 
-    const popup =
-        document.getElementById(
-            "ransomPopup"
-        );
+        event.stopPropagation();
 
+        closePopup();
+
+    }
+);
+
+
+/* =====================================================
+   POPUP MOVEMENT
+===================================================== */
+
+function startMovement(finalPhase) {
 
     clearInterval(
-        popupMoveInterval
+        moveTimer
     );
 
 
-    let x = 50;
+    const popup =
+        document.getElementById(
+            "popup"
+        );
 
-    let y = 35;
+
+    let x = 20;
+
+    let y = 20;
 
     let direction = 1;
 
 
-    popupMoveInterval =
+    moveTimer =
         setInterval(
             function() {
 
-                if (!popupActive) {
+                if (!popupOpen) {
                     return;
                 }
 
-
-                /*
-                   TYPE 3 becomes faster
-                   as the timer gets lower.
-                */
 
                 let speed = 1;
 
@@ -933,10 +1024,8 @@ function startMovingPopup(
 
                     const progress =
                         1 -
-                        (
-                            timeLeft /
-                            (3 * 60)
-                        );
+                        timeLeft /
+                        (3 * 60);
 
 
                     speed =
@@ -953,35 +1042,24 @@ function startMovingPopup(
                     speed *
                     direction;
 
+
                 y +=
                     speed *
                     0.45;
 
 
-                if (
-                    x >= 82
-                ) {
-
+                if (x >= 82) {
                     direction = -1;
-
                 }
 
 
-                if (
-                    x <= 18
-                ) {
-
+                if (x <= 18) {
                     direction = 1;
-
                 }
 
 
-                if (
-                    y >= 78
-                ) {
-
-                    y = 20;
-
+                if (y >= 78) {
+                    y = 18;
                 }
 
 
@@ -994,26 +1072,26 @@ function startMovingPopup(
 
 
                 popup.style.transform =
-                    "translate(-50%, -50%)";
+                    "translate(-50%,-50%)";
 
 
             },
+
             finalPhase
                 ? 25
                 : 40
         );
-
 }
 
 
-/* =========================================
-   POPUP SCHEDULING
-========================================= */
+/* =====================================================
+   POPUP SCHEDULER
+===================================================== */
 
-function scheduleNextPopup() {
+function schedulePopup() {
 
     clearTimeout(
-        popupTimeout
+        popupTimer
     );
 
 
@@ -1022,130 +1100,123 @@ function scheduleNextPopup() {
     }
 
 
-    const phase =
-        getPhase();
+    const p =
+        phase();
 
 
     let delay;
 
 
-    if (phase === 1) {
-
-        /*
-           Type 1:
-           less frequent.
-        */
+    if (p === 1) {
 
         delay =
-            15000 +
-            Math.random() * 20000;
+            12000 +
+            Math.random() * 16000;
 
     }
 
-
-    else if (phase === 2) {
-
-        /*
-           Type 2:
-           more frequent.
-        */
+    else if (p === 2) {
 
         delay =
-            8000 +
-            Math.random() * 14000;
+            7000 +
+            Math.random() * 11000;
 
     }
-
 
     else {
 
-        /*
-           Type 3:
-           increasingly frequent.
-        */
-
         const progress =
             1 -
-            (
-                timeLeft /
-                (3 * 60)
-            );
+            timeLeft /
+            (3 * 60);
 
 
         delay =
             Math.max(
-                2500,
-                8000 -
-                progress * 5000
+                2000,
+                7000 -
+                progress * 4500
             );
 
     }
 
 
-    popupTimeout =
+    popupTimer =
         setTimeout(
-            function() {
-
-                if (
-                    !popupActive &&
-                    timeLeft > 0
-                ) {
-
-                    showPopup(
-                        getPhase()
-                    );
-
-                }
-
-            },
+            showPopup,
             delay
         );
-
 }
 
 
-/* =========================================
+/* =====================================================
+   TIMER DISPLAY
+===================================================== */
+
+function updateDisplay() {
+
+    const minutes =
+        Math.floor(
+            timeLeft / 60
+        );
+
+
+    const seconds =
+        String(
+            timeLeft % 60
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    document.getElementById(
+        "timer"
+    ).textContent =
+        minutes +
+        ":" +
+        seconds;
+}
+
+
+/* =====================================================
    TIMER
-========================================= */
+===================================================== */
 
 function updateTimer() {
 
     /*
-       TYPE 3 FREEZES THE TIMER
-       WHILE THE POPUP IS ACTIVE.
+       TYPE 3 POPUP TEMPORARILY
+       BLOCKS THE COUNTDOWN.
     */
 
     if (
-        popupActive &&
-        currentPopupType === 3
+        popupOpen &&
+        popupType === 3
     ) {
 
-        updateTimerDisplay();
+        updateDisplay();
 
         return;
 
     }
 
 
-    timeLeft--;
-
-
-    if (
-        timeLeft < 0
-    ) {
-
-        timeLeft = 0;
-
+    if (!timerRunning) {
+        return;
     }
 
 
-    updateTimerDisplay();
+    timeLeft--;
 
 
-    /*
-       TIMER DANGER EFFECT
-       STARTS AT 30 SECONDS.
-    */
+    if (timeLeft < 0) {
+        timeLeft = 0;
+    }
+
+
+    updateDisplay();
+
 
     if (
         timeLeft <= 30 &&
@@ -1161,26 +1232,25 @@ function updateTimer() {
     }
 
 
-    /*
-       TIMER ENDS.
-    */
-
     if (
         timeLeft === 0
     ) {
 
+        timerRunning = false;
+
+
         clearInterval(
-            timerInterval
+            timer
         );
 
 
         clearTimeout(
-            popupTimeout
+            popupTimer
         );
 
 
         clearInterval(
-            popupMoveInterval
+            moveTimer
         );
 
 
@@ -1189,127 +1259,35 @@ function updateTimer() {
         ).style.display =
             "block";
 
-
-        return;
-
-    }
-
-
-    /*
-       Detect phase changes.
-    */
-
-    const phase =
-        getPhase();
-
-
-    if (
-        phase !== lastPopupPhase
-    ) {
-
-        lastPopupPhase =
-            phase;
-
-
-        clearTimeout(
-            popupTimeout
-        );
-
-
-        if (!popupActive) {
-
-            scheduleNextPopup();
-
-        }
-
     }
 
 }
 
 
-/* =========================================
-   TIMER DISPLAY
-========================================= */
-
-function updateTimerDisplay() {
-
-    let minutes =
-        Math.floor(
-            timeLeft / 60
-        );
+updateDisplay();
 
 
-    let seconds =
-        timeLeft % 60;
-
-
-    seconds =
-        String(seconds)
-            .padStart(
-                2,
-                "0"
-            );
-
-
-    document.getElementById(
-        "timer"
-    ).textContent =
-        minutes +
-        ":" +
-        seconds;
-
-}
-
-
-/* =========================================
-   START TIMER
-========================================= */
-
-updateTimerDisplay();
-
-
-let timerInterval =
+const timer =
     setInterval(
         updateTimer,
         1000
     );
 
 
-/* =========================================
-   START POPUP SYSTEM
-========================================= */
+/*
+   FIRST POPUP
+*/
 
-lastPopupPhase =
-    getPhase();
-
-
-scheduleNextPopup();
-
-
-/* =========================================
-   FOLDERS
-========================================= */
-
-const folders = {
-
-    Documents: [1, 100],
-
-    Downloads: [101, 200],
-
-    Pictures: [201, 300],
-
-    Games: [301, 400],
-
-    System: [401, 450],
-
-    Archives: [451, 500]
-
-};
+popupTimer =
+    setTimeout(
+        showPopup,
+        8000
+    );
 
 
-/* =========================================
-   OPEN FOLDER
-========================================= */
+/* =====================================================
+   FOLDER SYSTEM
+===================================================== */
 
 function openFolder(name) {
 
@@ -1320,13 +1298,12 @@ function openFolder(name) {
         1;
 
     renderFiles();
-
 }
 
 
-/* =========================================
-   RENDER FILES
-========================================= */
+/* =====================================================
+   FILE RENDER
+===================================================== */
 
 function renderFiles() {
 
@@ -1393,9 +1370,7 @@ function renderFiles() {
         if (
             completed.has(id)
         ) {
-
             continue;
-
         }
 
 
@@ -1406,10 +1381,6 @@ function renderFiles() {
 
     }
 
-
-    /*
-       Verification file.
-    */
 
     if (
         currentFolder ===
@@ -1425,17 +1396,16 @@ function renderFiles() {
 
 
     document.getElementById(
-        "pageNumber"
+        "page"
     ).textContent =
         "Page " +
         currentPage;
-
 }
 
 
-/* =========================================
+/* =====================================================
    CREATE DIAMOND
-========================================= */
+===================================================== */
 
 function createDiamond(
     box,
@@ -1465,20 +1435,15 @@ function createDiamond(
         "💎<br>" +
         "Diamond_" +
         number +
-        ".dat" +
-        "<br>" +
+        ".dat<br>" +
         "<small>VALUE: 1</small>";
 
 
     file.onclick =
         function() {
 
-            if (
-                popupActive
-            ) {
-
+            if (popupOpen) {
                 return;
-
             }
 
 
@@ -1502,10 +1467,9 @@ function createDiamond(
                 );
 
 
-            file.classList
-                .add(
-                    "selected"
-                );
+            file.classList.add(
+                "selected"
+            );
 
         };
 
@@ -1513,9 +1477,7 @@ function createDiamond(
     file.ondragstart =
         function(event) {
 
-            if (
-                popupActive
-            ) {
+            if (popupOpen) {
 
                 event.preventDefault();
 
@@ -1536,13 +1498,12 @@ function createDiamond(
     box.appendChild(
         file
     );
-
 }
 
 
-/* =========================================
+/* =====================================================
    VERIFICATION FILE
-========================================= */
+===================================================== */
 
 function createVerificationFile(
     box
@@ -1555,7 +1516,11 @@ function createVerificationFile(
 
 
     file.className =
-        "file special";
+        "file";
+
+
+    file.style.color =
+        "#ffd700";
 
 
     file.innerHTML =
@@ -1577,13 +1542,12 @@ function createVerificationFile(
     box.appendChild(
         file
     );
-
 }
 
 
-/* =========================================
+/* =====================================================
    PAGE CONTROLS
-========================================= */
+===================================================== */
 
 function nextPage() {
 
@@ -1618,7 +1582,6 @@ function nextPage() {
         renderFiles();
 
     }
-
 }
 
 
@@ -1633,77 +1596,65 @@ function previousPage() {
         renderFiles();
 
     }
-
 }
 
 
-/* =========================================
+/* =====================================================
    DRAG & DROP
-========================================= */
+===================================================== */
 
-const dropBox =
+const drop =
     document.getElementById(
-        "dropBox"
+        "drop"
     );
 
 
-dropBox.addEventListener(
+drop.addEventListener(
     "dragover",
     function(event) {
 
-        if (
-            popupActive
-        ) {
-
+        if (popupOpen) {
             return;
-
         }
 
 
         event.preventDefault();
 
 
-        dropBox.classList
-            .add(
-                "active"
-            );
+        drop.classList.add(
+            "active"
+        );
 
     }
 );
 
 
-dropBox.addEventListener(
+drop.addEventListener(
     "dragleave",
     function() {
 
-        dropBox.classList
-            .remove(
-                "active"
-            );
+        drop.classList.remove(
+            "active"
+        );
 
     }
 );
 
 
-dropBox.addEventListener(
+drop.addEventListener(
     "drop",
     function(event) {
 
         event.preventDefault();
 
 
-        dropBox.classList
-            .remove(
-                "active"
-            );
+        drop.classList.remove(
+            "active"
+        );
 
 
-        if (
-            popupActive
-        ) {
-
+        if (popupOpen) {
             return;
-
         }
 
 
@@ -1714,27 +1665,21 @@ dropBox.addEventListener(
                 );
 
 
-        deposit(
-            id
-        );
+        deposit(id);
 
     }
 );
 
 
-/* =========================================
+/* =====================================================
    MOBILE PAYMENT
-========================================= */
+===================================================== */
 
-dropBox.onclick =
+drop.onclick =
     function() {
 
-        if (
-            popupActive
-        ) {
-
+        if (popupOpen) {
             return;
-
         }
 
 
@@ -1760,22 +1705,16 @@ dropBox.onclick =
     };
 
 
-/* =========================================
+/* =====================================================
    DEPOSIT
-========================================= */
+===================================================== */
 
 function deposit(id) {
 
     if (
-        popupActive
+        popupOpen ||
+        !id
     ) {
-
-        return;
-
-    }
-
-
-    if (!id) {
         return;
     }
 
@@ -1783,9 +1722,7 @@ function deposit(id) {
     if (
         completed.has(id)
     ) {
-
         return;
-
     }
 
 
@@ -1802,7 +1739,7 @@ function deposit(id) {
 
 
     document.getElementById(
-        "progressBar"
+        "bar"
     ).style.width =
         (
             paid /
@@ -1810,46 +1747,6 @@ function deposit(id) {
             100
         ) +
         "%";
-
-
-    /*
-       Small milestones.
-    */
-
-    if (
-        paid === 100
-    ) {
-
-        alert(
-            "PAYMENT ACCEPTED.\n\n" +
-            "100 / 500"
-        );
-
-    }
-
-
-    if (
-        paid === 250
-    ) {
-
-        alert(
-            "HALF PAYMENT RECEIVED.\n\n" +
-            "250 / 500"
-        );
-
-    }
-
-
-    if (
-        paid === 400
-    ) {
-
-        alert(
-            "FINAL PAYMENT APPROACHING.\n\n" +
-            "400 / 500"
-        );
-
-    }
 
 
     renderFiles();
@@ -1862,37 +1759,38 @@ function deposit(id) {
         completePayment();
 
     }
-
 }
 
 
-/* =========================================
-   PAYMENT COMPLETE
-========================================= */
+/* =====================================================
+   COMPLETE
+===================================================== */
 
 function completePayment() {
 
+    timerRunning = false;
+
+
     clearInterval(
-        timerInterval
+        timer
     );
 
 
     clearTimeout(
-        popupTimeout
+        popupTimer
     );
 
 
     clearInterval(
-        popupMoveInterval
+        moveTimer
     );
 
 
-    popupActive =
-        false;
+    popupOpen = false;
 
 
     document.getElementById(
-        "popupOverlay"
+        "overlay"
     ).style.display =
         "none";
 
@@ -1907,19 +1805,18 @@ function completePayment() {
         "PAYMENT COMPLETE.\n\n" +
         "VERIFYING PAYMENT..."
     );
-
 }
 
 
-/* =========================================
-   VERIFY PAYMENT
-========================================= */
+/* =====================================================
+   VERIFY
+===================================================== */
 
-function verifyPayment() {
+function verify() {
 
     const code =
         document.getElementById(
-            "verificationInput"
+            "code"
         ).value
         .trim()
         .toUpperCase();
@@ -1950,7 +1847,6 @@ function verifyPayment() {
         );
 
     }
-
 }
 
 </script>
