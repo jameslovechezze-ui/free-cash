@@ -1,249 +1,1943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ransom-Banner</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+    width: 100%;
+    background: #101010;
+    color: #eee;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+/* HEADER */
+
+header {
+    background: #700000;
+    border-bottom: 3px solid #ff2222;
+    padding: 18px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    color: #ff4444;
+}
+
+/* MAIN */
+
+main {
+    width: 100%;
+    padding: 18px 24px 40px;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        360px;
+
+    grid-template-rows:
+        auto
+        auto
+        minmax(0, 1fr)
+        auto;
+
+    gap: 16px;
+}
+
+/* TIMER */
+
+#timer {
+    grid-column: 1 / -1;
+
+    position: relative;
+    z-index: 1;
+
+    text-align: center;
+
+    font-size: 64px;
+    font-weight: bold;
+
+    color: #ff3333;
+
+    padding: 10px;
+
+    text-shadow:
+        0 0 15px rgba(255,0,0,.5);
+}
+
+#timer.danger {
+    animation: timerFlash .45s infinite alternate;
+}
+
+@keyframes timerFlash {
+    from {
+        color: #ff3333;
+    }
+
+    to {
+        color: white;
+    }
+}
+
+/* PANELS */
+
+.panel {
+    background: #202020;
+    border: 1px solid #555;
+    border-radius: 8px;
+    padding: 20px;
+
+    box-shadow:
+        0 4px 18px rgba(0,0,0,.3);
+}
+
+/* FILE EXPLORER */
+
+.explorerPanel {
+    grid-column: 1;
+    grid-row: 2 / 4;
+
+    min-height: 500px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.folders {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.folder {
+    background: #303030;
+    border: 1px solid #666;
+
+    padding: 12px;
+
+    border-radius: 5px;
+
+    cursor: pointer;
+}
+
+.folder:hover {
+    background: #444;
+}
+
+#files {
+    flex: 1;
+
+    min-height: 250px;
+
+    margin-top: 15px;
+
+    overflow: auto;
+}
+
+.file {
+    display: inline-block;
+
+    width: 145px;
+    min-height: 90px;
+
+    margin: 5px;
+    padding: 12px;
+
+    background: #292929;
+
+    border: 1px solid #555;
+
+    border-radius: 6px;
+
+    text-align: center;
+
+    cursor: pointer;
+
+    user-select: none;
+}
+
+.file:hover {
+    background: #3a3a3a;
+}
+
+.file.selected {
+    border: 2px solid #0099ff;
+    background: #123344;
+}
+
+/* PAYMENT */
+
+.paymentPanel {
+    grid-column: 2;
+    grid-row: 2 / 4;
+}
+
+.amount {
+    text-align: center;
+
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.progress {
+    height: 24px;
+
+    background: #444;
+
+    border-radius: 8px;
+
+    overflow: hidden;
+
+    margin-top: 15px;
+}
+
+#bar {
+    width: 0%;
+    height: 100%;
+
+    background: #00bd50;
+
+    transition: width .2s;
+}
+
+/* PAYMENT AREA */
+
+#drop {
+    grid-column: 1;
+    grid-row: 4;
+
+    min-height: 120px;
+
+    border: 3px dashed #008cff;
+
+    border-radius: 8px;
+
+    padding: 28px;
+
+    text-align: center;
+
+    background: #151515;
+
+    cursor: pointer;
+}
+
+#drop.active {
+    background: #00344d;
+}
+
+/* BUTTONS */
+
+button {
+    padding: 10px 18px;
+
+    margin: 4px;
+
+    background: #0666a8;
+
+    color: white;
+
+    border: 0;
+
+    border-radius: 5px;
+
+    cursor: pointer;
+}
+
+button:hover {
+    background: #087fcf;
+}
+
+/* VERIFICATION */
+
+#verification,
+#success {
+    display: none;
+
+    grid-column: 2;
+    grid-row: 4;
+}
+
+input {
+    width: 100%;
+
+    padding: 12px;
+
+    background: #111;
+
+    color: white;
+
+    border: 1px solid #777;
+
+    border-radius: 5px;
+}
+
+/* FAILURE */
+
+#failure {
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 9000;
+
+    background: #050000;
+
+    text-align: center;
+
+    padding-top: 25vh;
+}
+
+#failure h1 {
+    color: red;
+
+    font-size: 50px;
+}
+
 /* =====================================================
-   POPUP VARIABLES & INITIALIZATION
+   POPUP SYSTEM
 ===================================================== */
-// Waktu awal hitung mundur dalam detik (Contoh: 10 menit = 600 detik)
-let timeLeft = 600; 
+
+#popupLayer {
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 5000;
+
+    pointer-events: none;
+}
+
+/*
+   IMPORTANT:
+
+   The layer does NOT block the page.
+
+   Only the actual popup is clickable.
+*/
+
+#ransomPopup {
+    position: absolute;
+
+    width: 330px;
+
+    background: #101010;
+
+    border: 3px solid #ff2222;
+
+    border-radius: 7px;
+
+    box-shadow:
+        0 0 20px rgba(255,0,0,.75);
+
+    overflow: hidden;
+
+    pointer-events: auto;
+
+    cursor: pointer;
+}
+
+/* POPUP TITLE */
+
+#popupTitle {
+    background: #9d0000;
+
+    padding: 10px;
+
+    font-weight: bold;
+
+    color: white;
+}
+
+/* POPUP TEXT */
+
+#popupText {
+    min-height: 90px;
+
+    padding: 22px 15px;
+
+    text-align: center;
+
+    font-size: 18px;
+
+    line-height: 1.35;
+}
+
+/* OK */
+
+#popupOK {
+    display: block;
+
+    margin: 0 auto 18px;
+
+    background: #e00000;
+}
+
+#popupOK:hover {
+    background: #ff2222;
+}
+
+/* TYPE 3 */
+
+body.type3Active {
+    animation: type3Pulse .45s infinite alternate;
+}
+
+@keyframes type3Pulse {
+    from {
+        box-shadow:
+            inset 0 0 0 rgba(255,0,0,0);
+    }
+
+    to {
+        box-shadow:
+            inset 0 0 55px rgba(255,0,0,.16);
+    }
+}
+
+#ransomPopup.type3Popup {
+    border-width: 4px;
+
+    box-shadow:
+        0 0 30px rgba(255,0,0,.95);
+}
+
+/* MOBILE */
+
+@media(max-width:800px) {
+
+    main {
+        display: block;
+        padding: 12px;
+    }
+
+    #timer {
+        font-size: 46px;
+    }
+
+    .panel,
+    #drop {
+        margin-bottom: 12px;
+    }
+
+    #ransomPopup {
+        width: min(330px,88vw);
+    }
+}
+</style>
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h1>
+        ⚠ YOUR FILES HAVE BEEN LOCKED ⚠
+    </h1>
+
+    <p>
+        Fictional ARG simulation — no real files are touched.
+    </p>
+
+</header>
+
+
+<main>
+
+
+<!-- TIMER -->
+
+<div id="timer">
+    13:00
+</div>
+
+
+<!-- FILE EXPLORER -->
+
+<div class="panel explorerPanel">
+
+    <h2>📁 File Explorer</h2>
+
+    <div class="folders">
+
+        <div
+            class="folder"
+            onclick="openFolder('Documents')">
+
+            📁 Documents
+
+        </div>
+
+        <div
+            class="folder"
+            onclick="openFolder('Downloads')">
+
+            📁 Downloads
+
+        </div>
+
+        <div
+            class="folder"
+            onclick="openFolder('Pictures')">
+
+            📁 Pictures
+
+        </div>
+
+        <div
+            class="folder"
+            onclick="openFolder('Games')">
+
+            📁 Games
+
+        </div>
+
+        <div
+            class="folder"
+            onclick="openFolder('System')">
+
+            📁 System
+
+        </div>
+
+        <div
+            class="folder"
+            onclick="openFolder('Archives')">
+
+            📁 Archives
+
+        </div>
+
+    </div>
+
+
+    <div id="files">
+        <p>Select a folder.</p>
+    </div>
+
+
+    <div style="text-align:center">
+
+        <button onclick="previousPage()">
+            ◀ Previous
+        </button>
+
+        <span id="page">
+            Page 1
+        </span>
+
+        <button onclick="nextPage()">
+            Next ▶
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- PAYMENT PANEL -->
+
+<div class="panel paymentPanel">
+
+    <h2>
+        💎 PAYMENT REQUIRED
+    </h2>
+
+    <p>
+        Collect and submit 500 diamonds.
+    </p>
+
+
+    <div class="amount">
+
+        💎
+        <span id="paid">0</span>
+        / 500
+
+    </div>
+
+
+    <div class="progress">
+
+        <div id="bar"></div>
+
+    </div>
+
+
+    <hr>
+
+
+    <h3>
+        Ransom-Banner Status
+    </h3>
+
+    <p>
+        Payment is required before the timer expires.
+    </p>
+
+</div>
+
+
+<!-- PAYMENT AREA -->
+
+<div id="drop">
+
+    <h2>
+        💎 PAYMENT AREA
+    </h2>
+
+    <p>
+        PC: drag a diamond here.
+    </p>
+
+    <p>
+        Mobile: tap a diamond, then tap here.
+    </p>
+
+</div>
+
+
+<!-- VERIFICATION -->
+
+<div
+    class="panel"
+    id="verification">
+
+    <h2>
+        🔎 PAYMENT VERIFICATION
+    </h2>
+
+    <p>
+        Enter the verification code from
+        Payment_Verification.txt.
+    </p>
+
+    <input
+        id="code"
+        placeholder="Enter verification code">
+
+    <br>
+
+    <button onclick="verify()">
+        VERIFY
+    </button>
+
+</div>
+
+
+<!-- SUCCESS -->
+
+<div
+    class="panel"
+    id="success">
+
+    <h1>
+        ✅ PAYMENT VERIFIED
+    </h1>
+
+    <p>
+        RANSOM SETTLED.
+    </p>
+
+</div>
+
+
+</main>
+
+
+<!-- =====================================================
+     POPUP
+===================================================== -->
+
+<div id="popupLayer">
+
+    <div id="ransomPopup">
+
+        <div id="popupTitle">
+            Ransom-Banner
+        </div>
+
+        <div id="popupText">
+        </div>
+
+        <button id="popupOK">
+            Ok
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- TIME OUT -->
+
+<div id="failure">
+
+    <h1>
+        TIME OUT
+    </h1>
+
+    <p>
+        Payment failed.
+    </p>
+
+    <button onclick="location.reload()">
+        TRY AGAIN
+    </button>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   MAIN VARIABLES
+===================================================== */
+
+const TOTAL_DIAMONDS = 500;
+
+let timeLeft = 13 * 60;
+
+let timerRunning = true;
+
+let paid = 0;
+
+let selectedDiamond = null;
+
+let collectedDiamonds = new Set();
+
+
+/* =====================================================
+   FOLDERS
+===================================================== */
+
+const folders = {
+
+    Documents: [1,100],
+
+    Downloads: [101,200],
+
+    Pictures: [201,300],
+
+    Games: [301,400],
+
+    System: [401,450],
+
+    Archives: [451,500]
+
+};
+
+let currentFolder = null;
+
+let currentPage = 1;
+
+
+/* =====================================================
+   POPUP VARIABLES
+===================================================== */
 
 let popupOpen = false;
+
 let popupType = 0;
+
 let popupVariant = 0;
 
 let popupTimer = null;
-let moveTimer = null;
-let countdownTimer = null;
+
+let popupMoveTimer = null;
+
 
 /* =====================================================
-   TEXT LISTS FOR POPUPS
+   TYPE 1
+   13:00 → 8:00
 ===================================================== */
-const type1 = [
+
+const type1Messages = [
+
     "PAY NOW",
+
     "Your files have been ENCRYPTED",
+
     "Ransom is HUNGRY",
+
     "DON'T LET THE RANSOM LEFT WITH NO WEALTH",
+
     "your MINE, DON'T YOU JUST LEAVE ME HERE EASILY"
+
 ];
 
-const type2 = [
-    ...type1,
+
+/* =====================================================
+   TYPE 2
+   8:00 → 3:00
+===================================================== */
+
+const type2Messages = [
+
+    ...type1Messages,
+
     "HE IS WATCHING",
+
     "YOU FAILED TO KEEP HER PROMISED"
+
 ];
 
-const type3 = [
-    ...type1,
-    "HE IS WATCHING",
-    "YOU FAILED TO KEEP HER PROMISED",
+
+/* =====================================================
+   TYPE 3
+   3:00 → 0:00
+===================================================== */
+
+const type3Messages = [
+
+    ...type2Messages,
+
     "TIME OUT",
+
     "PREPARE. THE. LOST",
+
     "DON'T YOU FEEL BAD FOR HER? SHE. IS. CRYING. NOW."
+
 ];
 
+
 /* =====================================================
-   CORE LOGIC & PHASES
+   GET PHASE
 ===================================================== */
-function phase() {
+
+function getPhase() {
+
     if (timeLeft > 8 * 60) {
-        return 1; // Lebih dari 8 menit
+        return 1;
     }
+
     if (timeLeft > 3 * 60) {
-        return 2; // Antara 3 sampai 8 menit
+        return 2;
     }
-    return 3; // Kurang dari 3 menit
+
+    return 3;
 }
 
-function randomText(list) {
-    return list[Math.floor(Math.random() * list.length)];
-}
 
 /* =====================================================
-   POPUP POSITIONING
+   RANDOM MESSAGE
 ===================================================== */
-function randomPopupPosition() {
-    const popup = document.getElementById("popup");
-    if (!popup) return;
 
-    const x = 12 + Math.random() * 76;
-    const y = 15 + Math.random() * 70;
+function randomMessage(list) {
 
-    popup.style.left = x + "%";
-    popup.style.top = y + "%";
-    popup.style.transform = "translate(-50%, -50%)";
+    return list[
+        Math.floor(
+            Math.random() * list.length
+        )
+    ];
 }
+
+
+/* =====================================================
+   RANDOM POPUP POSITION
+===================================================== */
+
+function randomPopupPosition() {
+
+    const popup =
+        document.getElementById(
+            "ransomPopup"
+        );
+
+    const x =
+        10 + Math.random() * 80;
+
+    const y =
+        15 + Math.random() * 70;
+
+    popup.style.left =
+        x + "%";
+
+    popup.style.top =
+        y + "%";
+
+    popup.style.transform =
+        "translate(-50%,-50%)";
+}
+
+
+/* =====================================================
+   TYPE 3 POSITION
+   OVER TIMER
+===================================================== */
 
 function timerPopupPosition() {
-    const popup = document.getElementById("popup");
-    if (!popup) return;
 
-    popup.style.left = "50%";
-    popup.style.top = "115px";
-    popup.style.transform = "translate(-50%, -50%)";
+    const popup =
+        document.getElementById(
+            "ransomPopup"
+        );
+
+    popup.style.left =
+        "50%";
+
+    popup.style.top =
+        "105px";
+
+    popup.style.transform =
+        "translate(-50%,-50%)";
 }
 
+
 /* =====================================================
-   SHOW POPUP CONTROL
+   SHOW POPUP
 ===================================================== */
+
 function showPopup() {
-    if (popupOpen || timeLeft <= 0) {
+
+    if (
+        popupOpen ||
+        timeLeft <= 0
+    ) {
         return;
     }
 
+
     popupOpen = true;
-    popupType = phase();
+
+    popupType = getPhase();
+
     popupVariant = 0;
 
-    const overlay = document.getElementById("overlay");
-    const text = document.getElementById("popupText");
 
-    if (!overlay || !text) return;
+    const layer =
+        document.getElementById(
+            "popupLayer"
+        );
 
-    clearInterval(moveTimer);
+    const popup =
+        document.getElementById(
+            "ransomPopup"
+        );
 
-    /* --- TYPE 1 --- */
+    const text =
+        document.getElementById(
+            "popupText"
+        );
+
+
+    clearInterval(
+        popupMoveTimer
+    );
+
+
+    popup.classList.remove(
+        "type3Popup"
+    );
+
+
+    /* TYPE 1 */
+
     if (popupType === 1) {
-        randomPopupPosition();
-        text.textContent = randomText(type1);
+
         popupVariant = 1;
-    }
-    /* --- TYPE 2 --- */
-    else if (popupType === 2) {
+
         randomPopupPosition();
-        text.textContent = randomText(type2);
 
-        // 50% kemungkinan bergerak/memantul
-        if (Math.random() < 0.5) {
+        text.textContent =
+            randomMessage(
+                type1Messages
+            );
+    }
+
+
+    /* TYPE 2 */
+
+    else if (popupType === 2) {
+
+        randomPopupPosition();
+
+        text.textContent =
+            randomMessage(
+                type2Messages
+            );
+
+
+        /*
+           70% normal
+           30% bouncing
+        */
+
+        if (
+            Math.random() < .70
+        ) {
+
             popupVariant = 2;
-        } else {
+
+        }
+
+        else {
+
             popupVariant = 3;
+
             startType2Bounce();
+
         }
     }
-    /* --- TYPE 3 --- */
+
+
+    /* TYPE 3 */
+
     else {
-        timerPopupPosition();
-        text.textContent = randomText(type3);
+
         popupVariant = 4;
-        document.body.classList.add("type3");
+
+        timerPopupPosition();
+
+        text.textContent =
+            randomMessage(
+                type3Messages
+            );
+
+        popup.classList.add(
+            "type3Popup"
+        );
+
+        document.body.classList.add(
+            "type3Active"
+        );
     }
 
-    overlay.style.display = "block";
+
+    layer.style.display =
+        "block";
 }
 
+
 /* =====================================================
-   TYPE 2B BOUNCING MOVEMENT
+   TYPE 2B BOUNCING
 ===================================================== */
+
 function startType2Bounce() {
-    clearInterval(moveTimer);
 
-    const popup = document.getElementById("popup");
-    if (!popup) return;
+    clearInterval(
+        popupMoveTimer
+    );
 
-    let x = parseFloat(popup.style.left) || 50;
-    let y = parseFloat(popup.style.top) || 50;
 
-    let vx = 0.8 + Math.random() * 0.8;
-    let vy = 0.5 + Math.random() * 0.6;
+    const popup =
+        document.getElementById(
+            "ransomPopup"
+        );
 
-    if (Math.random() < 0.5) vx *= -1;
-    if (Math.random() < 0.5) vy *= -1;
 
-    moveTimer = setInterval(function() {
-        if (!popupOpen || popupType !== 2) {
-            clearInterval(moveTimer);
-            return;
-        }
+    let x =
+        parseFloat(
+            popup.style.left
+        );
 
-        x += vx;
-        y += vy;
+    let y =
+        parseFloat(
+            popup.style.top
+        );
 
-        // Memantul dari tepi layar
-        if (x >= 88) { x = 88; vx *= -1; }
-        if (x <= 12) { x = 12; vx *= -1; }
-        if (y >= 84) { y = 84; vy *= -1; }
-        if (y <= 14) { y = 14; vy *= -1; }
 
-        popup.style.left = x + "%";
-        popup.style.top = y + "%";
-        popup.style.transform = "translate(-50%, -50%)";
-    }, 25);
+    let vx =
+        .45 +
+        Math.random() * .4;
+
+    let vy =
+        .30 +
+        Math.random() * .35;
+
+
+    if (
+        Math.random() < .5
+    ) {
+        vx *= -1;
+    }
+
+
+    if (
+        Math.random() < .5
+    ) {
+        vy *= -1;
+    }
+
+
+    popupMoveTimer =
+        setInterval(
+            function() {
+
+                if (
+                    !popupOpen ||
+                    popupType !== 2
+                ) {
+                    return;
+                }
+
+
+                x += vx;
+
+                y += vy;
+
+
+                if (x >= 88) {
+
+                    x = 88;
+
+                    vx *= -1;
+
+                }
+
+
+                if (x <= 12) {
+
+                    x = 12;
+
+                    vx *= -1;
+
+                }
+
+
+                if (y >= 85) {
+
+                    y = 85;
+
+                    vy *= -1;
+
+                }
+
+
+                if (y <= 15) {
+
+                    y = 15;
+
+                    vy *= -1;
+
+                }
+
+
+                popup.style.left =
+                    x + "%";
+
+                popup.style.top =
+                    y + "%";
+
+                popup.style.transform =
+                    "translate(-50%,-50%)";
+
+            },
+
+            30
+        );
 }
 
+
 /* =====================================================
-   CLOSE & SCHEDULE CONTROL
+   CLOSE POPUP
+   CLICK ANYWHERE INSIDE = CLOSE
 ===================================================== */
+
 function closePopup() {
+
     popupOpen = false;
+
     popupType = 0;
+
     popupVariant = 0;
 
-    clearInterval(moveTimer);
-    document.body.classList.remove("type3");
 
-    const overlay = document.getElementById("overlay");
-    if (overlay) overlay.style.display = "none";
+    clearInterval(
+        popupMoveTimer
+    );
 
-    schedulePopup();
+
+    document.body.classList.remove(
+        "type3Active"
+    );
+
+
+    document.getElementById(
+        "ransomPopup"
+    ).classList.remove(
+        "type3Popup"
+    );
+
+
+    document.getElementById(
+        "popupLayer"
+    ).style.display =
+        "none";
+
+
+    scheduleNextPopup();
 }
 
-function schedulePopup() {
-    clearTimeout(popupTimer);
+
+/* =====================================================
+   CLICK ANYWHERE INSIDE POPUP
+===================================================== */
+
+document
+    .getElementById(
+        "ransomPopup"
+    )
+    .addEventListener(
+        "click",
+        function() {
+
+            closePopup();
+
+        }
+    );
+
+
+/* =====================================================
+   POPUP FREQUENCY
+===================================================== */
+
+function scheduleNextPopup() {
+
+    clearTimeout(
+        popupTimer
+    );
+
 
     if (timeLeft <= 0) {
         return;
     }
 
-    const p = phase();
+
+    const phase =
+        getPhase();
+
+
     let delay;
 
-    if (p === 1) {
-        delay = 5000 + Math.random() * 7000;
-    } else if (p === 2) {
-        delay = 4000 + Math.random() * 5000;
-    } else {
-        const progress = 1 - timeLeft / (3 * 60);
-        delay = Math.max(1800, 5000 - progress * 3200);
+
+    if (phase === 1) {
+
+        /* 5–12 seconds */
+
+        delay =
+            5000 +
+            Math.random() * 7000;
+
     }
 
-    // MEMPERBAIKI KODE YANG TERPOTONG
-    popupTimer = setTimeout(showPopup, delay);
+    else if (phase === 2) {
+
+        /* 4–9 seconds */
+
+        delay =
+            4000 +
+            Math.random() * 5000;
+
+    }
+
+    else {
+
+        /*
+           Type 3 gets more common
+           as the timer approaches zero.
+        */
+
+        const progress =
+            1 -
+            timeLeft /
+            (3 * 60);
+
+
+        delay =
+            5000 -
+            progress * 3200;
+
+
+        if (delay < 1800) {
+            delay = 1800;
+        }
+    }
+
+
+    popupTimer =
+        setTimeout(
+            showPopup,
+            delay
+        );
 }
+
 
 /* =====================================================
-   EVENT LISTENERS & SYSTEM START
+   TIMER DISPLAY
 ===================================================== */
-// Mencegah popup tertutup saat isi popup di-klik
-const popupEl = document.getElementById("popup");
-if (popupEl) {
-    popupEl.addEventListener("click", function(event) {
-        event.stopPropagation();
-    });
+
+function updateTimerDisplay() {
+
+    const minutes =
+        Math.floor(
+            timeLeft / 60
+        );
+
+    const seconds =
+        String(
+            timeLeft % 60
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    document.getElementById(
+        "timer"
+    ).textContent =
+        minutes +
+        ":" +
+        seconds;
 }
 
-// Tombol OK untuk menutup popup
-const okBtn = document.getElementById("ok");
-if (okBtn) {
-    okBtn.addEventListener("click", function(event) {
-        event.stopPropagation();
-        closePopup();
-    });
+
+/* =====================================================
+   TIMER
+===================================================== */
+
+function timerTick() {
+
+    /*
+       TYPE 3 PAUSES TIMER.
+
+       Clicking inside Type 3 closes it,
+       then the timer continues.
+    */
+
+    if (
+        popupOpen &&
+        popupType === 3
+    ) {
+
+        updateTimerDisplay();
+
+        return;
+    }
+
+
+    if (!timerRunning) {
+        return;
+    }
+
+
+    timeLeft--;
+
+
+    if (timeLeft < 0) {
+        timeLeft = 0;
+    }
+
+
+    updateTimerDisplay();
+
+
+    if (
+        timeLeft <= 30 &&
+        timeLeft > 0
+    ) {
+
+        document
+            .getElementById(
+                "timer"
+            )
+            .classList.add(
+                "danger"
+            );
+    }
+
+
+    if (timeLeft === 0) {
+
+        timerRunning = false;
+
+
+        clearInterval(
+            timerInterval
+        );
+
+
+        clearTimeout(
+            popupTimer
+        );
+
+
+        clearInterval(
+            popupMoveTimer
+        );
+
+
+        document.getElementById(
+            "failure"
+        ).style.display =
+            "block";
+    }
 }
 
-// Fungsi internal untuk menjalankan hitung mundur waktu
-function startTimerSystem() {
-    countdownTimer = setInterval(function() {
-        if (timeLeft > 0) {
-            timeLeft--;
-            
-            // Opsional: Jika kamu punya elemen teks timer di HTML, kamu bisa update di sini
-            // contoh: document.getElementById("timerDisplay").textContent = timeLeft;
-            
-        } else {
-            clearInterval(countdownTimer);
-            clearTimeout(popupTimer);
-            clearInterval(moveTimer);
+
+/* =====================================================
+   START TIMER
+===================================================== */
+
+updateTimerDisplay();
+
+
+const timerInterval =
+    setInterval(
+        timerTick,
+        1000
+    );
+
+
+/* FIRST POPUP */
+
+popupTimer =
+    setTimeout(
+        showPopup,
+        5000
+    );
+
+
+/* =====================================================
+   FILE SYSTEM
+===================================================== */
+
+function openFolder(name) {
+
+    currentFolder = name;
+
+    currentPage = 1;
+
+    renderFiles();
+}
+
+
+/* =====================================================
+   RENDER FILES
+===================================================== */
+
+function renderFiles() {
+
+    const container =
+        document.getElementById(
+            "files"
+        );
+
+
+    container.innerHTML = "";
+
+
+    if (!currentFolder) {
+
+        container.innerHTML =
+            "<p>Select a folder.</p>";
+
+        return;
+    }
+
+
+    const range =
+        folders[currentFolder];
+
+
+    const start =
+        range[0] +
+        (
+            currentPage - 1
+        ) * 20;
+
+
+    const end =
+        Math.min(
+            start + 19,
+            range[1]
+        );
+
+
+    for (
+        let i = start;
+        i <= end;
+        i++
+    ) {
+
+        const id =
+            "diamond-" +
+            i;
+
+
+        if (
+            collectedDiamonds.has(id)
+        ) {
+            continue;
         }
-    }, 1000);
+
+
+        createDiamond(
+            container,
+            i
+        );
+    }
+
+
+    if (
+        currentFolder === "Documents" &&
+        currentPage === 1
+    ) {
+
+        createVerificationFile(
+            container
+        );
+    }
+
+
+    document.getElementById(
+        "page"
+    ).textContent =
+        "Page " +
+        currentPage;
 }
 
-// MENJALANKAN SISTEM PERTAMA KALI
-startTimerSystem();
-schedulePopup();
+
+/* =====================================================
+   CREATE DIAMOND
+===================================================== */
+
+function createDiamond(
+    container,
+    number
+) {
+
+    const file =
+        document.createElement(
+            "div"
+        );
+
+
+    file.className =
+        "file";
+
+
+    file.id =
+        "diamond-" +
+        number;
+
+
+    file.draggable =
+        true;
+
+
+    file.innerHTML =
+        "💎<br>" +
+        "Diamond_" +
+        number +
+        ".dat<br>" +
+        "<small>VALUE: 1</small>";
+
+
+    file.onclick =
+        function() {
+
+            if (popupOpen) {
+                return;
+            }
+
+
+            selectedDiamond =
+                file.id;
+
+
+            document
+                .querySelectorAll(
+                    ".file"
+                )
+                .forEach(
+                    function(other) {
+
+                        other.classList
+                            .remove(
+                                "selected"
+                            );
+
+                    }
+                );
+
+
+            file.classList.add(
+                "selected"
+            );
+        };
+
+
+    file.ondragstart =
+        function(event) {
+
+            if (popupOpen) {
+
+                event.preventDefault();
+
+                return;
+            }
+
+
+            event.dataTransfer.setData(
+                "diamond",
+                file.id
+            );
+        };
+
+
+    container.appendChild(
+        file
+    );
+}
+
+
+/* =====================================================
+   VERIFICATION FILE
+===================================================== */
+
+function createVerificationFile(
+    container
+) {
+
+    const file =
+        document.createElement(
+            "div"
+        );
+
+
+    file.className =
+        "file";
+
+
+    file.style.color =
+        "#ffd700";
+
+
+    file.innerHTML =
+        "📄<br>" +
+        "Payment_Verification.txt";
+
+
+    file.onclick =
+        function() {
+
+            alert(
+                "PAYMENT VERIFICATION\n\n" +
+                "Code: VERIFY-500"
+            );
+        };
+
+
+    container.appendChild(
+        file
+    );
+}
+
+
+/* =====================================================
+   PAGE CONTROLS
+===================================================== */
+
+function nextPage() {
+
+    if (!currentFolder) {
+        return;
+    }
+
+
+    const range =
+        folders[currentFolder];
+
+
+    const maxPages =
+        Math.ceil(
+            (
+                range[1] -
+                range[0] +
+                1
+            ) / 20
+        );
+
+
+    if (
+        currentPage <
+        maxPages
+    ) {
+
+        currentPage++;
+
+        renderFiles();
+    }
+}
+
+
+function previousPage() {
+
+    if (
+        currentPage > 1
+    ) {
+
+        currentPage--;
+
+        renderFiles();
+    }
+}
+
+
+/* =====================================================
+   DRAG & DROP
+===================================================== */
+
+const dropZone =
+    document.getElementById(
+        "drop"
+    );
+
+
+dropZone.addEventListener(
+    "dragover",
+    function(event) {
+
+        if (popupOpen) {
+            return;
+        }
+
+
+        event.preventDefault();
+
+
+        dropZone.classList.add(
+            "active"
+        );
+    }
+);
+
+
+dropZone.addEventListener(
+    "dragleave",
+    function() {
+
+        dropZone.classList.remove(
+            "active"
+        );
+    }
+);
+
+
+dropZone.addEventListener(
+    "drop",
+    function(event) {
+
+        event.preventDefault();
+
+
+        dropZone.classList.remove(
+            "active"
+        );
+
+
+        if (popupOpen) {
+            return;
+        }
+
+
+        const id =
+            event.dataTransfer.getData(
+                "diamond"
+            );
+
+
+        depositDiamond(id);
+    }
+);
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+dropZone.onclick =
+    function() {
+
+        if (popupOpen) {
+            return;
+        }
+
+
+        if (!selectedDiamond) {
+
+            alert(
+                "Tap a diamond first."
+            );
+
+            return;
+        }
+
+
+        depositDiamond(
+            selectedDiamond
+        );
+
+
+        selectedDiamond = null;
+    };
+
+
+/* =====================================================
+   DEPOSIT
+===================================================== */
+
+function depositDiamond(id) {
+
+    if (
+        popupOpen ||
+        !id ||
+        collectedDiamonds.has(id)
+    ) {
+        return;
+    }
+
+
+    collectedDiamonds.add(id);
+
+    paid++;
+
+
+    document.getElementById(
+        "paid"
+    ).textContent =
+        paid;
+
+
+    document.getElementById(
+        "bar"
+    ).style.width =
+        (
+            paid /
+            TOTAL_DIAMONDS *
+            100
+        ) + "%";
+
+
+    renderFiles();
+
+
+    if (
+        paid >= TOTAL_DIAMONDS
+    ) {
+
+        completePayment();
+    }
+}
+
+
+/* =====================================================
+   COMPLETE PAYMENT
+===================================================== */
+
+function completePayment() {
+
+    timerRunning = false;
+
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    clearTimeout(
+        popupTimer
+    );
+
+
+    clearInterval(
+        popupMoveTimer
+    );
+
+
+    popupOpen = false;
+
+
+    document.getElementById(
+        "popupLayer"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "verification"
+    ).style.display =
+        "block";
+
+
+    alert(
+        "PAYMENT COMPLETE.\n\n" +
+        "VERIFYING PAYMENT..."
+    );
+}
+
+
+/* =====================================================
+   VERIFY
+===================================================== */
+
+function verify() {
+
+    const code =
+        document.getElementById(
+            "code"
+        ).value
+        .trim()
+        .toUpperCase();
+
+
+    if (
+        code === "VERIFY-500"
+    ) {
+
+        document.getElementById(
+            "verification"
+        ).style.display =
+            "none";
+
+
+        document.getElementById(
+            "success"
+        ).style.display =
+            "block";
+
+    }
+
+    else {
+
+        alert(
+            "PAYMENT VERIFICATION FAILED."
+        );
+    }
+}
+
+</script>
+
+</body>
+</html>
