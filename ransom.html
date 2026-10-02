@@ -18,20 +18,6 @@ html,body{
 
 body{overflow-x:hidden}
 
-button{
-    padding:10px 17px;
-    border:0;
-    border-radius:6px;
-    background:#0873b9;
-    color:white;
-    cursor:pointer;
-    font-weight:bold;
-}
-
-button:hover{
-    filter:brightness(1.2);
-}
-
 /* ================= STARTUP ================= */
 
 #startupScreen{
@@ -47,8 +33,8 @@ button:hover{
 }
 
 #startupFace{
-    width:min(280px,70vw);
-    height:min(280px,70vw);
+    width:280px;
+    height:280px;
     opacity:0;
     animation:
         startupFaceIn .8s ease .3s forwards,
@@ -68,7 +54,6 @@ button:hover{
     color:#f22;
     opacity:0;
     text-shadow:0 0 20px red;
-    text-align:center;
     animation:startupText .5s ease 1.7s forwards;
 }
 
@@ -76,7 +61,6 @@ button:hover{
     margin-top:12px;
     color:#aaa;
     letter-spacing:4px;
-    text-align:center;
     opacity:0;
     animation:startupText .5s ease 2.3s forwards;
 }
@@ -115,7 +99,7 @@ button:hover{
     }
 }
 
-/* ================= HEADER ================= */
+/* ================= MAIN ================= */
 
 header{
     background:#650000;
@@ -134,11 +118,9 @@ header p{
     color:#ccc;
 }
 
-/* ================= TIMER ================= */
-
 #timer{
     text-align:center;
-    font-size:clamp(50px,9vw,82px);
+    font-size:82px;
     font-weight:bold;
     color:#f33;
     padding:18px;
@@ -155,8 +137,6 @@ header p{
         color:#fff;
     }
 }
-
-/* ================= MAIN ================= */
 
 main{
     display:grid;
@@ -195,7 +175,7 @@ body.gameStarted header{
     box-shadow:0 5px 20px #0008;
 }
 
-/* ================= FOLDERS ================= */
+/* ================= FILES ================= */
 
 .folders{
     display:flex;
@@ -209,7 +189,6 @@ body.gameStarted header{
     padding:11px;
     border-radius:6px;
     cursor:pointer;
-    user-select:none;
 }
 
 .folder:hover{
@@ -221,8 +200,6 @@ body.gameStarted header{
     margin-top:15px;
 }
 
-/* ================= DIAMONDS ================= */
-
 .file{
     display:inline-block;
     width:145px;
@@ -233,26 +210,26 @@ body.gameStarted header{
     border:1px solid #555;
     border-radius:7px;
     text-align:center;
-    cursor:pointer;
+    cursor:grab;
     user-select:none;
-    transition:
-        transform .12s,
-        background .12s,
-        border .12s;
-}
-
-.file:hover{
-    transform:scale(1.04);
-    background:#333;
-}
-
-.file:active{
-    transform:scale(.94);
 }
 
 .file.selected{
     border:2px solid #09f;
     background:#123344;
+}
+
+button{
+    padding:9px 17px;
+    background:#0873b9;
+    color:#fff;
+    border:0;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#0990e5;
 }
 
 /* ================= PAYMENT ================= */
@@ -278,6 +255,8 @@ body.gameStarted header{
     transition:width .2s;
 }
 
+/* ================= FACE ================= */
+
 #facePanel{
     width:100%;
     height:220px;
@@ -296,8 +275,6 @@ body.gameStarted header{
     height:100%;
     object-fit:contain;
 }
-
-/* ================= FACE DISTORTION ================= */
 
 .face1{animation:glitch1 .7s infinite}
 .face2{animation:glitch2 .35s infinite}
@@ -341,7 +318,7 @@ body.gameStarted header{
     }
 }
 
-/* ================= PAYMENT AREA ================= */
+/* ================= DROP ================= */
 
 #drop{
     min-height:145px;
@@ -357,33 +334,6 @@ body.gameStarted header{
     background:#00344d;
 }
 
-/* ================= COLLECTION POP ================= */
-
-#collectFloat{
-    position:fixed;
-    pointer-events:none;
-    z-index:8000;
-    font-weight:bold;
-    color:#45d8ff;
-    font-size:25px;
-    opacity:0;
-}
-
-.collectAnimation{
-    animation:collectFloat .7s ease-out;
-}
-
-@keyframes collectFloat{
-    0%{
-        opacity:1;
-        transform:translateY(0) scale(.7);
-    }
-    100%{
-        opacity:0;
-        transform:translateY(-60px) scale(1.2);
-    }
-}
-
 /* ================= POPUPS ================= */
 
 #popupLayer{
@@ -397,7 +347,6 @@ body.gameStarted header{
 #ransomPopup{
     position:absolute;
     width:330px;
-    max-width:85vw;
     background:#111;
     border:3px solid #f22;
     border-radius:8px;
@@ -532,7 +481,7 @@ body.timeoutShake #failure{
     100%{transform:translate(0)}
 }
 
-/* ================= VERIFY ================= */
+/* ================= VERIFY SCREEN ================= */
 
 #verifyScreen{
     display:none;
@@ -578,34 +527,18 @@ body.timeoutShake #failure{
     margin-top:8px;
 }
 
+#verifyButton:hover{
+    background:#20bb59;
+}
+
 #verifyMessage{
     min-height:25px;
     margin-top:15px;
     font-weight:bold;
 }
 
-/* ================= REDEEM ================= */
-
-#redeemBox{
-    display:none;
-    margin-top:25px;
-    padding:20px;
-    background:#07150b;
-    border:2px solid #39ff72;
-    border-radius:10px;
-}
-
-#redeemCode{
-    margin:15px 0;
-    padding:15px;
-    background:#020702;
-    border:1px solid #39ff72;
-    border-radius:6px;
-    color:#39ff72;
-    font-family:monospace;
-    font-size:24px;
-    font-weight:bold;
-    letter-spacing:2px;
+#verifyLocked{
+    color:#ff5555;
 }
 
 /* ================= SUCCESS ================= */
@@ -618,8 +551,7 @@ body.timeoutShake #failure{
     background:#061a0a;
     color:#39ff72;
     text-align:center;
-    padding:12vh 20px;
-    overflow:auto;
+    padding-top:25vh;
 }
 
 #success h1{
@@ -678,35 +610,8 @@ body.paymentComplete #bar{
         margin-bottom:12px;
     }
 
-    .file{
-        width:calc(50% - 12px);
-        min-height:90px;
-        margin:5px;
-    }
-
-    #files{
-        min-height:240px;
-    }
-
-    #facePanel{
-        height:190px;
-    }
-
-    #drop{
-        min-height:120px;
-    }
-
-    #popupText{
-        font-size:17px;
-    }
-
-    #verifyBox{
-        padding:20px;
-    }
-
-    #redeemCode{
-        font-size:19px;
-        word-break:break-all;
+    #ransomPopup{
+        width:min(330px,85vw);
     }
 
 }
@@ -715,12 +620,14 @@ body.paymentComplete #bar{
 
 <body>
 
-<!-- ================= STARTUP ================= -->
+<!-- STARTUP -->
 
 <div id="startupScreen">
 
     <div id="startupFace">
-        <img src="A-90_IDLE.png" alt="Ransom">
+        <img
+        src="https://static.wikia.nocookie.net/doors-game/images/0/0e/A-90_IDLE.png/revision/latest?cb=20230226202839"
+        alt="Ransom">
     </div>
 
     <div id="startupTitle">
@@ -735,10 +642,8 @@ body.paymentComplete #bar{
 
 <div id="timeoutFlash"></div>
 
-<div id="collectFloat">+1 💎</div>
 
-
-<!-- ================= HEADER ================= -->
+<!-- HEADER -->
 
 <header>
 
@@ -746,7 +651,9 @@ body.paymentComplete #bar{
         ⚠ YOUR FILES HAVE BEEN LOCKED ⚠
     </h1>
 
-    <p>Ransom-Banner</p>
+    <p>
+        Ransom-Banner
+    </p>
 
     <p>
         Fictional ARG simulation —
@@ -756,18 +663,16 @@ body.paymentComplete #bar{
 </header>
 
 
-<!-- ================= TIMER ================= -->
+<!-- TIMER -->
 
 <div id="timer">
     14:00
 </div>
 
 
-<!-- ================= MAIN ================= -->
+<!-- MAIN -->
 
 <main>
-
-    <!-- FILE EXPLORER -->
 
     <section class="panel">
 
@@ -776,27 +681,27 @@ body.paymentComplete #bar{
         <div class="folders">
 
             <div class="folder"
-                 onclick="openFolder('Documents')">
+            onclick="openFolder('Documents')">
                 📁 Documents
             </div>
 
             <div class="folder"
-                 onclick="openFolder('Downloads')">
+            onclick="openFolder('Downloads')">
                 📁 Downloads
             </div>
 
             <div class="folder"
-                 onclick="openFolder('Pictures')">
+            onclick="openFolder('Pictures')">
                 📁 Pictures
             </div>
 
             <div class="folder"
-                 onclick="openFolder('Games')">
+            onclick="openFolder('Games')">
                 📁 Games
             </div>
 
             <div class="folder"
-                 onclick="openFolder('System')">
+            onclick="openFolder('System')">
                 📁 System
             </div>
 
@@ -832,7 +737,8 @@ body.paymentComplete #bar{
         <h2>💎 PAYMENT REQUIRED</h2>
 
         <p>
-            Collect all <b>450 diamonds</b>.
+            Collect and submit
+            <b>450 diamonds</b>.
         </p>
 
         <div class="amount">
@@ -842,24 +748,22 @@ body.paymentComplete #bar{
         </div>
 
         <div class="progress">
-
             <div id="bar"></div>
-
         </div>
 
         <div id="facePanel">
 
             <img
-                id="ransomFace"
-                src="A-90_IDLE.png"
-                alt="Ransom">
+            id="ransomFace"
+            src="https://static.wikia.nocookie.net/doors-game/images/0/0e/A-90_IDLE.png/revision/latest?cb=20230226202839"
+            alt="Ransom">
 
         </div>
 
         <p style="text-align:center">
 
-            The closer the timer gets to zero,
-            the more distorted Ransom becomes.
+            Ransom becomes increasingly
+            distorted as the timer gets lower.
 
         </p>
 
@@ -872,12 +776,8 @@ body.paymentComplete #bar{
             </p>
 
             <p>
-                Mobile: simply TAP a diamond.
-            </p>
-
-            <p>
-                Each diamond is automatically paid
-                when collected.
+                Mobile: tap a diamond,
+                then tap here.
             </p>
 
         </div>
@@ -887,7 +787,7 @@ body.paymentComplete #bar{
 </main>
 
 
-<!-- ================= POPUPS ================= -->
+<!-- POPUPS -->
 
 <div id="popupLayer">
 
@@ -900,7 +800,7 @@ body.paymentComplete #bar{
         <div id="popupText"></div>
 
         <button id="popupOK">
-            TAP TO CLOSE
+            OK
         </button>
 
     </div>
@@ -908,7 +808,7 @@ body.paymentComplete #bar{
 </div>
 
 
-<!-- ================= FAILURE ================= -->
+<!-- TIMEOUT -->
 
 <div id="failure">
 
@@ -925,7 +825,7 @@ body.paymentComplete #bar{
 </div>
 
 
-<!-- ================= VERIFY ================= -->
+<!-- VERIFY -->
 
 <div id="verifyScreen">
 
@@ -944,52 +844,29 @@ body.paymentComplete #bar{
         </p>
 
         <input
-            id="ransomCode"
-            type="text"
-            placeholder="Ransom Code">
+        id="ransomCode"
+        type="text"
+        placeholder="Ransom Code">
 
         <input
-            id="verifyCode"
-            type="text"
-            placeholder="Verify Code">
+        id="verifyCode"
+        type="text"
+        placeholder="Verify Code">
 
         <button
-            id="verifyButton"
-            onclick="verifyRansomCode()">
+        id="verifyButton"
+        onclick="verifyRansomCode()">
             VERIFY
         </button>
 
         <div id="verifyMessage"></div>
-
-        <div id="redeemBox">
-
-            <h2>
-                🎉 BANNER REDEEM UNLOCKED
-            </h2>
-
-            <p>
-                Use this code to redeem the
-                banner in Minecraft:
-            </p>
-
-            <div id="redeemCode">
-                LAUGHTER_RELIEF
-            </div>
-
-            <button onclick="copyRedeemCode()">
-                COPY MINECRAFT CODE
-            </button>
-
-            <p id="copyMessage"></p>
-
-        </div>
 
     </div>
 
 </div>
 
 
-<!-- ================= SUCCESS ================= -->
+<!-- SUCCESS -->
 
 <div id="success">
 
@@ -997,35 +874,13 @@ body.paymentComplete #bar{
         THANK YOU!
     </h1>
 
-    <h2>
-        💎 450 / 450 PAID
-    </h2>
-
     <p>
         Payment has been successfully received.
     </p>
 
-    <h2>
-        WIN-WIN BANNER BREAKFEAST
-    </h2>
-
-    <div id="successRedeem">
-
-        <p>
-            Your Minecraft banner redemption code:
-        </p>
-
-        <div id="redeemCode">
-            LAUGHTER_RELIEF
-        </div>
-
-        <button onclick="copyRedeemCode()">
-            COPY CODE
-        </button>
-
-        <p id="copyMessage2"></p>
-
-    </div>
+    <p>
+        Ransom-Banner has been satisfied.
+    </p>
 
 </div>
 
@@ -1042,13 +897,15 @@ const RANSOM_CODE = "H3-1s-H6m95y";
 
 const VERIFY_CODE = "BANner_Relief";
 
-const MINECRAFT_REDEEM_CODE = "LAUGHTER_RELIEF";
-
 let timeLeft = 14 * 60;
 
 let paid = 0;
 
 let timerRunning = false;
+
+let selectedDiamond = null;
+
+let collected = new Set();
 
 let currentFolder = null;
 
@@ -1069,6 +926,19 @@ let timer = null;
    EXACTLY 450 DIAMONDS
 ========================================================= */
 
+/*
+   IMPORTANT:
+   There is NO Archives folder and NO IDs above 450.
+
+   Documents = 1-100
+   Downloads = 101-200
+   Pictures = 201-300
+   Games = 301-400
+   System = 401-450
+
+   TOTAL = 450
+*/
+
 const folders = {
 
     Documents: [1,100],
@@ -1082,8 +952,6 @@ const folders = {
     System: [401,450]
 
 };
-
-let collected = new Set();
 
 
 /* =========================================================
@@ -1136,13 +1004,10 @@ function phase(){
     if(timeLeft > 8 * 60)
         return 1;
 
-    if(timeLeft > 5 * 60)
+    if(timeLeft > 3 * 60)
         return 2;
 
-    if(timeLeft > 3 * 60)
-        return 3;
-
-    return 4;
+    return 3;
 
 }
 
@@ -1225,6 +1090,8 @@ function showPopup(){
     );
 
 
+    /* TYPE 1 */
+
     if(popupType === 1){
 
         randomPosition();
@@ -1234,6 +1101,9 @@ function showPopup(){
 
     }
 
+
+    /* TYPE 2 */
+
     else if(popupType === 2){
 
         randomPosition();
@@ -1242,8 +1112,8 @@ function showPopup(){
             random(type2);
 
         /*
-         * Type 2 is nerfed.
-         * The page remains accessible.
+         * Type 2 is intentionally nerfed.
+         * It does NOT stop access to the page.
          */
 
         if(
@@ -1256,16 +1126,15 @@ function showPopup(){
 
     }
 
-    else if(popupType === 3){
 
-        randomPosition();
-
-        text.textContent =
-            random(type3);
-
-    }
+    /* TYPE 3 */
 
     else{
+
+        /*
+         * Type 3 is active,
+         * but the TIMER NEVER PAUSES.
+         */
 
         popup.style.left = "50%";
 
@@ -1282,6 +1151,7 @@ function showPopup(){
         );
 
     }
+
 
     layer.style.display =
         "block";
@@ -1397,14 +1267,12 @@ function closePopup(){
 
 }
 
-
 document
     .getElementById(
         "ransomPopup"
     )
     .onclick =
     closePopup;
-
 
 document
     .getElementById(
@@ -1438,7 +1306,7 @@ function schedulePopup(){
 
     let delay;
 
-    if(timeLeft > 8 * 60){
+    if(phase() === 1){
 
         delay =
             7000 +
@@ -1446,19 +1314,11 @@ function schedulePopup(){
 
     }
 
-    else if(timeLeft > 5 * 60){
+    else if(phase() === 2){
 
         delay =
             6000 +
             Math.random() * 7000;
-
-    }
-
-    else if(timeLeft > 3 * 60){
-
-        delay =
-            5000 +
-            Math.random() * 6000;
 
     }
 
@@ -1480,7 +1340,7 @@ function schedulePopup(){
 
 
 /* =========================================================
-   TIMER DISPLAY
+   TIMER
 ========================================================= */
 
 function updateTimer(){
@@ -1512,7 +1372,7 @@ function updateTimer(){
 
 
 /* =========================================================
-   FACE DISTORTION
+   FACE
 ========================================================= */
 
 function updateFace(){
@@ -1528,16 +1388,6 @@ function updateFace(){
         "face3",
         "face4"
     );
-
-    /*
-     * Five musical/distortion phases:
-     *
-     * 1 = Demand
-     * 2 = Impatience
-     * 3 = Their Symphony
-     * 4 = Out of Breath
-     * 5 = Time Out
-     */
 
     if(timeLeft > 8 * 60)
         return;
@@ -1558,7 +1408,7 @@ function updateFace(){
 
 
 /* =========================================================
-   LOW TIMER TEXT DISTORTION
+   LOW TIMER DISTORTION
 ========================================================= */
 
 function distortText(){
@@ -1593,7 +1443,7 @@ function distortText(){
 
 
 /* =========================================================
-   START GAME
+   START
 ========================================================= */
 
 function startGame(){
@@ -1629,4 +1479,609 @@ function startGame(){
                 updateFace();
 
 
-               
+                if(
+                    timeLeft <= 30 &&
+                    timeLeft > 0
+                ){
+
+                    document
+                        .getElementById(
+                            "timer"
+                        )
+                        .classList.add(
+                            "danger"
+                        );
+
+                    if(
+                        Math.random() <
+                        .25 +
+                        (
+                            (30-timeLeft)/30
+                        ) * .5
+                    ){
+
+                        distortText();
+
+                    }
+
+                }
+
+
+                if(timeLeft === 0){
+
+                    timeout();
+
+                }
+
+            },
+
+            1000
+
+        );
+
+}
+
+
+/* =========================================================
+   TIMEOUT
+========================================================= */
+
+function timeout(){
+
+    if(!timerRunning)
+        return;
+
+    timerRunning = false;
+
+    clearInterval(timer);
+
+    clearTimeout(popupTimer);
+
+    clearInterval(popupMoveTimer);
+
+    document
+        .getElementById(
+            "popupLayer"
+        )
+        .style.display =
+        "none";
+
+    document
+        .getElementById(
+            "failure"
+        )
+        .style.display =
+        "block";
+
+    document.body.classList.add(
+        "timeoutShake"
+    );
+
+}
+
+
+/* =========================================================
+   FILE EXPLORER
+========================================================= */
+
+function openFolder(name){
+
+    currentFolder = name;
+
+    currentPage = 1;
+
+    renderFiles();
+
+}
+
+
+function renderFiles(){
+
+    const box =
+        document.getElementById(
+            "files"
+        );
+
+    box.innerHTML = "";
+
+    if(!currentFolder){
+
+        box.innerHTML =
+            "<p>Select a folder.</p>";
+
+        return;
+
+    }
+
+    const range =
+        folders[currentFolder];
+
+    const start =
+        range[0] +
+        (
+            currentPage - 1
+        ) * 20;
+
+    const end =
+        Math.min(
+            start + 19,
+            range[1]
+        );
+
+
+    for(
+        let i = start;
+        i <= end;
+        i++
+    ){
+
+        const id =
+            "diamond-" + i;
+
+        if(
+            collected.has(id)
+        )
+            continue;
+
+        createDiamond(
+            box,
+            i
+        );
+
+    }
+
+
+    document
+        .getElementById(
+            "page"
+        )
+        .textContent =
+        "Page " +
+        currentPage;
+
+}
+
+
+/* =========================================================
+   DIAMOND
+========================================================= */
+
+function createDiamond(
+    box,
+    number
+){
+
+    const diamond =
+        document.createElement(
+            "div"
+        );
+
+    diamond.className =
+        "file";
+
+    diamond.id =
+        "diamond-" +
+        number;
+
+    diamond.draggable = true;
+
+    diamond.innerHTML =
+        "💎<br>" +
+        "Diamond_" +
+        number +
+        ".dat<br>" +
+        "<small>VALUE: 1</small>";
+
+
+    diamond.onclick =
+        function(){
+
+            selectedDiamond =
+                diamond.id;
+
+            document
+                .querySelectorAll(
+                    ".file"
+                )
+                .forEach(
+                    item =>
+                        item.classList
+                            .remove(
+                                "selected"
+                            )
+                );
+
+            diamond.classList.add(
+                "selected"
+            );
+
+        };
+
+
+    diamond.ondragstart =
+        function(event){
+
+            event.dataTransfer
+                .setData(
+                    "diamond",
+                    diamond.id
+                );
+
+        };
+
+
+    box.appendChild(
+        diamond
+    );
+
+}
+
+
+/* =========================================================
+   PAGE NAVIGATION
+========================================================= */
+
+function nextPage(){
+
+    if(!currentFolder)
+        return;
+
+    const range =
+        folders[currentFolder];
+
+    const max =
+        Math.ceil(
+            (
+                range[1] -
+                range[0] +
+                1
+            ) / 20
+        );
+
+    if(currentPage < max){
+
+        currentPage++;
+
+        renderFiles();
+
+    }
+
+}
+
+
+function previousPage(){
+
+    if(currentPage > 1){
+
+        currentPage--;
+
+        renderFiles();
+
+    }
+
+}
+
+
+/* =========================================================
+   PAYMENT
+========================================================= */
+
+const drop =
+    document.getElementById(
+        "drop"
+    );
+
+
+drop.ondragover =
+    function(event){
+
+        event.preventDefault();
+
+        drop.classList.add(
+            "active"
+        );
+
+    };
+
+
+drop.ondragleave =
+    function(){
+
+        drop.classList.remove(
+            "active"
+        );
+
+    };
+
+
+drop.ondrop =
+    function(event){
+
+        event.preventDefault();
+
+        drop.classList.remove(
+            "active"
+        );
+
+        deposit(
+            event.dataTransfer
+                .getData(
+                    "diamond"
+                )
+        );
+
+    };
+
+
+drop.onclick =
+    function(){
+
+        if(!selectedDiamond){
+
+            alert(
+                "Tap a diamond first."
+            );
+
+            return;
+
+        }
+
+        deposit(
+            selectedDiamond
+        );
+
+        selectedDiamond = null;
+
+    };
+
+
+function deposit(id){
+
+    if(
+        !id ||
+        collected.has(id) ||
+        paid >= TOTAL_DIAMONDS
+    )
+        return;
+
+    collected.add(id);
+
+    paid++;
+
+
+    document
+        .getElementById(
+            "paid"
+        )
+        .textContent =
+        paid;
+
+
+    document
+        .getElementById(
+            "bar"
+        )
+        .style.width =
+        (
+            paid /
+            TOTAL_DIAMONDS *
+            100
+        ) + "%";
+
+
+    renderFiles();
+
+
+    /*
+     * VERIFY IS NOT UNLOCKED
+     * UNTIL ALL 450 ARE PAID.
+     */
+
+    if(
+        paid >= TOTAL_DIAMONDS
+    ){
+
+        paymentSucceeded();
+
+    }
+
+}
+
+
+/* =========================================================
+   PAYMENT SUCCESS
+========================================================= */
+
+function paymentSucceeded(){
+
+    timerRunning = false;
+
+    clearInterval(timer);
+
+    clearTimeout(popupTimer);
+
+    clearInterval(popupMoveTimer);
+
+    document
+        .getElementById(
+            "popupLayer"
+        )
+        .style.display =
+        "none";
+
+
+    document.body.classList.add(
+        "paymentComplete"
+    );
+
+
+    document
+        .getElementById(
+            "timer"
+        )
+        .textContent =
+        "✓ PAID";
+
+
+    document
+        .getElementById(
+            "bar"
+        )
+        .style.width =
+        "100%";
+
+
+    document
+        .getElementById(
+            "ransomFace"
+        )
+        .className =
+        "";
+
+
+    /*
+     * NOW AND ONLY NOW
+     * THE VERIFY SCREEN OPENS.
+     */
+
+    document
+        .getElementById(
+            "verifyScreen"
+        )
+        .style.display =
+        "block";
+
+}
+
+
+/* =========================================================
+   VERIFY
+========================================================= */
+
+function verifyRansomCode(){
+
+    /*
+     * Extra safety:
+     * verification cannot work before
+     * all 450 diamonds are paid.
+     */
+
+    if(
+        paid < TOTAL_DIAMONDS
+    ){
+
+        document
+            .getElementById(
+                "verifyMessage"
+            )
+            .textContent =
+            "PAYMENT REQUIRED FIRST.";
+
+        document
+            .getElementById(
+                "verifyMessage"
+            )
+            .style.color =
+            "#ff4444";
+
+        return;
+
+    }
+
+
+    const ransomInput =
+        document
+            .getElementById(
+                "ransomCode"
+            )
+            .value;
+
+    const verifyInput =
+        document
+            .getElementById(
+                "verifyCode"
+            )
+            .value;
+
+
+    if(
+        ransomInput === RANSOM_CODE &&
+        verifyInput === VERIFY_CODE
+    ){
+
+        document
+            .getElementById(
+                "verifyMessage"
+            )
+            .textContent =
+            "✓ CODE ACCEPTED — RANSOM-BANNER RELEASED.";
+
+        document
+            .getElementById(
+                "verifyMessage"
+            )
+            .style.color =
+            "#39ff72";
+
+
+        setTimeout(
+            function(){
+
+                document
+                    .getElementById(
+                        "verifyScreen"
+                    )
+                    .style.display =
+                    "none";
+
+                document
+                    .getElementById(
+                        "success"
+                    )
+                    .style.display =
+                    "block";
+
+            },
+            1000
+        );
+
+    }
+
+    else{
+
+        document
+            .getElementById(
+                "verifyMessage"
+            )
+            .textContent =
+            "✗ INVALID CODE";
+
+        document
+            .getElementById(
+                "verifyMessage"
+            )
+            .style.color =
+            "#ff3333";
+
+    }
+
+}
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+updateTimer();
+
+updateFace();
+
+setTimeout(
+    startGame,
+    3900
+);
+
+</script>
+
+</body>
+</html>
