@@ -2,2083 +2,1176 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Ransom-Banner</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RANSOM — Fictional ARG Simulation</title>
 
 <style>
+:root{
+  --red:#ff3030;
+  --bg:#111;
+  --panel:#202020;
+  --panel2:#292929;
+  --text:#f3f3f3;
+  --muted:#aaa;
+  --green:#36d36b;
+  --yellow:#ffd21c;
+  --blue:#48a8ff;
+}
+
 *{box-sizing:border-box}
 
-html,body{
-    margin:0;
-    min-height:100%;
-    font-family:Arial,Helvetica,sans-serif;
-    background:#080808;
-    color:#eee;
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
 }
-
-body{overflow-x:hidden}
-
-/* ================= STARTUP ================= */
-
-#startupScreen{
-    position:fixed;
-    inset:0;
-    z-index:10000;
-    background:#000;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    animation:startupFadeOut 1s ease 3.8s forwards;
-}
-
-#startupFace{
-    width:280px;
-    height:280px;
-    opacity:0;
-    animation:
-        startupFaceIn .8s ease .3s forwards,
-        startupGlitch .12s linear 1.4s 8;
-}
-
-#startupFace img{
-    width:100%;
-    height:100%;
-    object-fit:contain;
-}
-
-#startupTitle{
-    margin-top:20px;
-    font-size:clamp(35px,6vw,75px);
-    font-weight:bold;
-    color:#f22;
-    opacity:0;
-    text-shadow:0 0 20px red;
-    animation:startupText .5s ease 1.7s forwards;
-}
-
-#startupWarning{
-    margin-top:12px;
-    color:#aaa;
-    letter-spacing:4px;
-    opacity:0;
-    animation:startupText .5s ease 2.3s forwards;
-}
-
-@keyframes startupFaceIn{
-    0%{opacity:0;transform:scale(.2);filter:brightness(0)}
-    60%{opacity:1;transform:scale(1.12);filter:brightness(2)}
-    100%{opacity:1;transform:scale(1);filter:brightness(1)}
-}
-
-@keyframes startupGlitch{
-    0%{transform:translate(0)}
-    25%{transform:translate(-10px,5px)}
-    50%{transform:translate(12px,-4px)}
-    75%{transform:translate(-6px,-3px)}
-    100%{transform:translate(0)}
-}
-
-@keyframes startupText{
-    from{
-        opacity:0;
-        transform:translateY(15px);
-        filter:blur(8px);
-    }
-    to{
-        opacity:1;
-        transform:translateY(0);
-        filter:blur(0);
-    }
-}
-
-@keyframes startupFadeOut{
-    to{
-        opacity:0;
-        visibility:hidden;
-    }
-}
-
-/* ================= MAIN ================= */
 
 header{
-    background:#650000;
-    border-bottom:3px solid #f22;
-    text-align:center;
-    padding:18px;
+  background:#820000;
+  border-bottom:3px solid #ff3838;
+  text-align:center;
+  padding:24px 12px 30px;
 }
 
 header h1{
-    margin:0;
-    color:#ff4444;
+  margin:0;
+  color:#ff5555;
+  font-size:clamp(28px,5vw,48px);
 }
 
 header p{
-    margin:7px 0 0;
-    color:#ccc;
+  font-size:17px;
+  margin:18px 0 0;
 }
 
 #timer{
-    text-align:center;
-    font-size:82px;
-    font-weight:bold;
-    color:#f33;
-    padding:18px;
-    text-shadow:0 0 12px red;
-}
-
-#timer.danger{
-    animation:timerPulse .45s infinite alternate;
-}
-
-@keyframes timerPulse{
-    to{
-        transform:scale(1.04);
-        color:#fff;
-    }
+  font-size:clamp(36px,7vw,54px);
+  font-weight:800;
+  color:#ff3131;
+  text-align:center;
+  margin:24px 0;
 }
 
 main{
-    display:grid;
-    grid-template-columns:minmax(0,1fr) 390px;
-    gap:18px;
-    padding:18px;
-    opacity:0;
-    transform:translateY(25px);
+  width:min(1180px,94%);
+  margin:auto;
 }
 
-body.gameStarted main{
-    animation:uiIn .9s ease forwards;
+.card{
+  background:var(--panel);
+  border:1px solid #555;
+  border-radius:8px;
+  margin:18px 0;
+  overflow:hidden;
 }
 
-body.gameStarted header{
-    animation:headerIn .7s ease forwards;
+.card-head{
+  padding:18px;
+  background:#292929;
+  font-size:22px;
+  font-weight:700;
 }
 
-@keyframes uiIn{
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
+.card-body{
+  padding:20px;
 }
 
-@keyframes headerIn{
-    from{opacity:0}
-    to{opacity:1}
+.payment-title{
+  color:#ffd000;
+  font-size:25px;
+  font-weight:800;
 }
 
-.panel{
-    background:#181818;
-    border:1px solid #555;
-    border-radius:9px;
-    padding:18px;
-    box-shadow:0 5px 20px #0008;
+#count{
+  font-size:34px;
+  font-weight:800;
+  text-align:center;
+  margin:18px 0 4px;
 }
 
-/* ================= FILES ================= */
-
-.folders{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
+.diamond{
+  color:#50b8ff;
 }
 
-.folder{
-    background:#303030;
-    border:1px solid #666;
-    padding:11px;
-    border-radius:6px;
-    cursor:pointer;
+.progress-wrap{
+  height:28px;
+  background:#4a4a4a;
+  border-radius:9px;
+  overflow:hidden;
+  margin-top:18px;
 }
 
-.folder:hover{
-    background:#444;
+#progress{
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg,#21a7ff,#62c8ff);
+  transition:width .2s;
 }
 
-#files{
-    min-height:300px;
-    margin-top:15px;
+.folderbar{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  padding:14px;
+  background:#151515;
+}
+
+.folderbar button,
+.action-btn{
+  border:1px solid #555;
+  background:#252525;
+  color:#eee;
+  border-radius:6px;
+  padding:12px 16px;
+  font-size:16px;
+  cursor:pointer;
+}
+
+.folderbar button:hover,
+.action-btn:hover{
+  background:#353535;
+}
+
+.folderbar button.active{
+  background:#444;
+}
+
+#folderContent{
+  padding:18px;
+  min-height:170px;
+}
+
+.file-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:9px;
 }
 
 .file{
-    display:inline-block;
-    width:145px;
-    min-height:95px;
-    margin:5px;
-    padding:12px;
-    background:#292929;
-    border:1px solid #555;
-    border-radius:7px;
-    text-align:center;
-    cursor:grab;
-    user-select:none;
+  padding:12px;
+  border:1px solid #444;
+  border-radius:5px;
+  background:#181818;
+  cursor:pointer;
 }
 
-.file.selected{
-    border:2px solid #09f;
-    background:#123344;
+.file:hover{
+  border-color:#888;
+  background:#242424;
 }
 
-button{
-    padding:9px 17px;
-    background:#0873b9;
-    color:#fff;
-    border:0;
-    border-radius:5px;
-    cursor:pointer;
+.file.collected{
+  opacity:.45;
+  text-decoration:line-through;
 }
 
-button:hover{
-    background:#0990e5;
-}
+/* RANSOM FACE */
 
-/* ================= PAYMENT ================= */
-
-.amount{
-    text-align:center;
-    font-size:30px;
-    font-weight:bold;
-}
-
-.progress{
-    height:23px;
-    background:#444;
-    border-radius:8px;
-    overflow:hidden;
-    margin:12px 0;
-}
-
-#bar{
-    width:0;
-    height:100%;
-    background:#00bd50;
-    transition:width .2s;
-}
-
-/* ================= FACE ================= */
-
-#facePanel{
-    width:100%;
-    height:220px;
-    margin:18px 0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    overflow:hidden;
-    background:#050505;
-    border:1px solid #333;
-    border-radius:8px;
+#faceBox{
+  text-align:center;
+  margin:20px auto;
 }
 
 #ransomFace{
-    width:100%;
-    height:100%;
-    object-fit:contain;
+  width:min(300px,75vw);
+  height:auto;
+  max-height:300px;
+  object-fit:contain;
+  border-radius:10px;
+  border:2px solid #555;
+  background:#000;
+  transition:opacity .18s;
 }
 
-.face1{animation:glitch1 .7s infinite}
-.face2{animation:glitch2 .35s infinite}
-.face3{animation:glitch3 .18s infinite}
-.face4{animation:glitch4 .08s infinite}
-
-@keyframes glitch1{
-    30%{transform:translate(-3px,2px)}
-    60%{transform:translate(3px,-2px)}
+#phaseName{
+  text-align:center;
+  color:#ff4242;
+  font-size:22px;
+  font-weight:800;
+  margin-top:10px;
 }
 
-@keyframes glitch2{
-    25%{transform:translate(-8px,3px) skewX(4deg)}
-    50%{transform:translate(8px,-3px) skewX(-4deg)}
-    75%{transform:translate(-5px,2px)}
+/* MINIGAME */
+
+#minigame{
+  display:none;
+  text-align:center;
 }
 
-@keyframes glitch3{
-    20%{transform:translate(-13px,4px) scaleX(1.08)}
-    40%{transform:translate(14px,-5px) scaleX(.92)}
-    60%{transform:translate(-10px,6px) scaleX(1.12)}
-    80%{transform:translate(8px,-3px) scaleX(.88)}
+.sequence{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin:20px 0;
 }
 
-@keyframes glitch4{
-    20%{
-        transform:translate(-20px,7px) scaleX(1.2);
-        filter:contrast(2) hue-rotate(25deg);
-    }
-    40%{
-        transform:translate(18px,-9px) scaleX(.75);
-        filter:contrast(2.5) hue-rotate(-30deg);
-    }
-    60%{
-        transform:translate(-15px,10px) scaleY(1.15);
-        filter:contrast(3) hue-rotate(50deg);
-    }
-    80%{
-        transform:translate(20px,-6px) scaleX(1.3);
-        filter:contrast(2.5) hue-rotate(-40deg);
-    }
+.seq-btn{
+  min-width:62px;
+  padding:15px;
+  border:2px solid #555;
+  background:#181818;
+  color:#fff;
+  border-radius:8px;
+  font-size:20px;
+  cursor:pointer;
 }
 
-/* ================= DROP ================= */
-
-#drop{
-    min-height:145px;
-    border:3px dashed #078cff;
-    border-radius:9px;
-    padding:22px;
-    text-align:center;
-    background:#111;
-    cursor:pointer;
+.seq-btn:hover{
+  background:#333;
 }
 
-#drop.active{
-    background:#00344d;
+.seq-btn.good{
+  border-color:#39df72;
+  background:#174e2b;
 }
 
-/* ================= POPUPS ================= */
-
-#popupLayer{
-    position:fixed;
-    inset:0;
-    z-index:5000;
-    display:none;
-    pointer-events:none;
+.seq-btn.bad{
+  border-color:#ff3030;
+  background:#591010;
 }
 
-#ransomPopup{
-    position:absolute;
-    width:330px;
-    background:#111;
-    border:3px solid #f22;
-    border-radius:8px;
-    box-shadow:0 0 25px #f000;
-    overflow:hidden;
-    pointer-events:auto;
-    cursor:pointer;
+#status{
+  min-height:25px;
+  font-weight:700;
 }
 
-#popupTitle{
-    background:#970000;
-    padding:10px;
-    font-weight:bold;
+.verify{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:12px;
 }
 
-#popupText{
-    min-height:105px;
-    padding:22px 15px;
-    text-align:center;
-    font-size:18px;
-    line-height:1.4;
+.verify input{
+  flex:1;
+  min-width:220px;
+  background:#111;
+  border:1px solid #555;
+  color:#fff;
+  padding:13px;
+  border-radius:6px;
 }
 
-#popupOK{
-    display:block;
-    margin:0 auto 16px;
-    background:#e00000;
+button:disabled{
+  opacity:.45;
+  cursor:not-allowed;
 }
 
-.type3Popup{
-    border-width:4px!important;
-    box-shadow:0 0 40px #f000!important;
+.success{
+  display:none;
+  text-align:center;
+  background:#12351e;
+  border:1px solid #39d66d;
+  padding:28px;
+  border-radius:8px;
+  margin:20px 0;
 }
 
-/* ================= DISTORTION ================= */
-
-.lowDistort{
-    animation:textGlitch .18s linear;
+.success h2{
+  color:#45e979;
 }
 
-@keyframes textGlitch{
-    20%{
-        transform:translate(-5px,2px) skewX(8deg);
-        filter:contrast(2);
-    }
-    40%{
-        transform:translate(6px,-2px) skewX(-8deg);
-    }
-    60%{
-        transform:translate(-3px,1px);
-    }
+#redeemCode{
+  font-size:26px;
+  font-weight:900;
+  letter-spacing:2px;
+  color:#7de5ff;
 }
 
-/* ================= TIMEOUT ================= */
-
-#timeoutFlash{
-    position:fixed;
-    inset:0;
-    z-index:10001;
-    background:red;
-    pointer-events:none;
-    opacity:0;
+.fail{
+  display:none;
+  text-align:center;
+  background:#3b1111;
+  border:1px solid #ff4040;
+  padding:28px;
+  border-radius:8px;
 }
 
-body.timeoutShake{
-    animation:timeoutShake .08s infinite;
+.note{
+  color:#aaa;
+  font-size:14px;
 }
 
-body.timeoutShake #timeoutFlash{
-    animation:timeoutFlashAnimation .8s ease;
-}
-
-@keyframes timeoutShake{
-    0%{transform:translate(0)}
-    25%{transform:translate(-8px,3px)}
-    50%{transform:translate(8px,-3px)}
-    75%{transform:translate(-5px,-2px)}
-    100%{transform:translate(0)}
-}
-
-@keyframes timeoutFlashAnimation{
-    0%{opacity:0}
-    10%{opacity:.9}
-    20%{opacity:0}
-    30%{opacity:.75}
-    45%{opacity:0}
-    100%{opacity:0}
-}
-
-#failure{
-    display:none;
-    position:fixed;
-    inset:0;
-    z-index:9000;
-    background:#050000;
-    text-align:center;
-    padding-top:20vh;
-}
-
-body.timeoutShake #failure{
-    animation:timeoutScreenIn 1.2s ease forwards;
-}
-
-@keyframes timeoutScreenIn{
-    0%{
-        opacity:0;
-        transform:scale(1.2);
-    }
-    35%{
-        opacity:1;
-        transform:scale(.97);
-    }
-    100%{
-        opacity:1;
-        transform:scale(1);
-    }
-}
-
-#failure h1{
-    color:#f22;
-    font-size:clamp(55px,10vw,110px);
-    margin:0;
-    text-shadow:0 0 25px red;
-    animation:timeoutTitle .15s infinite;
-}
-
-@keyframes timeoutTitle{
-    0%{transform:translate(0)}
-    25%{transform:translate(-5px,2px)}
-    50%{transform:translate(5px,-2px)}
-    75%{transform:translate(-3px,1px)}
-    100%{transform:translate(0)}
-}
-
-/* ================= VERIFY SCREEN ================= */
-
-#verifyScreen{
-    display:none;
-    position:fixed;
-    inset:0;
-    z-index:9600;
-    background:#07100a;
-    color:#fff;
-    padding:8vh 20px;
-    text-align:center;
-    overflow:auto;
-}
-
-#verifyBox{
-    max-width:600px;
-    margin:auto;
-    background:#101b13;
-    border:2px solid #36e76b;
-    border-radius:12px;
-    padding:30px;
-    box-shadow:0 0 35px #0f43;
-}
-
-#verifyBox h1{
-    color:#39ff72;
-}
-
-#verifyBox input{
-    display:block;
-    width:100%;
-    margin:12px 0;
+@media(max-width:600px){
+  .card-body{
     padding:14px;
-    background:#050505;
-    border:1px solid #555;
-    border-radius:6px;
-    color:white;
-    font-size:17px;
-}
+  }
 
-#verifyButton{
-    background:#159447;
-    width:100%;
-    margin-top:8px;
-}
+  .folderbar{
+    overflow-x:auto;
+    flex-wrap:nowrap;
+  }
 
-#verifyButton:hover{
-    background:#20bb59;
-}
+  .folderbar button{
+    white-space:nowrap;
+  }
 
-#verifyMessage{
-    min-height:25px;
-    margin-top:15px;
-    font-weight:bold;
-}
-
-#verifyLocked{
-    color:#ff5555;
-}
-
-/* ================= SUCCESS ================= */
-
-#success{
-    display:none;
-    position:fixed;
-    inset:0;
-    z-index:9500;
-    background:#061a0a;
-    color:#39ff72;
-    text-align:center;
-    padding-top:25vh;
-}
-
-#success h1{
-    font-size:clamp(55px,11vw,120px);
-    margin:0;
-    text-shadow:0 0 15px #0f4,0 0 40px #0f49;
-    animation:successPulse 1.2s infinite alternate;
-}
-
-@keyframes successPulse{
-    to{transform:scale(1.04)}
-}
-
-body.paymentComplete{
-    background:#061a0a;
-}
-
-body.paymentComplete header{
-    background:#08752b;
-    border-color:#39ff72;
-}
-
-body.paymentComplete header h1{
-    color:#39ff72;
-}
-
-body.paymentComplete #timer{
-    color:#39ff72;
-    text-shadow:0 0 12px #0f4;
-}
-
-body.paymentComplete .panel{
-    background:#102c17;
-    border-color:#208c45;
-}
-
-body.paymentComplete #drop{
-    border-color:#39ff72;
-    background:#08200e;
-}
-
-body.paymentComplete #bar{
-    background:#39ff72!important;
-}
-
-/* ================= MOBILE ================= */
-
-@media(max-width:850px){
-
-    main{
-        display:block;
-        padding:10px;
-    }
-
-    .panel{
-        margin-bottom:12px;
-    }
-
-    #ransomPopup{
-        width:min(330px,85vw);
-    }
-
+  .file-grid{
+    grid-template-columns:1fr;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<!-- STARTUP -->
-
-<div id="startupScreen">
-
-    <div id="startupFace">
-        <img
-        src="https://static.wikia.nocookie.net/doors-game/images/0/0e/A-90_IDLE.png/revision/latest?cb=20230226202839"
-        alt="Ransom">
-    </div>
-
-    <div id="startupTitle">
-        RANSOM-BANNER
-    </div>
-
-    <div id="startupWarning">
-        YOUR FILES HAVE BEEN ENCRYPTED
-    </div>
-
-</div>
-
-<div id="timeoutFlash"></div>
-
-
-<!-- HEADER -->
-
 <header>
-
-    <h1>
-        ⚠ YOUR FILES HAVE BEEN LOCKED ⚠
-    </h1>
-
-    <p>
-        Ransom-Banner
-    </p>
-
-    <p>
-        Fictional ARG simulation —
-        no real files are touched.
-    </p>
-
+  <h1>⚠ YOUR FILES HAVE BEEN LOCKED ⚠</h1>
+  <p>Fictional ARG simulation — no real files are touched.</p>
 </header>
 
-
-<!-- TIMER -->
-
-<div id="timer">
-    14:00
-</div>
-
-
-<!-- MAIN -->
+<div id="timer">16:00</div>
 
 <main>
 
-    <section class="panel">
+<!-- PAYMENT -->
 
-        <h2>📁 File Explorer</h2>
+<section class="card">
+  <div class="card-body">
 
-        <div class="folders">
-
-            <div class="folder"
-            onclick="openFolder('Documents')">
-                📁 Documents
-            </div>
-
-            <div class="folder"
-            onclick="openFolder('Downloads')">
-                📁 Downloads
-            </div>
-
-            <div class="folder"
-            onclick="openFolder('Pictures')">
-                📁 Pictures
-            </div>
-
-            <div class="folder"
-            onclick="openFolder('Games')">
-                📁 Games
-            </div>
-
-            <div class="folder"
-            onclick="openFolder('System')">
-                📁 System
-            </div>
-
-        </div>
-
-        <div id="files">
-            <p>Select a folder.</p>
-        </div>
-
-        <div style="text-align:center">
-
-            <button onclick="previousPage()">
-                ◀ Previous
-            </button>
-
-            <span id="page">
-                Page 1
-            </span>
-
-            <button onclick="nextPage()">
-                Next ▶
-            </button>
-
-        </div>
-
-    </section>
-
-
-    <!-- PAYMENT -->
-
-    <section class="panel">
-
-        <h2>💎 PAYMENT REQUIRED</h2>
-
-        <p>
-            Collect and submit
-            <b>450 diamonds</b>.
-        </p>
-
-        <div class="amount">
-
-            💎 <span id="paid">0</span> / 450
-
-        </div>
-
-        <div class="progress">
-            <div id="bar"></div>
-        </div>
-
-        <div id="facePanel">
-
-            <img
-            id="ransomFace"
-            src="https://static.wikia.nocookie.net/doors-game/images/0/0e/A-90_IDLE.png/revision/latest?cb=20230226202839"
-            alt="Ransom">
-
-        </div>
-
-        <p style="text-align:center">
-
-            Ransom becomes increasingly
-            distorted as the timer gets lower.
-
-        </p>
-
-        <div id="drop">
-
-            <h2>💎 PAYMENT AREA</h2>
-
-            <p>
-                PC: drag a diamond here.
-            </p>
-
-            <p>
-                Mobile: tap a diamond,
-                then tap here.
-            </p>
-
-        </div>
-
-    </section>
-
-</main>
-
-
-<!-- POPUPS -->
-
-<div id="popupLayer">
-
-    <div id="ransomPopup">
-
-        <div id="popupTitle">
-            Ransom-Banner
-        </div>
-
-        <div id="popupText"></div>
-
-        <button id="popupOK">
-            OK
-        </button>
-
+    <div class="payment-title">
+      💎 PAYMENT REQUIRED
     </div>
-
-</div>
-
-
-<!-- TIMEOUT -->
-
-<div id="failure">
-
-    <h1>TIME OUT</h1>
 
     <p>
-        Payment failed.
+      Collect and submit <b>450 diamonds</b>.
     </p>
 
-    <button onclick="location.reload()">
-        TRY AGAIN
-    </button>
+    <div id="count">
+      <span class="diamond">💎</span>
+      <span id="diamondCount">0</span> / 450
+    </div>
 
-</div>
+    <div class="progress-wrap">
+      <div id="progress"></div>
+    </div>
+
+    <p class="note">
+      Diamonds are fictional collectibles. Nothing on your device is modified.
+    </p>
+
+  </div>
+</section>
 
 
-<!-- VERIFY -->
+<!-- FILE EXPLORER -->
 
-<div id="verifyScreen">
+<section class="card">
 
-    <div id="verifyBox">
+  <div class="card-head">
+    📁 File Explorer
+  </div>
 
-        <h1>
-            RANSOM-BANNER
-        </h1>
+  <div class="folderbar" id="folders"></div>
 
-        <p>
-            Payment accepted.
-        </p>
+  <div id="folderContent">
+    Select a folder.
+  </div>
 
-        <p>
-            Enter the recovery credentials.
-        </p>
+</section>
 
-        <input
-        id="ransomCode"
-        type="text"
-        placeholder="Ransom Code">
 
-        <input
-        id="verifyCode"
-        type="text"
-        placeholder="Verify Code">
+<!-- RANSOM FACE -->
 
-        <button
-        id="verifyButton"
-        onclick="verifyRansomCode()">
-            VERIFY
-        </button>
+<section class="card" id="faceBox">
 
-        <div id="verifyMessage"></div>
+  <div class="card-body">
+
+    <img
+      id="ransomFace"
+      src="ransom2.jpg"
+      alt="Ransom face"
+    >
+
+    <div id="phaseName">
+      PHASE 2
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- VERIFICATION MINIGAME -->
+
+<section class="card" id="minigame">
+
+  <div class="card-head">
+    🔐 RANSOM VERIFICATION
+  </div>
+
+  <div class="card-body">
+
+    <p>
+      Ransom is waiting. Complete the verification sequence.
+    </p>
+
+    <p class="note">
+      The minigame begins with the Phase 2 face.
+    </p>
+
+    <div id="sequence" class="sequence"></div>
+
+    <div id="status"></div>
+
+  </div>
+
+</section>
+
+
+<!-- CODE -->
+
+<section class="card">
+
+  <div class="card-head">
+    🔑 Payment Verification
+  </div>
+
+  <div class="card-body">
+
+    <p>
+      Verification remains locked until all 450 diamonds
+      are collected.
+    </p>
+
+    <div class="verify">
+
+      <input
+        id="verifyInput"
+        placeholder="Enter verification code"
+        autocomplete="off"
+      >
+
+      <button
+        class="action-btn"
+        id="verifyBtn"
+        disabled
+      >
+        VERIFY
+      </button>
 
     </div>
 
-</div>
+    <p class="note">
+      Verification code:
+      <b>H3-1s-H6m95y</b>
+    </p>
+
+  </div>
+
+</section>
 
 
 <!-- SUCCESS -->
 
-<div id="success">
+<div class="success" id="success">
 
-    <h1>
-        THANK YOU!
-    </h1>
+  <h2>THANK YOU!</h2>
 
-    <p>
-        Payment has been successfully received.
-    </p>
+  <p>
+    The fictional ransom has been successfully paid.
+  </p>
 
-    <p>
-        Ransom-Banner has been satisfied.
-    </p>
+  <p>
+    Your Minecraft banner redemption code is:
+  </p>
+
+  <div id="redeemCode">
+    LAUGHTER_RELIEF
+  </div>
+
+  <p class="note">
+    Use this code to redeem the Minecraft banner in your ARG.
+  </p>
 
 </div>
 
 
+<!-- FAILURE -->
+
+<div class="fail" id="fail">
+
+  <h2>TIME EXPIRED</h2>
+
+  <p>
+    The ransom sequence timed out.
+  </p>
+
+  <button
+    class="action-btn"
+    onclick="location.reload()"
+  >
+    RESTART
+  </button>
+
+</div>
+
+</main>
+
+
 <script>
 
-/* =========================================================
-   SETTINGS
-========================================================= */
+/* =========================================
+   RANSOM SETTINGS
+========================================= */
 
-const TOTAL_DIAMONDS = 450;
+const TOTAL = 450;
 
-const RANSOM_CODE = "H3-1s-H6m95y";
+const folders = [
 
-const VERIFY_CODE = "BANner_Relief";
+  {
+    name:"Documents",
+    start:1,
+    end:100
+  },
 
-let timeLeft = 14 * 60;
+  {
+    name:"Downloads",
+    start:101,
+    end:200
+  },
 
-let paid = 0;
+  {
+    name:"Pictures",
+    start:201,
+    end:300
+  },
 
-let timerRunning = false;
+  {
+    name:"Games",
+    start:301,
+    end:400
+  },
 
-let selectedDiamond = null;
+  {
+    name:"System",
+    start:401,
+    end:450
+  }
+
+];
+
+
+/* =========================================
+   FACE IMAGES
+========================================= */
+
+const face1 = "ransom1.jpg";
+const face2 = "ransom2.jpg";
+
+
+/* =========================================
+   GAME VARIABLES
+========================================= */
 
 let collected = new Set();
 
 let currentFolder = null;
 
-let currentPage = 1;
+let phase = 0;
 
-let popupOpen = false;
+let secondsLeft = 16 * 60;
 
-let popupType = 0;
+let sequence = [];
 
-let popupTimer = null;
+let sequenceIndex = 0;
 
-let popupMoveTimer = null;
+let gameStarted = false;
 
-let timer = null;
+let finished = false;
 
 
-/* =========================================================
-   EXACTLY 450 DIAMONDS
-========================================================= */
+/* =========================================
+   HTML ELEMENTS
+========================================= */
 
-/*
-   IMPORTANT:
-   There is NO Archives folder and NO IDs above 450.
+const foldersEl =
+  document.getElementById("folders");
 
-   Documents = 1-100
-   Downloads = 101-200
-   Pictures = 201-300
-   Games = 301-400
-   System = 401-450
+const folderContent =
+  document.getElementById("folderContent");
 
-   TOTAL = 450
-*/
+const diamondCount =
+  document.getElementById("diamondCount");
 
-const folders = {
+const progress =
+  document.getElementById("progress");
 
-    Documents: [1,100],
+const timerEl =
+  document.getElementById("timer");
 
-    Downloads: [101,200],
+const faceBox =
+  document.getElementById("faceBox");
 
-    Pictures: [201,300],
+const ransomFace =
+  document.getElementById("ransomFace");
 
-    Games: [301,400],
+const phaseName =
+  document.getElementById("phaseName");
 
-    System: [401,450]
+const minigame =
+  document.getElementById("minigame");
+
+const verifyBtn =
+  document.getElementById("verifyBtn");
+
+const verifyInput =
+  document.getElementById("verifyInput");
+
+
+
+/* =========================================
+   FACE CHANGER
+========================================= */
+
+function setFace(src,name){
+
+  ransomFace.style.opacity = "0";
+
+  setTimeout(()=>{
+
+    ransomFace.src = src;
+
+    ransomFace.onload = ()=>{
+
+      ransomFace.style.opacity = "1";
+
+    };
+
+    ransomFace.style.opacity = "1";
+
+  },180);
+
+  phaseName.textContent = name;
+
+  faceBox.style.display = "block";
+}
+
+
+
+/* =========================================
+   CREATE FOLDERS
+========================================= */
+
+function renderFolders(){
+
+  foldersEl.innerHTML = "";
+
+  folders.forEach((folder,index)=>{
+
+    const button =
+      document.createElement("button");
+
+    button.textContent =
+      "📁 " + folder.name;
+
+    button.onclick =
+      ()=>openFolder(index);
+
+    button.id =
+      "folder-" + index;
+
+    foldersEl.appendChild(button);
+
+  });
+
+}
+
+renderFolders();
+
+
+
+/* =========================================
+   OPEN FOLDER
+========================================= */
+
+function openFolder(index){
+
+  currentFolder = index;
+
+  document
+    .querySelectorAll(".folderbar button")
+    .forEach(button=>{
+      button.classList.remove("active");
+    });
+
+  document
+    .getElementById("folder-"+index)
+    .classList.add("active");
+
+
+  const folder = folders[index];
+
+
+  let html = `
+
+    <p>
+      📁 <b>${folder.name}</b>
+      — ${folder.end-folder.start+1}
+      collectible diamonds
+    </p>
+
+    <div class="file-grid">
+
+  `;
+
+
+  for(
+    let number=folder.start;
+    number<=folder.end;
+    number++
+  ){
+
+    const id =
+      folder.name + "-" + number;
+
+    const collectedClass =
+      collected.has(id)
+      ? "collected"
+      : "";
+
+
+    html += `
+
+      <div
+        class="file ${collectedClass}"
+        data-id="${id}"
+        onclick="collectDiamond('${id}')"
+      >
+
+        💎 Diamond ${number}
+
+      </div>
+
+    `;
+
+  }
+
+
+  html += `
+    </div>
+  `;
+
+
+  folderContent.innerHTML = html;
+}
+
+
+
+/* =========================================
+   COLLECT DIAMOND
+========================================= */
+
+function collectDiamond(id){
+
+  if(collected.has(id))
+    return;
+
+  collected.add(id);
+
+  updatePayment();
+
+  if(currentFolder !== null)
+    openFolder(currentFolder);
+
+}
+
+
+
+/* =========================================
+   PAYMENT PROGRESS
+========================================= */
+
+function updatePayment(){
+
+  const amount =
+    collected.size;
+
+  diamondCount.textContent =
+    amount;
+
+  progress.style.width =
+    (amount / TOTAL * 100) + "%";
+
+
+  if(amount >= TOTAL){
+
+    verifyBtn.disabled = false;
+
+    startVerification();
+
+  }
+
+}
+
+
+
+/* =========================================
+   START MINIGAME
+========================================= */
+
+function startVerification(){
+
+  if(gameStarted)
+    return;
+
+  gameStarted = true;
+
+  minigame.style.display =
+    "block";
+
+
+  /*
+    IMPORTANT:
+    MINIGAME STARTS WITH PHASE 2
+  */
+
+  setFace(
+    face2,
+    "PHASE 2 — VERIFICATION"
+  );
+
+
+  makeSequence();
+
+}
+
+
+
+/* =========================================
+   MAKE SEQUENCE
+========================================= */
+
+function makeSequence(){
+
+  sequence =
+    Array.from(
+      {length:8},
+      ()=>Math.floor(Math.random()*4)+1
+    );
+
+
+  sequenceIndex = 0;
+
+
+  const box =
+    document.getElementById("sequence");
+
+  box.innerHTML = "";
+
+
+  sequence.forEach((number)=>{
+
+    const button =
+      document.createElement("button");
+
+    button.className =
+      "seq-btn";
+
+    button.textContent =
+      number;
+
+    button.onclick =
+      ()=>pressSequence(button,number);
+
+    box.appendChild(button);
+
+  });
+
+
+  document.getElementById("status")
+    .textContent =
+      "Repeat the sequence shown: "
+      + sequence.join(" ");
+
+}
+
+
+
+/* =========================================
+   SEQUENCE INPUT
+========================================= */
+
+function pressSequence(button,number){
+
+  if(
+    number ===
+    sequence[sequenceIndex]
+  ){
+
+    button.classList.add("good");
+
+    sequenceIndex++;
+
+
+    if(
+      sequenceIndex ===
+      sequence.length
+    ){
+
+      document.getElementById("status")
+        .textContent =
+          "Verification sequence complete.";
+
+      verifyBtn.disabled = false;
+
+    }
+
+  }
+
+  else{
+
+    button.classList.add("bad");
+
+    document.getElementById("status")
+      .textContent =
+        "Wrong sequence. Try again.";
+
+    setFace(
+      face2,
+      "PHASE 2 — RETRY"
+    );
+
+    setTimeout(
+      makeSequence,
+      500
+    );
+
+  }
+
+}
+
+
+
+/* =========================================
+   VERIFY
+========================================= */
+
+verifyBtn.onclick = ()=>{
+
+  if(collected.size < TOTAL)
+    return;
+
+
+  if(
+    verifyInput.value.trim()
+    ===
+    "H3-1s-H6m95y"
+  ){
+
+    finished = true;
+
+
+    document
+      .getElementById("success")
+      .style.display = "block";
+
+
+    minigame.style.display =
+      "none";
+
+    faceBox.style.display =
+      "none";
+
+    document
+      .getElementById("fail")
+      .style.display =
+        "none";
+
+  }
+
+  else{
+
+    document
+      .getElementById("status")
+      .textContent =
+        "Invalid verification code.";
+
+    setFace(
+      face2,
+      "PHASE 2 — INVALID CODE"
+    );
+
+  }
 
 };
 
 
-/* =========================================================
-   POPUP TEXT
-========================================================= */
 
-const type1 = [
+/* =========================================
+   PHASE SYSTEM
+=========================================
 
-    "PAY NOW",
+   Phase 1:
+   DEMAND
+   7 minutes
 
-    "Your files have been ENCRYPTED",
+   Phase 2:
+   IMPATIENCE
+   3 minutes
 
-    "Ransom is HUNGRY",
+   Phase 3:
+   THEIR SYMPHONY
+   3 minutes
 
-    "DON'T LET THE RANSOM LEFT WITH NO WEALTH",
+   Phase 4:
+   OUT OF BREATH
+   3 minutes
+========================================= */
 
-    "YOUR MINE, DON'T YOU JUST LEAVE ME HERE EASILY"
+function updatePhase(){
 
-];
-
-const type2 = [
-
-    ...type1,
-
-    "HE IS WATCHING",
-
-    "YOU FAILED TO KEEP HER PROMISED"
-
-];
-
-const type3 = [
-
-    ...type2,
-
-    "TIME OUT",
-
-    "PREPARE. THE. LOST",
-
-    "DON'T YOU FEEL BAD FOR HER? SHE. IS. CRYING. NOW."
-
-];
+  const elapsed =
+    (16*60) - secondsLeft;
 
 
-/* =========================================================
-   PHASE
-========================================================= */
-
-function phase(){
-
-    if(timeLeft > 8 * 60)
-        return 1;
-
-    if(timeLeft > 3 * 60)
-        return 2;
-
-    return 3;
-
-}
+  let newPhase;
 
 
-/* =========================================================
-   RANDOM
-========================================================= */
+  if(elapsed < 7*60){
 
-function random(array){
+    newPhase = 1;
 
-    return array[
-        Math.floor(
-            Math.random() * array.length
-        )
-    ];
+  }
 
-}
+  else if(elapsed < 10*60){
 
+    newPhase = 2;
 
-/* =========================================================
-   POPUP POSITION
-========================================================= */
+  }
 
-function randomPosition(){
+  else if(elapsed < 13*60){
 
-    const popup =
-        document.getElementById(
-            "ransomPopup"
-        );
+    newPhase = 3;
 
-    popup.style.left =
-        (10 + Math.random() * 80) + "%";
+  }
 
-    popup.style.top =
-        (15 + Math.random() * 70) + "%";
+  else{
 
-    popup.style.transform =
-        "translate(-50%,-50%)";
+    newPhase = 4;
 
-}
+  }
 
 
-/* =========================================================
-   SHOW POPUP
-========================================================= */
+  if(newPhase !== phase){
 
-function showPopup(){
-
-    if(
-        !timerRunning ||
-        timeLeft <= 0
-    )
-        return;
-
-    popupOpen = true;
-
-    popupType = phase();
-
-    clearInterval(
-        popupMoveTimer
-    );
-
-    const layer =
-        document.getElementById(
-            "popupLayer"
-        );
-
-    const popup =
-        document.getElementById(
-            "ransomPopup"
-        );
-
-    const text =
-        document.getElementById(
-            "popupText"
-        );
-
-    popup.classList.remove(
-        "type3Popup"
-    );
+    phase = newPhase;
 
 
-    /* TYPE 1 */
+    if(phase === 1){
 
-    if(popupType === 1){
-
-        randomPosition();
-
-        text.textContent =
-            random(type1);
+      setFace(
+        face1,
+        "PHASE 1 — DEMAND"
+      );
 
     }
 
+    else if(phase === 2){
 
-    /* TYPE 2 */
-
-    else if(popupType === 2){
-
-        randomPosition();
-
-        text.textContent =
-            random(type2);
-
-        /*
-         * Type 2 is intentionally nerfed.
-         * It does NOT stop access to the page.
-         */
-
-        if(
-            Math.random() < .25
-        ){
-
-            bouncePopup();
-
-        }
+      setFace(
+        face2,
+        "PHASE 2 — IMPATIENCE"
+      );
 
     }
 
+    else if(phase === 3){
 
-    /* TYPE 3 */
-
-    else{
-
-        /*
-         * Type 3 is active,
-         * but the TIMER NEVER PAUSES.
-         */
-
-        popup.style.left = "50%";
-
-        popup.style.top = "145px";
-
-        popup.style.transform =
-            "translate(-50%,-50%)";
-
-        text.textContent =
-            random(type3);
-
-        popup.classList.add(
-            "type3Popup"
-        );
-
-    }
-
-
-    layer.style.display =
-        "block";
-
-}
-
-
-/* =========================================================
-   TYPE 2 BOUNCE
-========================================================= */
-
-function bouncePopup(){
-
-    const popup =
-        document.getElementById(
-            "ransomPopup"
-        );
-
-    let x = 50;
-
-    let y = 50;
-
-    let vx =
-        (
-            .25 +
-            Math.random() * .25
-        ) *
-        (
-            Math.random() < .5
-                ? -1
-                : 1
-        );
-
-    let vy =
-        (
-            .2 +
-            Math.random() * .2
-        ) *
-        (
-            Math.random() < .5
-                ? -1
-                : 1
-        );
-
-
-    popupMoveTimer =
-        setInterval(
-
-            function(){
-
-                if(
-                    !popupOpen ||
-                    popupType !== 2 ||
-                    !timerRunning
-                )
-                    return;
-
-                x += vx;
-                y += vy;
-
-                if(
-                    x >= 88 ||
-                    x <= 12
-                )
-                    vx *= -1;
-
-                if(
-                    y >= 85 ||
-                    y <= 15
-                )
-                    vy *= -1;
-
-                popup.style.left =
-                    x + "%";
-
-                popup.style.top =
-                    y + "%";
-
-                popup.style.transform =
-                    "translate(-50%,-50%)";
-
-            },
-
-            35
-
-        );
-
-}
-
-
-/* =========================================================
-   CLOSE POPUP
-========================================================= */
-
-function closePopup(){
-
-    popupOpen = false;
-
-    popupType = 0;
-
-    clearInterval(
-        popupMoveTimer
-    );
-
-    document
-        .getElementById(
-            "popupLayer"
-        )
-        .style.display =
-        "none";
-
-    schedulePopup();
-
-}
-
-document
-    .getElementById(
-        "ransomPopup"
-    )
-    .onclick =
-    closePopup;
-
-document
-    .getElementById(
-        "popupOK"
-    )
-    .onclick =
-    function(event){
-
-        event.stopPropagation();
-
-        closePopup();
-
-    };
-
-
-/* =========================================================
-   POPUP SCHEDULER
-========================================================= */
-
-function schedulePopup(){
-
-    clearTimeout(
-        popupTimer
-    );
-
-    if(
-        !timerRunning ||
-        timeLeft <= 0
-    )
-        return;
-
-    let delay;
-
-    if(phase() === 1){
-
-        delay =
-            7000 +
-            Math.random() * 9000;
-
-    }
-
-    else if(phase() === 2){
-
-        delay =
-            6000 +
-            Math.random() * 7000;
+      setFace(
+        face2,
+        "PHASE 3 — THEIR SYMPHONY"
+      );
 
     }
 
     else{
 
-        delay =
-            3500 +
-            Math.random() * 4500;
+      setFace(
+        face2,
+        "PHASE 4 — OUT OF BREATH"
+      );
 
     }
 
-    popupTimer =
-        setTimeout(
-            showPopup,
-            delay
-        );
+  }
 
 }
 
 
-/* =========================================================
+
+/* =========================================
    TIMER
-========================================================= */
+========================================= */
 
-function updateTimer(){
+function tick(){
 
-    const minutes =
-        Math.floor(
-            timeLeft / 60
-        );
+  if(finished)
+    return;
 
-    const seconds =
-        String(
-            timeLeft % 60
-        )
-        .padStart(
-            2,
-            "0"
-        );
+
+  secondsLeft--;
+
+
+  if(secondsLeft <= 0){
+
+    secondsLeft = 0;
+
+    timerEl.textContent =
+      "0:00";
+
 
     document
-        .getElementById(
-            "timer"
-        )
-        .textContent =
-        minutes +
-        ":" +
-        seconds;
-
-}
-
-
-/* =========================================================
-   FACE
-========================================================= */
-
-function updateFace(){
-
-    const face =
-        document.getElementById(
-            "ransomFace"
-        );
-
-    face.classList.remove(
-        "face1",
-        "face2",
-        "face3",
-        "face4"
-    );
-
-    if(timeLeft > 8 * 60)
-        return;
-
-    if(timeLeft > 5 * 60)
-        face.classList.add("face1");
-
-    else if(timeLeft > 3 * 60)
-        face.classList.add("face2");
-
-    else if(timeLeft > 60)
-        face.classList.add("face3");
-
-    else
-        face.classList.add("face4");
-
-}
-
-
-/* =========================================================
-   LOW TIMER DISTORTION
-========================================================= */
-
-function distortText(){
-
-    const elements =
-        document.querySelectorAll(
-            "header h1,header p,h2,p,.amount,.folder"
-        );
-
-    if(!elements.length)
-        return;
-
-    const element =
-        elements[
-            Math.floor(
-                Math.random() *
-                elements.length
-            )
-        ];
-
-    element.classList.remove(
-        "lowDistort"
-    );
-
-    void element.offsetWidth;
-
-    element.classList.add(
-        "lowDistort"
-    );
-
-}
-
-
-/* =========================================================
-   START
-========================================================= */
-
-function startGame(){
-
-    document.body.classList.add(
-        "gameStarted"
-    );
-
-    timerRunning = true;
-
-    updateTimer();
-
-    updateFace();
-
-    schedulePopup();
-
-
-    timer =
-        setInterval(
-
-            function(){
-
-                if(!timerRunning)
-                    return;
-
-                timeLeft--;
-
-                if(timeLeft < 0)
-                    timeLeft = 0;
-
-                updateTimer();
-
-                updateFace();
-
-
-                if(
-                    timeLeft <= 30 &&
-                    timeLeft > 0
-                ){
-
-                    document
-                        .getElementById(
-                            "timer"
-                        )
-                        .classList.add(
-                            "danger"
-                        );
-
-                    if(
-                        Math.random() <
-                        .25 +
-                        (
-                            (30-timeLeft)/30
-                        ) * .5
-                    ){
-
-                        distortText();
-
-                    }
-
-                }
-
-
-                if(timeLeft === 0){
-
-                    timeout();
-
-                }
-
-            },
-
-            1000
-
-        );
-
-}
-
-
-/* =========================================================
-   TIMEOUT
-========================================================= */
-
-function timeout(){
-
-    if(!timerRunning)
-        return;
-
-    timerRunning = false;
-
-    clearInterval(timer);
-
-    clearTimeout(popupTimer);
-
-    clearInterval(popupMoveTimer);
-
-    document
-        .getElementById(
-            "popupLayer"
-        )
-        .style.display =
-        "none";
-
-    document
-        .getElementById(
-            "failure"
-        )
-        .style.display =
+      .getElementById("fail")
+      .style.display =
         "block";
 
-    document.body.classList.add(
-        "timeoutShake"
-    );
+    finished = true;
+
+    return;
+
+  }
+
+
+  const minutes =
+    Math.floor(secondsLeft / 60);
+
+
+  const seconds =
+    String(secondsLeft % 60)
+      .padStart(2,"0");
+
+
+  timerEl.textContent =
+    `${minutes}:${seconds}`;
+
+
+  updatePhase();
 
 }
 
 
-/* =========================================================
-   FILE EXPLORER
-========================================================= */
 
-function openFolder(name){
+/* =========================================
+   INITIAL STATE
+========================================= */
 
-    currentFolder = name;
+/*
+   The intro intentionally uses
+   the Phase 2 face as requested.
+*/
 
-    currentPage = 1;
+setFace(
+  face2,
+  "PHASE 2"
+);
 
-    renderFiles();
 
-}
-
-
-function renderFiles(){
-
-    const box =
-        document.getElementById(
-            "files"
-        );
-
-    box.innerHTML = "";
-
-    if(!currentFolder){
-
-        box.innerHTML =
-            "<p>Select a folder.</p>";
-
-        return;
-
-    }
-
-    const range =
-        folders[currentFolder];
-
-    const start =
-        range[0] +
-        (
-            currentPage - 1
-        ) * 20;
-
-    const end =
-        Math.min(
-            start + 19,
-            range[1]
-        );
-
-
-    for(
-        let i = start;
-        i <= end;
-        i++
-    ){
-
-        const id =
-            "diamond-" + i;
-
-        if(
-            collected.has(id)
-        )
-            continue;
-
-        createDiamond(
-            box,
-            i
-        );
-
-    }
-
-
-    document
-        .getElementById(
-            "page"
-        )
-        .textContent =
-        "Page " +
-        currentPage;
-
-}
-
-
-/* =========================================================
-   DIAMOND
-========================================================= */
-
-function createDiamond(
-    box,
-    number
-){
-
-    const diamond =
-        document.createElement(
-            "div"
-        );
-
-    diamond.className =
-        "file";
-
-    diamond.id =
-        "diamond-" +
-        number;
-
-    diamond.draggable = true;
-
-    diamond.innerHTML =
-        "💎<br>" +
-        "Diamond_" +
-        number +
-        ".dat<br>" +
-        "<small>VALUE: 1</small>";
-
-
-    diamond.onclick =
-        function(){
-
-            selectedDiamond =
-                diamond.id;
-
-            document
-                .querySelectorAll(
-                    ".file"
-                )
-                .forEach(
-                    item =>
-                        item.classList
-                            .remove(
-                                "selected"
-                            )
-                );
-
-            diamond.classList.add(
-                "selected"
-            );
-
-        };
-
-
-    diamond.ondragstart =
-        function(event){
-
-            event.dataTransfer
-                .setData(
-                    "diamond",
-                    diamond.id
-                );
-
-        };
-
-
-    box.appendChild(
-        diamond
-    );
-
-}
-
-
-/* =========================================================
-   PAGE NAVIGATION
-========================================================= */
-
-function nextPage(){
-
-    if(!currentFolder)
-        return;
-
-    const range =
-        folders[currentFolder];
-
-    const max =
-        Math.ceil(
-            (
-                range[1] -
-                range[0] +
-                1
-            ) / 20
-        );
-
-    if(currentPage < max){
-
-        currentPage++;
-
-        renderFiles();
-
-    }
-
-}
-
-
-function previousPage(){
-
-    if(currentPage > 1){
-
-        currentPage--;
-
-        renderFiles();
-
-    }
-
-}
-
-
-/* =========================================================
-   PAYMENT
-========================================================= */
-
-const drop =
-    document.getElementById(
-        "drop"
-    );
-
-
-drop.ondragover =
-    function(event){
-
-        event.preventDefault();
-
-        drop.classList.add(
-            "active"
-        );
-
-    };
-
-
-drop.ondragleave =
-    function(){
-
-        drop.classList.remove(
-            "active"
-        );
-
-    };
-
-
-drop.ondrop =
-    function(event){
-
-        event.preventDefault();
-
-        drop.classList.remove(
-            "active"
-        );
-
-        deposit(
-            event.dataTransfer
-                .getData(
-                    "diamond"
-                )
-        );
-
-    };
-
-
-drop.onclick =
-    function(){
-
-        if(!selectedDiamond){
-
-            alert(
-                "Tap a diamond first."
-            );
-
-            return;
-
-        }
-
-        deposit(
-            selectedDiamond
-        );
-
-        selectedDiamond = null;
-
-    };
-
-
-function deposit(id){
-
-    if(
-        !id ||
-        collected.has(id) ||
-        paid >= TOTAL_DIAMONDS
-    )
-        return;
-
-    collected.add(id);
-
-    paid++;
-
-
-    document
-        .getElementById(
-            "paid"
-        )
-        .textContent =
-        paid;
-
-
-    document
-        .getElementById(
-            "bar"
-        )
-        .style.width =
-        (
-            paid /
-            TOTAL_DIAMONDS *
-            100
-        ) + "%";
-
-
-    renderFiles();
-
-
-    /*
-     * VERIFY IS NOT UNLOCKED
-     * UNTIL ALL 450 ARE PAID.
-     */
-
-    if(
-        paid >= TOTAL_DIAMONDS
-    ){
-
-        paymentSucceeded();
-
-    }
-
-}
-
-
-/* =========================================================
-   PAYMENT SUCCESS
-========================================================= */
-
-function paymentSucceeded(){
-
-    timerRunning = false;
-
-    clearInterval(timer);
-
-    clearTimeout(popupTimer);
-
-    clearInterval(popupMoveTimer);
-
-    document
-        .getElementById(
-            "popupLayer"
-        )
-        .style.display =
-        "none";
-
-
-    document.body.classList.add(
-        "paymentComplete"
-    );
-
-
-    document
-        .getElementById(
-            "timer"
-        )
-        .textContent =
-        "✓ PAID";
-
-
-    document
-        .getElementById(
-            "bar"
-        )
-        .style.width =
-        "100%";
-
-
-    document
-        .getElementById(
-            "ransomFace"
-        )
-        .className =
-        "";
-
-
-    /*
-     * NOW AND ONLY NOW
-     * THE VERIFY SCREEN OPENS.
-     */
-
-    document
-        .getElementById(
-            "verifyScreen"
-        )
-        .style.display =
-        "block";
-
-}
-
-
-/* =========================================================
-   VERIFY
-========================================================= */
-
-function verifyRansomCode(){
-
-    /*
-     * Extra safety:
-     * verification cannot work before
-     * all 450 diamonds are paid.
-     */
-
-    if(
-        paid < TOTAL_DIAMONDS
-    ){
-
-        document
-            .getElementById(
-                "verifyMessage"
-            )
-            .textContent =
-            "PAYMENT REQUIRED FIRST.";
-
-        document
-            .getElementById(
-                "verifyMessage"
-            )
-            .style.color =
-            "#ff4444";
-
-        return;
-
-    }
-
-
-    const ransomInput =
-        document
-            .getElementById(
-                "ransomCode"
-            )
-            .value;
-
-    const verifyInput =
-        document
-            .getElementById(
-                "verifyCode"
-            )
-            .value;
-
-
-    if(
-        ransomInput === RANSOM_CODE &&
-        verifyInput === VERIFY_CODE
-    ){
-
-        document
-            .getElementById(
-                "verifyMessage"
-            )
-            .textContent =
-            "✓ CODE ACCEPTED — RANSOM-BANNER RELEASED.";
-
-        document
-            .getElementById(
-                "verifyMessage"
-            )
-            .style.color =
-            "#39ff72";
-
-
-        setTimeout(
-            function(){
-
-                document
-                    .getElementById(
-                        "verifyScreen"
-                    )
-                    .style.display =
-                    "none";
-
-                document
-                    .getElementById(
-                        "success"
-                    )
-                    .style.display =
-                    "block";
-
-            },
-            1000
-        );
-
-    }
-
-    else{
-
-        document
-            .getElementById(
-                "verifyMessage"
-            )
-            .textContent =
-            "✗ INVALID CODE";
-
-        document
-            .getElementById(
-                "verifyMessage"
-            )
-            .style.color =
-            "#ff3333";
-
-    }
-
-}
-
-
-/* =========================================================
-   INITIALIZE
-========================================================= */
-
-updateTimer();
-
-updateFace();
-
-setTimeout(
-    startGame,
-    3900
+setInterval(
+  tick,
+  1000
 );
 
 </script>
