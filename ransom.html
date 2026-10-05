@@ -4,183 +4,108 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RANSOM</title>
+<title>Ransom</title>
 
 <style>
 * {
     box-sizing: border-box;
 }
 
-html, body {
+body {
     margin: 0;
-    width: 100%;
-    min-height: 100%;
-    background: #000;
-    color: #fff;
-    font-family: Arial, Helvetica, sans-serif;
+    background: #050505;
+    color: white;
+    font-family: Arial, sans-serif;
     overflow-x: hidden;
 }
 
-/* =========================================================
+/* =========================
    INTRO
-========================================================= */
+========================= */
 
 #intro {
     position: fixed;
     inset: 0;
-    z-index: 99999;
-
-    background: #050505;
-
+    z-index: 10000;
+    background: #000;
     display: flex;
     justify-content: center;
     align-items: center;
-
     text-align: center;
 }
 
-.claimBox {
-    width: min(700px, 90%);
-}
-
-.claimBox h1 {
-    margin: 0;
-    font-size: clamp(45px, 8vw, 85px);
-}
-
-.claimBox p {
-    color: #aaa;
-    margin: 15px 0 35px;
-}
-
 #claimButton {
-    padding: 18px 45px;
-
-    background: #092414;
-    color: #64ff8a;
-
-    border: 2px solid #45ff70;
-    border-radius: 7px;
-
-    font-size: 24px;
-    font-weight: bold;
-
+    padding: 18px 40px;
+    background: #111;
+    border: 2px solid #777;
+    color: white;
+    font-size: 22px;
     cursor: pointer;
 }
 
 #claimButton:hover {
-    background: #14552a;
+    background: #222;
 }
 
-
-/* =========================================================
+/* =========================
    CINEMATIC
-========================================================= */
+========================= */
 
 #cinematic {
     position: fixed;
     inset: 0;
-
-    z-index: 99998;
-
+    z-index: 9999;
     display: none;
-
-    overflow: hidden;
-
     background: #000;
+    overflow: hidden;
 }
 
-#redBG {
+#redBackground {
     position: absolute;
     inset: 0;
-
     opacity: 0;
-
     background:
-        radial-gradient(
-            circle at center,
+        radial-gradient(circle,
             #650000 0%,
-            #190000 48%,
-            #000 100%
-        );
-
-    transition: opacity 1s;
-}
-
-
-/* =========================================================
-   PHASE 1 FACE
-========================================================= */
-
-#phase1 {
-    position: absolute;
-
-    width: min(430px, 65vw);
-    height: min(430px, 65vw);
-
-    left: 50%;
-    top: 50%;
-
-    transform: translate(-50%, -50%);
-
-    object-fit: contain;
-
-    opacity: 0;
-
+            #190000 50%,
+            #000 100%);
     transition: opacity .8s;
 }
 
-
-/* =========================================================
-   PHASE 2 FACE
-========================================================= */
-
-#phase2 {
+.ransomIntroFace {
     position: absolute;
-
-    width: min(500px, 70vw);
-    height: min(500px, 70vw);
-
+    width: min(450px, 70vw);
+    height: min(450px, 70vw);
+    object-fit: contain;
     left: 50%;
     top: 50%;
-
     transform: translate(-50%, -50%);
+}
 
-    object-fit: contain;
-
+#introPhase1 {
     opacity: 0;
-
-    filter:
-        contrast(1.2)
-        brightness(1);
 }
 
-
-/* =========================================================
-   PHASE 2+ DISTORTION
-========================================================= */
-
-.phaseDistort {
-    animation:
-        distortShake .08s infinite;
+#introPhase2 {
+    opacity: 0;
 }
 
-@keyframes distortShake {
+.distorted {
+    animation: distortion .08s infinite;
+}
 
+@keyframes distortion {
     0% {
         transform:
-            translate(
-                calc(-50% - var(--shake)),
-                calc(-50% + 2px)
-            )
+            translate(-50%, -50%)
             skewX(-2deg);
     }
 
     25% {
         transform:
             translate(
-                calc(-50% + var(--shake)),
-                calc(-50% - 2px)
+                calc(-50% - 9px),
+                calc(-50% + 3px)
             )
             skewX(3deg);
     }
@@ -188,8 +113,8 @@ html, body {
     50% {
         transform:
             translate(
-                calc(-50% - 2px),
-                calc(-50% + var(--shake))
+                calc(-50% + 8px),
+                calc(-50% - 3px)
             )
             skewX(-3deg);
     }
@@ -197,8 +122,8 @@ html, body {
     75% {
         transform:
             translate(
-                calc(-50% + 2px),
-                calc(-50% - var(--shake))
+                calc(-50% - 4px),
+                calc(-50% + 2px)
             )
             skewX(2deg);
     }
@@ -210,94 +135,23 @@ html, body {
     }
 }
 
-
-/* =========================================================
-   ARG GLITCH
-========================================================= */
-
-.glitchLayer {
+#downloadScreen {
     position: absolute;
     inset: 0;
-
-    pointer-events: none;
-
-    opacity: 0;
-}
-
-#scanlines {
-    background:
-        repeating-linear-gradient(
-            0deg,
-            transparent 0px,
-            transparent 4px,
-            rgba(255,255,255,.08) 5px,
-            transparent 7px
-        );
-}
-
-#redGlitch {
-    background:
-        repeating-linear-gradient(
-            0deg,
-            transparent 0px,
-            transparent 8px,
-            rgba(255,0,0,.35) 9px,
-            transparent 12px
-        );
-}
-
-#whiteGlitch {
-    background:
-        repeating-linear-gradient(
-            90deg,
-            transparent 0px,
-            transparent 20px,
-            rgba(255,255,255,.08) 21px,
-            transparent 25px
-        );
-}
-
-.glitchBlock {
-    position: absolute;
-
-    opacity: 0;
-
-    pointer-events: none;
-
-    background: #fff;
-}
-
-
-/* =========================================================
-   DOWNLOAD
-========================================================= */
-
-#download {
-    position: absolute;
-    inset: 0;
-
     background: #000;
-
     display: none;
-
     justify-content: center;
     align-items: center;
-
     flex-direction: column;
 }
 
-.downloadLogo {
-    width: 90px;
-    height: 90px;
-
-    border: 7px solid #ddd;
-
+.downloadIcon {
+    width: 75px;
+    height: 75px;
+    border: 6px solid white;
     border-radius: 50%;
-
-    margin-bottom: 30px;
-
-    animation:
-        spin .7s linear infinite;
+    margin-bottom: 25px;
+    animation: spin .7s linear infinite;
 }
 
 @keyframes spin {
@@ -306,183 +160,97 @@ html, body {
     }
 }
 
-#downloadText {
-    font-family: monospace;
-    font-size: 20px;
-}
-
 .downloadBar {
-    width: min(600px, 75vw);
-    height: 15px;
-
-    margin-top: 20px;
-
+    width: min(600px, 80vw);
+    height: 14px;
     background: #222;
-
-    border: 1px solid #555;
+    margin-top: 20px;
 }
 
 #downloadProgress {
     width: 0%;
     height: 100%;
-
-    background: #d40000;
+    background: #e00000;
 }
 
-
-/* =========================================================
-   ENCRYPTED
-========================================================= */
-
-#encrypted {
+#encryptedScreen {
     position: absolute;
     inset: 0;
-
+    background: #000;
     display: none;
-
     justify-content: center;
     align-items: center;
-
-    background: #030000;
-
-    text-align: center;
 }
 
 #encryptedText {
-    color: #fff;
-
-    font-size: clamp(32px, 7vw, 80px);
-
-    font-weight: 900;
-
-    text-shadow:
-        0 0 10px red,
-        0 0 30px red;
-
-    animation:
-        warningFlash .13s infinite;
+    color: red;
+    font-size: clamp(30px, 7vw, 80px);
+    font-weight: bold;
+    text-align: center;
+    animation: flash .15s infinite;
 }
 
-@keyframes warningFlash {
-
-    0% {
-        opacity: 1;
-    }
-
-    50% {
-        opacity: .25;
-    }
-
-    100% {
-        opacity: 1;
-    }
+@keyframes flash {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .2; }
 }
 
-
-/* =========================================================
-   MAIN GAME
-========================================================= */
+/* =========================
+   GAME
+========================= */
 
 #game {
     display: none;
 }
 
 header {
-    background: #790000;
-
-    border-bottom:
-        3px solid #ff3030;
-
-    padding: 22px 12px;
-
     text-align: center;
+    padding: 25px;
+    background: #700000;
+    border-bottom: 3px solid red;
 }
 
 header h1 {
     margin: 0;
-
-    font-size:
-        clamp(28px, 6vw, 48px);
-
-    color: #ff4a4a;
 }
-
-header p {
-    margin: 10px 0 0;
-}
-
-
-/* =========================================================
-   TIMER
-========================================================= */
 
 #timer {
     position: sticky;
-
     top: 0;
-
-    z-index: 1000;
-
+    z-index: 5000;
     text-align: center;
-
+    background: #050505;
+    border-bottom: 2px solid #400000;
     padding: 15px;
-
-    background:
-        rgba(0,0,0,.96);
-
     color: #ff3030;
-
-    font-size: 52px;
-
+    font-size: 50px;
     font-weight: bold;
-
-    border-bottom:
-        2px solid #500000;
-
-    transition:
-        color .2s,
-        text-shadow .2s;
 }
 
 .timerDanger {
-    color: #ff0000 !important;
-
+    color: red !important;
     text-shadow:
         0 0 10px red,
         0 0 30px red;
 }
 
-
-/* =========================================================
-   MAIN CONTENT
-========================================================= */
-
 main {
-    width: min(1150px, 94%);
-
+    width: min(1100px, 94%);
     margin: auto;
 }
 
 .card {
     background: #202020;
-
-    border:
-        1px solid #505050;
-
+    border: 1px solid #444;
     border-radius: 8px;
-
-    margin: 18px 0;
-
+    margin: 20px 0;
     overflow: hidden;
 }
 
-.cardHead {
+.cardTitle {
+    padding: 16px;
     background: #292929;
-
-    padding: 17px;
-
     font-size: 21px;
-
     font-weight: bold;
 }
 
@@ -490,244 +258,179 @@ main {
     padding: 20px;
 }
 
+/* =========================
+   PAYMENT AREA
+========================= */
 
-/* =========================================================
-   PAYMENT
-========================================================= */
+#paymentArea {
+    min-height: 190px;
+    border: 3px dashed #ffd000;
+    border-radius: 10px;
+    background: #161616;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: .2s;
+}
 
-.paymentTitle {
+#paymentArea.dragOver {
+    background: #403500;
+    border-color: #fff000;
+    box-shadow: 0 0 25px #ffd000;
+}
+
+.paymentAmount {
     color: #ffd000;
-
-    font-size: 25px;
-
+    font-size: 30px;
     font-weight: bold;
 }
 
 #diamondCount {
-    font-size: 34px;
-
+    font-size: 32px;
     font-weight: bold;
 }
 
 .progress {
-    height: 27px;
-
-    margin-top: 18px;
-
-    background: #454545;
-
-    border-radius: 8px;
-
+    width: 100%;
+    height: 25px;
+    background: #444;
+    margin-top: 15px;
+    border-radius: 5px;
     overflow: hidden;
 }
 
 #progressBar {
     width: 0%;
-
     height: 100%;
-
-    background:
-        linear-gradient(
-            90deg,
-            #168cff,
-            #64d5ff
-        );
+    background: #3bbcff;
 }
 
+/* =========================
+   FILE EXPLORER
+========================= */
 
-/* =========================================================
-   FILES
-========================================================= */
-
-.folderbar {
+.folderBar {
     display: flex;
-
     gap: 8px;
-
-    padding: 14px;
-
+    padding: 12px;
     background: #151515;
-
     overflow-x: auto;
 }
 
-.folderbar button {
-    white-space: nowrap;
-
+.folderButton {
+    padding: 11px 15px;
     background: #252525;
-
-    border: 1px solid #555;
-
     color: white;
-
-    border-radius: 6px;
-
-    padding: 12px 15px;
-
+    border: 1px solid #555;
+    border-radius: 5px;
     cursor: pointer;
+    white-space: nowrap;
 }
 
-.folderbar button.active,
-.folderbar button:hover {
-    background: #414141;
+.folderButton.active,
+.folderButton:hover {
+    background: #444;
 }
 
-#folderContent {
+#fileArea {
     padding: 18px;
-
-    min-height: 170px;
 }
 
 .fileGrid {
     display: grid;
-
     grid-template-columns:
-        repeat(
-            auto-fill,
-            minmax(175px,1fr)
-        );
-
-    gap: 8px;
+        repeat(auto-fill, minmax(180px, 1fr));
+    gap: 9px;
 }
 
 .file {
-    background: #181818;
-
+    background: #171717;
     border: 1px solid #444;
-
-    border-radius: 5px;
-
-    padding: 12px;
-
+    padding: 13px;
+    border-radius: 6px;
     cursor: pointer;
+    user-select: none;
 }
 
 .file:hover {
     background: #282828;
 }
 
-.file.collected {
-    opacity: .4;
+.file.dragging {
+    opacity: .5;
+}
 
+.file.collected {
+    opacity: .35;
     text-decoration: line-through;
 }
 
-
-/* =========================================================
+/* =========================
    RANSOM FACE
-========================================================= */
+========================= */
 
-#faceBox {
+#faceContainer {
     text-align: center;
 }
 
 #ransomFace {
-    width: min(300px,75vw);
-
-    max-height: 300px;
-
+    width: min(350px, 75vw);
+    max-height: 350px;
     object-fit: contain;
-
-    background: #000;
-
-    border: 2px solid #555;
-
-    border-radius: 10px;
-
-    transition:
-        filter .5s,
-        transform .1s;
+    transition: filter .2s;
 }
 
-
-/* =========================================================
+/* =========================
    POPUPS
-========================================================= */
+========================= */
 
 .popupOverlay {
     position: fixed;
-
     inset: 0;
-
-    z-index: 9000;
-
+    z-index: 8000;
     display: none;
-
     justify-content: center;
-
     align-items: center;
-
-    background:
-        rgba(0,0,0,.84);
+    background: rgba(0,0,0,.82);
 }
 
 .popup {
-    width: min(620px,90%);
-
-    padding: 28px;
-
+    width: min(600px, 90%);
+    padding: 30px;
     background: #202020;
-
-    border:
-        2px solid #ff3333;
-
+    border: 2px solid red;
     border-radius: 10px;
-
     text-align: center;
-
     cursor: pointer;
-
-    box-shadow:
-        0 0 35px
-        rgba(255,0,0,.35);
+    box-shadow: 0 0 40px rgba(255,0,0,.4);
 }
 
 .popup h2 {
-    margin-top: 0;
-
-    color: #ff4545;
+    color: #ff4141;
 }
 
 .popup.type2 {
-    border-color: #ff7925;
-
-    box-shadow:
-        0 0 40px
-        rgba(255,100,20,.4);
+    border-color: orange;
+    box-shadow: 0 0 40px rgba(255,120,0,.4);
 }
 
 .popup.type2 h2 {
-    color: #ff8a3d;
+    color: orange;
 }
 
 .popup.type3 {
-    border-color: #b33cff;
-
-    box-shadow:
-        0 0 50px
-        rgba(180,50,255,.55);
+    border-color: #c040ff;
+    box-shadow: 0 0 50px rgba(190,40,255,.5);
 }
 
 .popup.type3 h2 {
-    color: #ca5aff;
+    color: #d05aff;
 }
 
-.type3Warning {
-    color: #ff72ff;
-
-    font-weight: bold;
-}
-
-.small {
-    color: #999;
-
-    font-size: 13px;
-}
-
-
-/* =========================================================
+/* =========================
    MINIGAME
-========================================================= */
+========================= */
 
 #minigame {
     display: none;
@@ -735,219 +438,108 @@ main {
 
 .sequence {
     display: flex;
-
     justify-content: center;
-
-    flex-wrap: wrap;
-
     gap: 10px;
-
-    margin: 20px 0;
-}
-
-.seqButton {
-    min-width: 60px;
-
-    padding: 15px;
-
-    background: #181818;
-
-    border: 2px solid #555;
-
-    border-radius: 8px;
-
-    color: white;
-
-    font-size: 20px;
-
-    cursor: pointer;
-}
-
-.seqButton.good {
-    background: #174f2b;
-
-    border-color: #3ddd75;
-}
-
-.seqButton.bad {
-    background: #5a1010;
-
-    border-color: #ff3030;
-}
-
-#status {
-    min-height: 24px;
-
-    font-weight: bold;
-}
-
-
-/* =========================================================
-   VERIFICATION
-========================================================= */
-
-.verify {
-    display: flex;
-
-    gap: 8px;
-
     flex-wrap: wrap;
 }
 
-.verify input {
-    flex: 1;
-
-    min-width: 220px;
-
-    padding: 13px;
-
-    background: #111;
-
+.sequenceButton {
+    padding: 15px 22px;
+    background: #181818;
+    border: 2px solid #555;
+    border-radius: 7px;
     color: white;
-
-    border: 1px solid #555;
-
-    border-radius: 6px;
-}
-
-.actionButton {
-    background: #292929;
-
-    color: white;
-
-    border: 1px solid #555;
-
-    border-radius: 6px;
-
-    padding: 12px 18px;
-
+    font-size: 20px;
     cursor: pointer;
 }
 
-
-/* =========================================================
-   PC DRAG DIAMOND
-========================================================= */
-
-#dragDiamond {
-    position: fixed;
-
-    width: 42px;
-    height: 42px;
-
-    display: none;
-
-    z-index: 9500;
-
-    background: #55dfff;
-
-    border: 3px solid white;
-
-    transform: rotate(45deg);
-
-    box-shadow:
-        0 0 15px #28cfff;
-
-    cursor: grab;
-
-    user-select: none;
-
-    touch-action: none;
+.sequenceButton.good {
+    background: #154b29;
+    border-color: #40ff77;
 }
 
-#dragDiamond:active {
-    cursor: grabbing;
+.sequenceButton.bad {
+    background: #551010;
+    border-color: red;
 }
 
-#dragTarget {
-    position: fixed;
+/* =========================
+   VERIFY
+========================= */
 
-    width: 78px;
-    height: 78px;
-
-    display: none;
-
-    z-index: 9499;
-
-    border:
-        2px dashed #55dfff;
-
-    border-radius: 8px;
-
-    pointer-events: none;
+.verifyRow {
+    display: flex;
+    gap: 8px;
 }
 
+.verifyRow input {
+    flex: 1;
+    padding: 13px;
+    background: #111;
+    border: 1px solid #555;
+    color: white;
+}
 
-/* =========================================================
+.verifyRow button {
+    padding: 13px 20px;
+    background: #292929;
+    color: white;
+    border: 1px solid #555;
+    cursor: pointer;
+}
+
+/* =========================
    OUTRO
-========================================================= */
+========================= */
 
 #outro {
     position: fixed;
-
     inset: 0;
-
-    z-index: 999999;
-
+    z-index: 99999;
     display: none;
-
     justify-content: center;
-
     align-items: center;
-
-    text-align: center;
-
     background: #050505;
-}
-
-.outroBox {
-    width: min(750px,90%);
+    text-align: center;
 }
 
 .outroBox h1 {
-    font-size:
-        clamp(45px,8vw,80px);
+    font-size: clamp(45px, 8vw, 85px);
 }
 
-.winTitle {
-    color: #45e979;
+.win {
+    color: #40ff70;
 }
 
-.loseTitle {
-    color: #ff3333;
+.lose {
+    color: red;
 }
 
-.restartButton {
+.restart {
     padding: 14px 30px;
-
-    background: #970000;
-
-    border:
-        1px solid #ff4444;
-
+    background: #700000;
+    border: 1px solid red;
     color: white;
-
-    border-radius: 7px;
-
-    font-size: 18px;
-
     cursor: pointer;
 }
 
-
-/* =========================================================
+/* =========================
    MOBILE
-========================================================= */
+========================= */
 
-@media(max-width:700px) {
+@media (max-width:700px) {
 
-    #dragDiamond,
-    #dragTarget {
-        display: none !important;
+    .verifyRow {
+        flex-direction: column;
     }
 
-    .fileGrid {
-        grid-template-columns: 1fr;
+    /*
+       Drag-and-drop is PC ONLY.
+       Files still work normally by tapping.
+    */
+
+    .file {
+        cursor: pointer;
     }
 }
 </style>
@@ -955,25 +547,19 @@ main {
 
 <body>
 
-
 <!-- =====================================================
      CLAIM
 ===================================================== -->
 
 <div id="intro">
 
-    <div class="claimBox">
-
-        <h1>$500</h1>
-
-        <p>
-            A reward is waiting for you.
-        </p>
+    <div>
+        <h1>YOU HAVE WON</h1>
+        <p>$500 REWARD AVAILABLE</p>
 
         <button id="claimButton">
             CLAIM $500
         </button>
-
     </div>
 
 </div>
@@ -985,72 +571,33 @@ main {
 
 <div id="cinematic">
 
-    <div id="redBG"></div>
-
-
-    <!-- PHASE 1 -->
+    <div id="redBackground"></div>
 
     <img
-        id="phase1"
+        id="introPhase1"
+        class="ransomIntroFace"
         src="https://raw.githubusercontent.com/jameslovechezze-ui/free-cash/main/ransom1.jpg"
-        alt=""
     >
-
-
-    <!-- PHASE 2 -->
 
     <img
-        id="phase2"
+        id="introPhase2"
+        class="ransomIntroFace"
         src="https://raw.githubusercontent.com/jameslovechezze-ui/free-cash/main/ransom2.jpg"
-        alt=""
     >
 
+    <div id="downloadScreen">
 
-    <div
-        class="glitchLayer"
-        id="scanlines"
-    ></div>
+        <div class="downloadIcon"></div>
 
-    <div
-        class="glitchLayer"
-        id="redGlitch"
-    ></div>
-
-    <div
-        class="glitchLayer"
-        id="whiteGlitch"
-    ></div>
-
-
-    <div class="glitchBlock" id="g1"></div>
-    <div class="glitchBlock" id="g2"></div>
-    <div class="glitchBlock" id="g3"></div>
-    <div class="glitchBlock" id="g4"></div>
-    <div class="glitchBlock" id="g5"></div>
-
-
-    <!-- DOWNLOAD -->
-
-    <div id="download">
-
-        <div class="downloadLogo"></div>
-
-        <div id="downloadText">
-            ENCRYPTING SYSTEM...
-        </div>
+        <div>DOWNLOADING ENCRYPTION...</div>
 
         <div class="downloadBar">
-
             <div id="downloadProgress"></div>
-
         </div>
 
     </div>
 
-
-    <!-- ENCRYPTED -->
-
-    <div id="encrypted">
+    <div id="encryptedScreen">
 
         <div id="encryptedText">
             YOU HAVE BEEN ENCRYPTED.
@@ -1068,15 +615,8 @@ main {
 <div id="game">
 
 <header>
-
-    <h1>
-        ⚠ YOUR FILES HAVE BEEN LOCKED ⚠
-    </h1>
-
-    <p>
-        Ransomware simulation.
-    </p>
-
+    <h1>⚠ YOUR FILES HAVE BEEN LOCKED ⚠</h1>
+    <p>PAY THE RANSOM TO RESTORE YOUR FILES.</p>
 </header>
 
 
@@ -1088,36 +628,46 @@ main {
 <main>
 
 
-<!-- PAYMENT -->
+<!-- =====================================================
+     PAYMENT AREA
+===================================================== -->
 
 <section class="card">
 
+    <div class="cardTitle">
+        💰 PAYMENT AREA
+    </div>
+
     <div class="cardBody">
 
-        <div class="paymentTitle">
-            💎 PAYMENT REQUIRED
-        </div>
+        <div id="paymentArea">
 
-        <p>
-            Collect all 450 diamonds.
-        </p>
+            <div class="paymentAmount">
+                $500
+            </div>
 
-        <div style="text-align:center">
+            <p>
+                Drag diamond files here
+                on PC.
+            </p>
 
-            💎
+            <p>
+                Or tap a diamond file
+                on mobile.
+            </p>
 
-            <span id="diamondCount">
-                0
-            </span>
-
-            / 450
+            <div>
+                💎
+                <span id="diamondCount">
+                    0
+                </span>
+                / 450
+            </div>
 
         </div>
 
         <div class="progress">
-
             <div id="progressBar"></div>
-
         </div>
 
     </div>
@@ -1125,39 +675,39 @@ main {
 </section>
 
 
-<!-- FILES -->
+<!-- =====================================================
+     FILE EXPLORER
+===================================================== -->
 
 <section class="card">
 
-    <div class="cardHead">
-        📁 File Explorer
+    <div class="cardTitle">
+        📁 FILE EXPLORER
     </div>
 
     <div
-        class="folderbar"
-        id="folders"
+        class="folderBar"
+        id="folderBar"
     ></div>
 
-    <div id="folderContent">
+    <div id="fileArea">
         Select a folder.
     </div>
 
 </section>
 
 
-<!-- FACE -->
+<!-- =====================================================
+     RANSOM FACE
+===================================================== -->
 
-<section
-    class="card"
-    id="faceBox"
->
+<section class="card">
 
-    <div class="cardBody">
+    <div class="cardBody" id="faceContainer">
 
         <img
             id="ransomFace"
             src="https://raw.githubusercontent.com/jameslovechezze-ui/free-cash/main/ransom1.jpg"
-            alt="Ransom"
         >
 
     </div>
@@ -1165,15 +715,14 @@ main {
 </section>
 
 
-<!-- MINIGAME -->
+<!-- =====================================================
+     MINIGAME
+===================================================== -->
 
-<section
-    class="card"
-    id="minigame"
->
+<section class="card" id="minigame">
 
-    <div class="cardHead">
-        🔐 RANSOM VERIFICATION
+    <div class="cardTitle">
+        🔐 VERIFICATION MINIGAME
     </div>
 
     <div class="cardBody">
@@ -1187,41 +736,39 @@ main {
             id="sequence"
         ></div>
 
-        <div id="status"></div>
+        <p id="sequenceStatus"></p>
 
     </div>
 
 </section>
 
 
-<!-- VERIFY -->
+<!-- =====================================================
+     VERIFY
+===================================================== -->
 
 <section class="card">
 
-    <div class="cardHead">
-        🔑 Verification
+    <div class="cardTitle">
+        🔑 FINAL VERIFICATION
     </div>
 
     <div class="cardBody">
 
-        <div class="verify">
+        <div class="verifyRow">
 
             <input
                 id="verifyInput"
                 placeholder="Enter verification code"
             >
 
-            <button
-                class="actionButton"
-                id="verifyButton"
-                disabled
-            >
+            <button id="verifyButton" disabled>
                 VERIFY
             </button>
 
         </div>
 
-        <p class="small">
+        <p>
             Verification code:
             <b>H3-1s-H6m95y</b>
         </p>
@@ -1234,7 +781,8 @@ main {
 
 
 <!-- =====================================================
-     TYPE 1 POPUP
+     TYPE 1
+     14:00 -> 8:00
 ===================================================== -->
 
 <div
@@ -1248,20 +796,22 @@ main {
     >
 
         <h2>
-            TYPE 1 — DEMAND
+            TYPE 1 — RANSOM DEMAND
         </h2>
 
         <p>
-            Collect the diamonds.
+            Your files have been encrypted.
         </p>
 
         <p>
-            Pay the ransom before the timer reaches zero.
+            Collect the diamonds and pay
+            the ransom.
         </p>
 
-        <p class="small">
-            Click anywhere inside to close.
-        </p>
+        <small>
+            Click anywhere inside this window
+            to close.
+        </small>
 
     </div>
 
@@ -1269,7 +819,8 @@ main {
 
 
 <!-- =====================================================
-     TYPE 2 POPUP
+     TYPE 2
+     8:00 -> 3:00
 ===================================================== -->
 
 <div
@@ -1283,20 +834,21 @@ main {
     >
 
         <h2>
-            TYPE 2 — IMPATIENCE
+            TYPE 2 — WARNING
         </h2>
 
         <p>
-            You're taking too long.
+            You are running out of time.
         </p>
 
         <p>
             Ransom is becoming impatient.
         </p>
 
-        <p class="small">
-            Click anywhere inside to close.
-        </p>
+        <small>
+            Click anywhere inside this window
+            to close.
+        </small>
 
     </div>
 
@@ -1304,7 +856,8 @@ main {
 
 
 <!-- =====================================================
-     TYPE 3 POPUP
+     TYPE 3
+     3:00 -> 0:00
 ===================================================== -->
 
 <div
@@ -1318,34 +871,31 @@ main {
     >
 
         <h2>
-            TYPE 3 — ACCELERATION
+            TYPE 3 — CRITICAL
         </h2>
 
-        <p class="type3Warning">
-            THE TIMER IS MOVING FASTER.
+        <p>
+            THE TIMER IS ACCELERATING.
         </p>
 
         <p>
-            Close this popup to return the timer to normal.
+            The timer will move faster
+            while this popup is open.
         </p>
 
-        <p class="small">
-            Click anywhere inside to close.
-        </p>
+        <small>
+            Click anywhere inside this window
+            to close.
+        </small>
 
     </div>
 
 </div>
 
 
-<!-- PC DIAMOND -->
-
-<div id="dragTarget"></div>
-
-<div id="dragDiamond"></div>
-
-
-<!-- OUTRO -->
+<!-- =====================================================
+     OUTRO
+===================================================== -->
 
 <div id="outro">
 
@@ -1353,10 +903,10 @@ main {
 
         <h1 id="outroTitle"></h1>
 
-        <p id="outroText"></p>
+        <p id="outroMessage"></p>
 
         <button
-            class="restartButton"
+            class="restart"
             onclick="location.reload()"
         >
             RESTART
@@ -1372,34 +922,18 @@ main {
 <script>
 
 /* =========================================================
-   SETTINGS
+   CONFIG
 ========================================================= */
 
 const TOTAL_DIAMONDS = 450;
 
 const NORMAL_TIMER_SPEED = 1000;
 
-const TYPE3_TIMER_SPEED = 500;
-
-
 /*
-    EXACT PHASE TIMINGS
-
-    Phase 1:
-    14:00 -> 8:00
-
-    Phase 2:
-    8:00 -> 5:00
-
-    Phase 3:
-    5:00 -> 3:00
-
-    Phase 4:
-    3:00 -> 1:00
-
-    Phase 5:
-    1:00 -> 0:00
+    Faster timer while Type 3 popup
+    is OPEN.
 */
+const TYPE3_TIMER_SPEED = 500;
 
 
 /* =========================================================
@@ -1408,21 +942,19 @@ const TYPE3_TIMER_SPEED = 500;
 
 let secondsLeft = 14 * 60;
 
-let currentPhase = 1;
+let phase = 1;
 
-let type3Active = false;
-
-let gameStarted = false;
-
-let finished = false;
+let type3Open = false;
 
 let timerInterval = null;
 
-let phaseGlitchTimer = null;
+let finished = false;
+
+let gameStarted = false;
 
 let collected = new Set();
 
-let currentFolder = null;
+let currentFolder = 0;
 
 
 /* =========================================================
@@ -1432,38 +964,29 @@ let currentFolder = null;
 const intro =
     document.getElementById("intro");
 
-const claimButton =
-    document.getElementById("claimButton");
-
 const cinematic =
     document.getElementById("cinematic");
 
-const phase1 =
-    document.getElementById("phase1");
+const claimButton =
+    document.getElementById("claimButton");
 
-const phase2 =
-    document.getElementById("phase2");
+const introPhase1 =
+    document.getElementById("introPhase1");
 
-const redBG =
-    document.getElementById("redBG");
+const introPhase2 =
+    document.getElementById("introPhase2");
 
-const scanlines =
-    document.getElementById("scanlines");
+const redBackground =
+    document.getElementById("redBackground");
 
-const redGlitch =
-    document.getElementById("redGlitch");
+const downloadScreen =
+    document.getElementById("downloadScreen");
 
-const whiteGlitch =
-    document.getElementById("whiteGlitch");
-
-const download =
-    document.getElementById("download");
+const encryptedScreen =
+    document.getElementById("encryptedScreen");
 
 const downloadProgress =
     document.getElementById("downloadProgress");
-
-const encrypted =
-    document.getElementById("encrypted");
 
 const game =
     document.getElementById("game");
@@ -1474,6 +997,9 @@ const timer =
 const ransomFace =
     document.getElementById("ransomFace");
 
+const paymentArea =
+    document.getElementById("paymentArea");
+
 const diamondCount =
     document.getElementById("diamondCount");
 
@@ -1481,25 +1007,19 @@ const progressBar =
     document.getElementById("progressBar");
 
 const folderBar =
-    document.getElementById("folders");
+    document.getElementById("folderBar");
 
-const folderContent =
-    document.getElementById("folderContent");
+const fileArea =
+    document.getElementById("fileArea");
 
 const minigame =
     document.getElementById("minigame");
 
-const verifyButton =
-    document.getElementById("verifyButton");
-
 const verifyInput =
     document.getElementById("verifyInput");
 
-const dragDiamond =
-    document.getElementById("dragDiamond");
-
-const dragTarget =
-    document.getElementById("dragTarget");
+const verifyButton =
+    document.getElementById("verifyButton");
 
 
 /* =========================================================
@@ -1507,10 +1027,10 @@ const dragTarget =
 ========================================================= */
 
 claimButton.onclick =
-    startIntro;
+    beginIntro;
 
 
-function startIntro(){
+function beginIntro() {
 
     intro.style.display =
         "none";
@@ -1520,189 +1040,48 @@ function startIntro(){
 
 
     /*
-        Phase 1 appears
-        in pitch black.
+        Phase 1 standing in pitch black.
     */
 
-    phase1.style.opacity =
+    introPhase1.style.opacity =
         "1";
 
 
-    setTimeout(
-        ()=>{
-            redBG.style.opacity =
-                "1";
+    setTimeout(() => {
 
-            phase1.style.opacity =
-                "0";
-        },
-        2200
-    );
+        redBackground.style.opacity =
+            "1";
+
+        introPhase1.style.opacity =
+            "0";
+
+        introPhase2.style.opacity =
+            "1";
+
+        introPhase2.classList.add(
+            "distorted"
+        );
+
+    }, 2300);
 
 
     /*
-        Phase 2 comes in
-        already distorted.
+        No zoom.
+        Phase 2 uses distortion.
     */
 
-    setTimeout(
-        startIntroPhase2,
-        3100
-    );
+    setTimeout(() => {
 
-}
-
-
-function startIntroPhase2(){
-
-    phase2.style.opacity =
-        "1";
-
-    phase2.classList.add(
-        "phaseDistort"
-    );
-
-    phase2.style.setProperty(
-        "--shake",
-        "15px"
-    );
-
-    scanlines.style.opacity =
-        ".9";
-
-    redGlitch.style.opacity =
-        ".75";
-
-    whiteGlitch.style.opacity =
-        ".55";
-
-
-    startGlitches();
-
-
-    /*
-        Distortion only.
-        NO ZOOM.
-    */
-
-    setTimeout(
-        removeIntroPhase2,
-        2400
-    );
-
-}
-
-
-function removeIntroPhase2(){
-
-    phase2.classList.remove(
-        "phaseDistort"
-    );
-
-    stopGlitches();
-
-    phase2.style.opacity =
-        "0";
-
-    scanlines.style.opacity =
-        "0";
-
-    redGlitch.style.opacity =
-        "0";
-
-    whiteGlitch.style.opacity =
-        "0";
-
-
-    setTimeout(
-        startDownload,
-        300
-    );
-
-}
-
-
-/* =========================================================
-   INTRO GLITCHES
-========================================================= */
-
-function startGlitches(){
-
-    const blocks = [
-
-        document.getElementById("g1"),
-        document.getElementById("g2"),
-        document.getElementById("g3"),
-        document.getElementById("g4"),
-        document.getElementById("g5")
-
-    ];
-
-
-    phaseGlitchTimer =
-        setInterval(
-            ()=>{
-
-                const block =
-                    blocks[
-                        Math.floor(
-                            Math.random() *
-                            blocks.length
-                        )
-                    ];
-
-
-                block.style.left =
-                    Math.random()*100 + "%";
-
-                block.style.top =
-                    Math.random()*100 + "%";
-
-                block.style.width =
-                    Math.random()*40 + 5 + "%";
-
-                block.style.height =
-                    Math.random()*12 + 2 + "px";
-
-                block.style.background =
-                    Math.random() > .5
-                    ? "#fff"
-                    : "#f00";
-
-                block.style.opacity =
-                    Math.random()*.8 + .2;
-
-
-                setTimeout(
-                    ()=>{
-                        block.style.opacity =
-                            "0";
-                    },
-                    50 + Math.random()*150
-                );
-
-            },
-            80
+        introPhase2.classList.remove(
+            "distorted"
         );
 
-}
+        introPhase2.style.opacity =
+            "0";
 
+        startDownload();
 
-function stopGlitches(){
-
-    clearInterval(
-        phaseGlitchTimer
-    );
-
-
-    document
-        .querySelectorAll(".glitchBlock")
-        .forEach(
-            block=>{
-                block.style.opacity =
-                    "0";
-            }
-        );
+    }, 5000);
 
 }
 
@@ -1711,62 +1090,52 @@ function stopGlitches(){
    DOWNLOAD
 ========================================================= */
 
-function startDownload(){
+function startDownload() {
 
-    download.style.display =
+    downloadScreen.style.display =
         "flex";
-
 
     let progress = 0;
 
-
     const interval =
-        setInterval(
-            ()=>{
+        setInterval(() => {
 
-                progress +=
-                    Math.random()*12 + 8;
+            progress +=
+                Math.random() * 15 + 10;
 
+            if(progress >= 100) {
 
-                if(progress >= 100){
+                progress = 100;
 
-                    progress = 100;
+                clearInterval(interval);
 
-                    clearInterval(
-                        interval
-                    );
+                setTimeout(
+                    showEncrypted,
+                    200
+                );
 
+            }
 
-                    setTimeout(
-                        showEncrypted,
-                        250
-                    );
+            downloadProgress.style.width =
+                progress + "%";
 
-                }
-
-
-                downloadProgress.style.width =
-                    progress + "%";
-
-            },
-            70
-        );
+        }, 60);
 
 }
 
 
-function showEncrypted(){
+function showEncrypted() {
 
-    download.style.display =
+    downloadScreen.style.display =
         "none";
 
-    encrypted.style.display =
+    encryptedScreen.style.display =
         "flex";
 
 
     setTimeout(
-        finishIntro,
-        1900
+        startGame,
+        1800
     );
 
 }
@@ -1776,10 +1145,7 @@ function showEncrypted(){
    START GAME
 ========================================================= */
 
-function finishIntro(){
-
-    encrypted.style.display =
-        "none";
+function startGame() {
 
     cinematic.style.display =
         "none";
@@ -1787,29 +1153,21 @@ function finishIntro(){
     game.style.display =
         "block";
 
-
     gameStarted =
         true;
-
-    finished =
-        false;
-
 
     secondsLeft =
         14 * 60;
 
-
-    currentPhase =
+    phase =
         1;
 
-    type3Active =
+    finished =
         false;
 
+    type3Open =
+        false;
 
-    /*
-        Phase 1 face during
-        the first phase.
-    */
 
     ransomFace.src =
         "https://raw.githubusercontent.com/jameslovechezze-ui/free-cash/main/ransom1.jpg";
@@ -1817,197 +1175,176 @@ function finishIntro(){
 
     updateTimer();
 
+    buildFolders();
+
+    openFolder(0);
+
     startTimer();
 
-    updatePhase();
-
 
     /*
-        Type 1 popup appears
-        at gameplay start.
+        TYPE 1 EXISTS DURING
+        14:00 -> 8:00.
+
+        Popup is shown when gameplay
+        begins.
     */
 
-    showType1();
-
-
-    /*
-        PC-only drag.
-    */
-
-    enablePCDragDiamond();
+    showPopup("type1Popup");
 
 }
 
 
 /* =========================================================
-   PHASE SYSTEM
+   TIMER
 ========================================================= */
 
-function updatePhase(){
+function startTimer() {
+
+    restartTimer();
+
+}
+
+
+function restartTimer() {
+
+    clearInterval(
+        timerInterval
+    );
+
+    timerInterval =
+        setInterval(
+            timerTick,
+            type3Open
+                ? TYPE3_TIMER_SPEED
+                : NORMAL_TIMER_SPEED
+        );
+
+}
+
+
+function timerTick() {
+
+    if(
+        finished ||
+        !gameStarted
+    )
+        return;
+
+
+    secondsLeft--;
+
+
+    if(secondsLeft <= 0) {
+
+        secondsLeft = 0;
+
+        updateTimer();
+
+        loseGame();
+
+        return;
+
+    }
+
+
+    updateTimer();
+
+    checkPhase();
+
+}
+
+
+/* =========================================================
+   EXACT PHASES
+=========================================================
+
+   14:00 -> 8:00 = TYPE 1
+   8:00  -> 3:00 = TYPE 2
+   3:00  -> 0:00 = TYPE 3
+========================================================= */
+
+function checkPhase() {
 
     /*
-        PHASE 1
-        14:00 -> 8:00
+        TYPE 1
     */
 
-    if(secondsLeft > 8 * 60){
+    if(secondsLeft > 8 * 60) {
 
-        if(currentPhase !== 1){
+        if(phase !== 1) {
 
-            currentPhase =
-                1;
+            phase = 1;
 
             ransomFace.src =
                 "https://raw.githubusercontent.com/jameslovechezze-ui/free-cash/main/ransom1.jpg";
 
-            resetFaceDistortion();
+            resetFace();
 
         }
 
         return;
+
     }
 
 
     /*
-        PHASE 2
-        8:00 -> 5:00
+        TYPE 2
+        EXACTLY STARTS AT 8:00
     */
 
     if(
         secondsLeft <= 8 * 60 &&
-        secondsLeft > 5 * 60
-    ){
+        secondsLeft > 3 * 60
+    ) {
 
-        if(currentPhase !== 2){
+        if(phase !== 2) {
 
-            currentPhase =
-                2;
-
-            /*
-                PHASE 2 APPEARS
-                IMMEDIATELY AT 8:00
-            */
+            phase = 2;
 
             ransomFace.src =
                 "https://raw.githubusercontent.com/jameslovechezze-ui/free-cash/main/ransom2.jpg";
 
-            showType2();
+            showPopup("type2Popup");
 
         }
 
 
         /*
-            Distortion grows
-            from 0 -> 25%
+            Distortion progressively increases
+            during Phase 2.
         */
 
         const progress =
             (8 * 60 - secondsLeft) /
-            (3 * 60);
+            (5 * 60);
 
-        updateFaceDistortion(
-            progress
-        );
+        distortFace(progress);
 
         return;
+
     }
 
 
     /*
-        PHASE 3
-        5:00 -> 3:00
+        TYPE 3
+        EXACTLY STARTS AT 3:00
     */
 
-    if(
-        secondsLeft <= 5 * 60 &&
-        secondsLeft > 3 * 60
-    ){
+    if(secondsLeft <= 3 * 60) {
 
-        if(currentPhase !== 3){
+        if(phase !== 3) {
 
-            currentPhase =
-                3;
+            phase = 3;
 
-        }
-
-
-        const progress =
-            .25 +
-            (
-                (5 * 60 - secondsLeft) /
-                (2 * 60)
-            ) * .25;
-
-
-        updateFaceDistortion(
-            progress
-        );
-
-        return;
-    }
-
-
-    /*
-        PHASE 4
-        3:00 -> 1:00
-    */
-
-    if(
-        secondsLeft <= 3 * 60 &&
-        secondsLeft > 1 * 60
-    ){
-
-        if(currentPhase !== 4){
-
-            currentPhase =
-                4;
-
-            /*
-                Type 3 begins here.
-                Timer becomes faster.
-            */
+            distortFace(1);
 
             showType3();
 
         }
 
+        distortFace(1);
 
-        const progress =
-            .5 +
-            (
-                (3 * 60 - secondsLeft) /
-                (2 * 60)
-            ) * .3;
-
-
-        updateFaceDistortion(
-            progress
-        );
-
-        return;
-    }
-
-
-    /*
-        PHASE 5
-        1:00 -> 0:00
-    */
-
-    if(secondsLeft <= 1 * 60){
-
-        if(currentPhase !== 5){
-
-            currentPhase =
-                5;
-
-        }
-
-
-        updateFaceDistortion(
-            1
-        );
-
-        return;
     }
 
 }
@@ -2017,9 +1354,7 @@ function updatePhase(){
    FACE DISTORTION
 ========================================================= */
 
-function updateFaceDistortion(
-    amount
-){
+function distortFace(amount) {
 
     amount =
         Math.max(
@@ -2031,115 +1366,47 @@ function updateFaceDistortion(
         );
 
 
-    if(amount <= 0){
-
-        resetFaceDistortion();
-
-        return;
-    }
-
-
-    ransomFace.style.setProperty(
-        "--shake",
-        (2 + amount * 18) + "px"
-    );
-
-
     ransomFace.style.filter = `
-        contrast(${1.15 + amount * 1.6})
-        brightness(${1 - amount * .25})
-        drop-shadow(${2 + amount * 14}px 0 red)
-        drop-shadow(${-2 - amount * 14}px 0 cyan)
+        contrast(${1.15 + amount * 1.8})
+        brightness(${1 - amount * .3})
+        drop-shadow(${amount * 14}px 0 red)
+        drop-shadow(${-amount * 14}px 0 cyan)
     `;
 
 
-    ransomFace.classList.add(
-        "phaseDistort"
-    );
+    if(amount > 0) {
+
+        ransomFace.classList.add(
+            "distorted"
+        );
+
+    }
 
 }
 
 
-function resetFaceDistortion(){
+function resetFace() {
 
     ransomFace.classList.remove(
-        "phaseDistort"
+        "distorted"
     );
 
     ransomFace.style.filter =
-        "contrast(1.15) brightness(1)";
+        "none";
 
 }
 
 
 /* =========================================================
-   TIMER
+   TIMER DISPLAY
 ========================================================= */
 
-function startTimer(){
-
-    restartTimer();
-
-}
-
-
-function restartTimer(){
-
-    clearInterval(
-        timerInterval
-    );
-
-
-    timerInterval =
-        setInterval(
-            timerTick,
-            type3Active
-                ? TYPE3_TIMER_SPEED
-                : NORMAL_TIMER_SPEED
-        );
-
-}
-
-
-function timerTick(){
-
-    if(
-        !gameStarted ||
-        finished
-    )
-        return;
-
-
-    secondsLeft--;
-
-
-    if(secondsLeft <= 0){
-
-        secondsLeft =
-            0;
-
-        updateTimer();
-
-        loseGame();
-
-        return;
-    }
-
-
-    updateTimer();
-
-    updatePhase();
-
-}
-
-
-function updateTimer(){
+function updateTimer() {
 
     const minutes =
         Math.floor(
             secondsLeft / 60
         );
-
 
     const seconds =
         String(
@@ -2149,16 +1416,11 @@ function updateTimer(){
             "0"
         );
 
-
     timer.textContent =
         minutes + ":" + seconds;
 
 
-    /*
-        Extra timer danger effect.
-    */
-
-    if(secondsLeft <= 60){
+    if(secondsLeft <= 60) {
 
         timer.classList.add(
             "timerDanger"
@@ -2179,78 +1441,52 @@ function updateTimer(){
    POPUPS
 ========================================================= */
 
-function showType1(){
+function showPopup(id) {
 
-    document.getElementById(
-        "type1Popup"
-    ).style.display =
+    document.getElementById(id)
+        .style.display =
         "flex";
 
 }
 
 
-function showType2(){
+function closePopup(id) {
 
-    document.getElementById(
-        "type2Popup"
-    ).style.display =
-        "flex";
+    document.getElementById(id)
+        .style.display =
+        "none";
 
 }
 
 
-function showType3(){
+/*
+    TYPE 3:
+    timer becomes faster ONLY while popup
+    is open.
+*/
 
-    if(type3Active)
-        return;
+function showType3() {
 
-
-    type3Active =
+    type3Open =
         true;
 
-
-    document.getElementById(
+    showPopup(
         "type3Popup"
-    ).style.display =
-        "flex";
-
-
-    /*
-        Timer immediately becomes
-        faster.
-    */
+    );
 
     restartTimer();
 
 }
 
 
-function closePopup(id){
+function closeType3() {
 
-    document.getElementById(
-        id
-    ).style.display =
-        "none";
-
-}
-
-
-function closeType3(){
-
-    type3Active =
+    type3Open =
         false;
 
-
-    document.getElementById(
+    closePopup(
         "type3Popup"
-    ).style.display =
-        "none";
-
-
-    /*
-        Timer immediately returns
-        to normal.
-    */
+    );
 
     restartTimer();
 
@@ -2296,26 +1532,30 @@ const folders = [
 ];
 
 
-function createFolders(){
+function buildFolders() {
 
     folderBar.innerHTML =
         "";
 
-
     folders.forEach(
-        (folder,index)=>{
+        (folder, index) => {
 
             const button =
                 document.createElement(
                     "button"
                 );
 
+            button.className =
+                "folderButton";
+
             button.textContent =
                 "📁 " + folder.name;
 
             button.onclick =
-                ()=>{
+                () => {
+
                     openFolder(index);
+
                 };
 
             folderBar.appendChild(
@@ -2328,32 +1568,26 @@ function createFolders(){
 }
 
 
-createFolders();
+/* =========================================================
+   OPEN FOLDER
+========================================================= */
 
-
-function openFolder(index){
+function openFolder(index) {
 
     currentFolder =
         index;
 
 
-    document
-        .querySelectorAll(
-            ".folderbar button"
-        )
+    [...folderBar.children]
         .forEach(
-            button=>{
-                button.classList.remove(
-                    "active"
+            (button, i) => {
+
+                button.classList.toggle(
+                    "active",
+                    i === index
                 );
+
             }
-        );
-
-
-    folderBar
-        .children[index]
-        .classList.add(
-            "active"
         );
 
 
@@ -2361,70 +1595,256 @@ function openFolder(index){
         folders[index];
 
 
-    let html = `
-        <p>
-            📁 <b>${folder.name}</b>
-        </p>
-
-        <div class="fileGrid">
-    `;
+    let html =
+        '<div class="fileGrid">';
 
 
     for(
-        let n = folder.start;
-        n <= folder.end;
-        n++
-    ){
+        let i = folder.start;
+        i <= folder.end;
+        i++
+    ) {
 
         const id =
-            folder.name + "-" + n;
+            "diamond-" + i;
+
+        const alreadyCollected =
+            collected.has(id);
 
 
         html += `
             <div
                 class="file ${
-                    collected.has(id)
-                    ? "collected"
-                    : ""
+                    alreadyCollected
+                        ? "collected"
+                        : ""
                 }"
-                onclick="collectDiamond('${id}')"
+                draggable="${
+                    !alreadyCollected
+                }"
+                data-id="${id}"
+                onclick="tapDiamond('${id}')"
             >
-                💎 Diamond ${n}
+                💎 diamond_${i}.dat
             </div>
         `;
 
     }
 
 
-    html += `
-        </div>
-    `;
+    html +=
+        "</div>";
 
 
-    folderContent.innerHTML =
+    fileArea.innerHTML =
         html;
+
+
+    /*
+        PC drag events are attached to
+        THE ACTUAL FILE ELEMENTS.
+    */
+
+    if(isPC()) {
+
+        fileArea
+            .querySelectorAll(".file")
+            .forEach(
+                file => {
+
+                    file.addEventListener(
+                        "dragstart",
+                        fileDragStart
+                    );
+
+                    file.addEventListener(
+                        "dragend",
+                        fileDragEnd
+                    );
+
+                }
+            );
+
+    }
 
 }
 
 
-function collectDiamond(id){
+/* =========================================================
+   MOBILE / NORMAL CLICK
+========================================================= */
 
-    if(collected.has(id))
+function tapDiamond(id) {
+
+    if(isPC())
+        return;
+
+    collectDiamond(id);
+
+}
+
+
+/* =========================================================
+   PC DRAG
+========================================================= */
+
+let draggedDiamond =
+    null;
+
+
+function isPC() {
+
+    return (
+        window.innerWidth > 700 &&
+        window.matchMedia(
+            "(pointer: fine)"
+        ).matches
+    );
+
+}
+
+
+function fileDragStart(event) {
+
+    if(!isPC())
+        return;
+
+
+    draggedDiamond =
+        event.currentTarget;
+
+
+    draggedDiamond.classList.add(
+        "dragging"
+    );
+
+
+    event.dataTransfer.effectAllowed =
+        "move";
+
+
+    event.dataTransfer.setData(
+        "text/plain",
+        draggedDiamond.dataset.id
+    );
+
+}
+
+
+function fileDragEnd() {
+
+    if(draggedDiamond) {
+
+        draggedDiamond.classList.remove(
+            "dragging"
+        );
+
+    }
+
+    draggedDiamond =
+        null;
+
+}
+
+
+/* =========================================================
+   PAYMENT DROP
+========================================================= */
+
+paymentArea.addEventListener(
+    "dragover",
+    event => {
+
+        if(!isPC())
+            return;
+
+        event.preventDefault();
+
+        paymentArea.classList.add(
+            "dragOver"
+        );
+
+    }
+);
+
+
+paymentArea.addEventListener(
+    "dragleave",
+    () => {
+
+        paymentArea.classList.remove(
+            "dragOver"
+        );
+
+    }
+);
+
+
+paymentArea.addEventListener(
+    "drop",
+    event => {
+
+        if(!isPC())
+            return;
+
+        event.preventDefault();
+
+        paymentArea.classList.remove(
+            "dragOver"
+        );
+
+
+        const id =
+            event.dataTransfer.getData(
+                "text/plain"
+            );
+
+
+        if(id) {
+
+            collectDiamond(id);
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   COLLECT DIAMOND
+========================================================= */
+
+function collectDiamond(id) {
+
+    if(
+        finished ||
+        collected.has(id)
+    )
         return;
 
 
     collected.add(id);
 
+
     updatePayment();
 
 
-    if(currentFolder !== null)
-        openFolder(currentFolder);
+    if(currentFolder !== null) {
+
+        openFolder(
+            currentFolder
+        );
+
+    }
 
 }
 
 
-function updatePayment(){
+/* =========================================================
+   PAYMENT PROGRESS
+========================================================= */
+
+function updatePayment() {
 
     diamondCount.textContent =
         collected.size;
@@ -2438,10 +1858,15 @@ function updatePayment(){
         ) + "%";
 
 
+    /*
+        Once all diamonds are paid,
+        unlock verification.
+    */
+
     if(
         collected.size >=
         TOTAL_DIAMONDS
-    ){
+    ) {
 
         verifyButton.disabled =
             false;
@@ -2459,10 +1884,10 @@ function updatePayment(){
 
 let sequence = [];
 
-let sequenceIndex = 0;
+let sequencePosition = 0;
 
 
-function startMinigame(){
+function startMinigame() {
 
     if(
         minigame.style.display ===
@@ -2475,25 +1900,24 @@ function startMinigame(){
         "block";
 
 
-    makeSequence();
+    generateSequence();
 
 }
 
 
-function makeSequence(){
+function generateSequence() {
 
     sequence =
         Array.from(
             {length:8},
-            ()=>{
-                return Math.floor(
+            () =>
+                Math.floor(
                     Math.random()*4
-                ) + 1;
-            }
+                ) + 1
         );
 
 
-    sequenceIndex =
+    sequencePosition =
         0;
 
 
@@ -2508,7 +1932,7 @@ function makeSequence(){
 
 
     sequence.forEach(
-        number=>{
+        number => {
 
             const button =
                 document.createElement(
@@ -2516,17 +1940,19 @@ function makeSequence(){
                 );
 
             button.className =
-                "seqButton";
+                "sequenceButton";
 
             button.textContent =
                 number;
 
             button.onclick =
-                ()=>{
+                () => {
+
                     pressSequence(
                         button,
                         number
                     );
+
                 };
 
             box.appendChild(
@@ -2538,9 +1964,9 @@ function makeSequence(){
 
 
     document.getElementById(
-        "status"
+        "sequenceStatus"
     ).textContent =
-        "Repeat: " +
+        "Repeat the sequence: " +
         sequence.join(" ");
 
 }
@@ -2549,29 +1975,29 @@ function makeSequence(){
 function pressSequence(
     button,
     number
-){
+) {
 
     if(
         number ===
-        sequence[sequenceIndex]
-    ){
+        sequence[sequencePosition]
+    ) {
 
         button.classList.add(
             "good"
         );
 
-        sequenceIndex++;
+        sequencePosition++;
 
 
         if(
-            sequenceIndex ===
+            sequencePosition ===
             sequence.length
-        ){
+        ) {
 
             document.getElementById(
-                "status"
+                "sequenceStatus"
             ).textContent =
-                "Sequence complete.";
+                "Sequence completed.";
 
         }
 
@@ -2582,12 +2008,12 @@ function pressSequence(
         );
 
         document.getElementById(
-            "status"
+            "sequenceStatus"
         ).textContent =
             "Wrong sequence.";
 
         setTimeout(
-            makeSequence,
+            generateSequence,
             500
         );
 
@@ -2597,11 +2023,11 @@ function pressSequence(
 
 
 /* =========================================================
-   VERIFY
+   VERIFICATION
 ========================================================= */
 
 verifyButton.onclick =
-    ()=>{
+    () => {
 
         if(
             collected.size <
@@ -2611,19 +2037,18 @@ verifyButton.onclick =
 
 
         if(
-            verifyInput.value.trim()
-            ===
+            verifyInput.value.trim() ===
             "H3-1s-H6m95y"
-        ){
+        ) {
 
             winGame();
 
         } else {
 
             document.getElementById(
-                "status"
+                "sequenceStatus"
             ).textContent =
-                "Invalid verification code.";
+                "Incorrect verification code.";
 
         }
 
@@ -2631,182 +2056,10 @@ verifyButton.onclick =
 
 
 /* =========================================================
-   PC-ONLY DRAG DIAMOND
-========================================================= */
-
-function isPC(){
-
-    return (
-        window.innerWidth > 700 &&
-        window.matchMedia(
-            "(pointer:fine)"
-        ).matches
-    );
-
-}
-
-
-function enablePCDragDiamond(){
-
-    if(!isPC()){
-
-        dragDiamond.style.display =
-            "none";
-
-        dragTarget.style.display =
-            "none";
-
-        return;
-    }
-
-
-    dragDiamond.style.display =
-        "block";
-
-    dragTarget.style.display =
-        "block";
-
-
-    dragDiamond.style.left =
-        "80px";
-
-    dragDiamond.style.top =
-        "500px";
-
-
-    dragTarget.style.right =
-        "100px";
-
-    dragTarget.style.top =
-        "500px";
-
-}
-
-
-let dragging =
-    false;
-
-let offsetX =
-    0;
-
-let offsetY =
-    0;
-
-
-dragDiamond.addEventListener(
-    "pointerdown",
-    e=>{
-
-        if(!isPC())
-            return;
-
-
-        dragging =
-            true;
-
-
-        const rect =
-            dragDiamond.getBoundingClientRect();
-
-
-        offsetX =
-            e.clientX -
-            rect.left;
-
-        offsetY =
-            e.clientY -
-            rect.top;
-
-
-        dragDiamond.setPointerCapture(
-            e.pointerId
-        );
-
-    }
-);
-
-
-dragDiamond.addEventListener(
-    "pointermove",
-    e=>{
-
-        if(!dragging)
-            return;
-
-
-        dragDiamond.style.left =
-            (
-                e.clientX -
-                offsetX
-            ) + "px";
-
-
-        dragDiamond.style.top =
-            (
-                e.clientY -
-                offsetY
-            ) + "px";
-
-    }
-);
-
-
-dragDiamond.addEventListener(
-    "pointerup",
-    ()=>{
-
-        if(!dragging)
-            return;
-
-
-        dragging =
-            false;
-
-
-        const diamond =
-            dragDiamond.getBoundingClientRect();
-
-
-        const target =
-            dragTarget.getBoundingClientRect();
-
-
-        const touching =
-            diamond.left <
-                target.right &&
-            diamond.right >
-                target.left &&
-            diamond.top <
-                target.bottom &&
-            diamond.bottom >
-                target.top;
-
-
-        if(touching){
-
-            dragDiamond.style.display =
-                "none";
-
-            dragTarget.style.display =
-                "none";
-
-            /*
-                Successful PC drag.
-                Add your existing reward
-                logic here if needed.
-            */
-
-        }
-
-    }
-);
-
-
-/* =========================================================
    WIN
 ========================================================= */
 
-function winGame(){
+function winGame() {
 
     if(finished)
         return;
@@ -2827,25 +2080,26 @@ function winGame(){
         "flex";
 
 
-    document.getElementById(
-        "outroTitle"
-    ).textContent =
+    const title =
+        document.getElementById(
+            "outroTitle"
+        );
+
+
+    title.textContent =
         "YOU WIN";
 
-
-    document.getElementById(
-        "outroTitle"
-    ).className =
-        "winTitle";
+    title.className =
+        "win";
 
 
     document.getElementById(
-        "outroText"
-    ).innerHTML = `
-        The ransom has been paid.
-        <br><br>
+        "outroMessage"
+    ).innerHTML =
+        `
+        The ransom has been paid.<br>
         Your files have been restored.
-    `;
+        `;
 
 }
 
@@ -2854,7 +2108,7 @@ function winGame(){
    LOSS
 ========================================================= */
 
-function loseGame(){
+function loseGame() {
 
     if(finished)
         return;
@@ -2875,31 +2129,32 @@ function loseGame(){
         "flex";
 
 
-    document.getElementById(
-        "outroTitle"
-    ).textContent =
+    const title =
+        document.getElementById(
+            "outroTitle"
+        );
+
+
+    title.textContent =
         "YOU LOST";
 
-
-    document.getElementById(
-        "outroTitle"
-    ).className =
-        "loseTitle";
+    title.className =
+        "lose";
 
 
     document.getElementById(
-        "outroText"
-    ).innerHTML = `
-        The timer reached zero.
-        <br><br>
+        "outroMessage"
+    ).innerHTML =
+        `
+        The timer reached zero.<br>
         Ransom wins.
-    `;
+        `;
 
 }
 
 
 /* =========================================================
-   INITIAL
+   INITIAL TIMER
 ========================================================= */
 
 updateTimer();
