@@ -4,164 +4,245 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>RANSOM — Intro</title>
+<title>RANSOM</title>
 
 <style>
 * {
     box-sizing: border-box;
 }
 
-html,
-body {
+html, body {
     margin: 0;
     width: 100%;
-    height: 100%;
-    overflow: hidden;
+    min-height: 100%;
     background: #000;
-    font-family: Arial, Helvetica, sans-serif;
     color: white;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-/* =====================================================
-   CLAIM SCREEN
-===================================================== */
+/* =========================================================
+   INTRO
+========================================================= */
 
-#claimScreen {
+#intro {
     position: fixed;
     inset: 0;
-    background:
-        radial-gradient(circle at center, #252525 0%, #090909 55%, #000 100%);
+    background: #050505;
+    z-index: 50000;
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
-}
-
-.claimBox {
     text-align: center;
 }
 
+.claimBox {
+    width: min(700px, 90%);
+}
+
 .claimBox h1 {
-    font-size: clamp(35px, 7vw, 75px);
-    margin: 0 0 15px;
-    letter-spacing: 5px;
+    font-size: clamp(40px, 8vw, 80px);
+    margin: 0;
 }
 
 .claimBox p {
     color: #aaa;
-    margin-bottom: 35px;
+    margin: 15px 0 35px;
 }
 
 #claimButton {
-    border: 2px solid #45ff72;
-    background: #0b3218;
-    color: #69ff8b;
-    font-size: 25px;
+    padding: 18px 45px;
+    font-size: 24px;
     font-weight: bold;
-    padding: 20px 45px;
+    color: #65ff88;
+    background: #092414;
+    border: 2px solid #45ff70;
     border-radius: 7px;
     cursor: pointer;
-    transition: .15s;
 }
 
 #claimButton:hover {
-    background: #17652c;
-    transform: scale(1.05);
+    background: #124b25;
 }
 
-/* =====================================================
+/* =========================================================
    CINEMATIC
-===================================================== */
+========================================================= */
 
 #cinematic {
     position: fixed;
     inset: 0;
     background: #000;
+    z-index: 49000;
     display: none;
     overflow: hidden;
-    z-index: 900;
 }
 
-/* =====================================================
+#redBG {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #650000 0%,
+            #180000 45%,
+            #000 100%
+        );
+
+    transition: opacity 1s;
+}
+
+/* =========================================================
    PHASE 1
-===================================================== */
+========================================================= */
 
 #phase1 {
     position: absolute;
+    width: min(430px, 65vw);
+    height: min(430px, 65vw);
+
     left: 50%;
     top: 50%;
-    width: min(420px, 55vw);
-    height: min(420px, 55vw);
+
     object-fit: contain;
 
     transform: translate(-50%, -50%);
 
     opacity: 0;
 
-    filter: contrast(1.1);
-
-    transition:
-        opacity 1s ease;
-}
-
-/* =====================================================
-   RED / BLACK BACKGROUND
-===================================================== */
-
-#redBackground {
-    position: absolute;
-    inset: 0;
-
-    background:
-        radial-gradient(
-            ellipse at center,
-            rgba(150, 0, 0, .65),
-            #090000 55%,
-            #000 100%
-        );
-
-    opacity: 0;
-
     transition: opacity 1s;
 }
 
-/* =====================================================
+/* =========================================================
    PHASE 2
-===================================================== */
-
-#phase2Container {
-    position: absolute;
-    inset: 0;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    opacity: 0;
-
-    transform: scale(0.65);
-
-    z-index: 5;
-}
+========================================================= */
 
 #phase2 {
-    width: min(500px, 65vw);
-    height: min(500px, 65vw);
+    position: absolute;
+
+    width: min(500px, 70vw);
+    height: min(500px, 70vw);
+
+    left: 50%;
+    top: 50%;
 
     object-fit: contain;
+
+    transform: translate(-50%, -50%);
+
+    opacity: 0;
 
     filter:
         contrast(1.5)
         brightness(1.15);
-
-    transition:
-        transform 4s cubic-bezier(.15,.7,.15,1);
 }
 
-/* =====================================================
-   WINDOWS / ARG GLITCH EFFECT
-===================================================== */
+/* =========================================================
+   PHASE 2 ARG DISTORTION
+========================================================= */
+
+.phase2Distort {
+    animation:
+        phaseShake .075s infinite,
+        phaseColor .13s infinite,
+        phaseStretch .18s infinite;
+}
+
+@keyframes phaseShake {
+
+    0% {
+        transform:
+            translate(
+                calc(-50% - 7px),
+                calc(-50% + 2px)
+            )
+            skewX(-3deg);
+    }
+
+    25% {
+        transform:
+            translate(
+                calc(-50% + 9px),
+                calc(-50% - 4px)
+            )
+            skewX(4deg);
+    }
+
+    50% {
+        transform:
+            translate(
+                calc(-50% - 4px),
+                calc(-50% + 6px)
+            )
+            skewX(-5deg);
+    }
+
+    75% {
+        transform:
+            translate(
+                calc(-50% + 6px),
+                calc(-50% - 5px)
+            )
+            skewX(2deg);
+    }
+
+    100% {
+        transform:
+            translate(-50%, -50%)
+            skewX(0);
+    }
+}
+
+@keyframes phaseColor {
+
+    0% {
+        filter:
+            contrast(1.8)
+            brightness(1.2)
+            drop-shadow(9px 0 #ff0000)
+            drop-shadow(-9px 0 #00ffff);
+    }
+
+    50% {
+        filter:
+            contrast(2.2)
+            brightness(.7)
+            drop-shadow(-12px 0 #ff0000)
+            drop-shadow(12px 0 #00ffff);
+    }
+
+    100% {
+        filter:
+            contrast(1.5)
+            brightness(1.3)
+            drop-shadow(6px 0 #00ffff)
+            drop-shadow(-6px 0 #ff0000);
+    }
+}
+
+@keyframes phaseStretch {
+
+    0% {
+        width: min(500px, 70vw);
+    }
+
+    40% {
+        width: min(560px, 78vw);
+    }
+
+    70% {
+        width: min(470px, 66vw);
+    }
+
+    100% {
+        width: min(500px, 70vw);
+    }
+}
+
+/* =========================================================
+   GLITCH LAYERS
+========================================================= */
 
 .glitchLayer {
     position: absolute;
@@ -170,139 +251,56 @@ body {
     pointer-events: none;
 
     opacity: 0;
-    z-index: 20;
+}
 
+#scanlines {
     background:
         repeating-linear-gradient(
             0deg,
             transparent 0px,
             transparent 4px,
             rgba(255,255,255,.08) 5px,
-            transparent 6px
+            transparent 7px
         );
-
-    mix-blend-mode: screen;
 }
 
-#glitchRed {
+#redGlitch {
     background:
         repeating-linear-gradient(
             0deg,
             transparent 0px,
             transparent 8px,
-            rgba(255,0,0,.45) 9px,
-            transparent 11px
+            rgba(255,0,0,.35) 9px,
+            transparent 12px
         );
-
-    mix-blend-mode: screen;
 }
 
-#glitchWhite {
+#whiteGlitch {
     background:
         repeating-linear-gradient(
             90deg,
             transparent 0px,
-            transparent 17px,
-            rgba(255,255,255,.12) 18px,
-            transparent 22px
+            transparent 20px,
+            rgba(255,255,255,.08) 21px,
+            transparent 25px
         );
 }
-
-/* Main corruption animation */
-
-.corrupted {
-    animation:
-        corruptShake .09s infinite,
-        corruptColor .16s infinite;
-}
-
-@keyframes corruptShake {
-
-    0% {
-        transform:
-            translate(-4px, 2px)
-            skewX(-2deg);
-    }
-
-    20% {
-        transform:
-            translate(5px, -2px)
-            skewX(3deg);
-    }
-
-    40% {
-        transform:
-            translate(-7px, 0)
-            skewX(-4deg);
-    }
-
-    60% {
-        transform:
-            translate(3px, 4px)
-            skewX(2deg);
-    }
-
-    80% {
-        transform:
-            translate(-2px, -4px)
-            skewX(-1deg);
-    }
-
-    100% {
-        transform:
-            translate(4px, 1px)
-            skewX(3deg);
-    }
-}
-
-@keyframes corruptColor {
-
-    0% {
-        filter:
-            contrast(1.5)
-            brightness(1.2)
-            drop-shadow(8px 0 red)
-            drop-shadow(-8px 0 cyan);
-    }
-
-    50% {
-        filter:
-            contrast(2)
-            brightness(.8)
-            drop-shadow(-10px 0 red)
-            drop-shadow(10px 0 cyan);
-    }
-
-    100% {
-        filter:
-            contrast(1.6)
-            brightness(1.3)
-            drop-shadow(5px 0 cyan)
-            drop-shadow(-5px 0 red);
-    }
-}
-
-/* =====================================================
-   RANDOM ARG GLITCH BLOCKS
-===================================================== */
 
 .glitchBlock {
     position: absolute;
 
-    background: white;
+    background: #fff;
 
     opacity: 0;
 
     pointer-events: none;
-
-    z-index: 30;
 }
 
-/* =====================================================
-   DOWNLOAD SCREEN
-===================================================== */
+/* =========================================================
+   DOWNLOAD
+========================================================= */
 
-#downloadScreen {
+#download {
     position: absolute;
     inset: 0;
 
@@ -314,62 +312,22 @@ body {
     align-items: center;
 
     flex-direction: column;
-
-    z-index: 50;
 }
 
 .downloadLogo {
-    width: 100px;
-    height: 100px;
+    width: 90px;
+    height: 90px;
 
     border: 7px solid #ddd;
+
     border-radius: 50%;
 
-    position: relative;
+    margin-bottom: 30px;
 
-    margin-bottom: 35px;
-
-    animation:
-        downloadSpin .7s linear infinite;
+    animation: spin .7s linear infinite;
 }
 
-.downloadLogo::before {
-    content: "";
-
-    position: absolute;
-
-    width: 30px;
-    height: 7px;
-
-    background: #ddd;
-
-    left: 50%;
-    top: 50%;
-
-    transform:
-        translate(-50%, -50%);
-}
-
-.downloadLogo::after {
-    content: "";
-
-    position: absolute;
-
-    width: 30px;
-    height: 30px;
-
-    border-left: 7px solid #ddd;
-    border-bottom: 7px solid #ddd;
-
-    left: 50%;
-    top: 50%;
-
-    transform:
-        translate(-50%, -30%)
-        rotate(-45deg);
-}
-
-@keyframes downloadSpin {
+@keyframes spin {
     to {
         transform: rotate(360deg);
     }
@@ -377,73 +335,66 @@ body {
 
 #downloadText {
     font-family: monospace;
-    font-size: 22px;
-    color: #ddd;
+    font-size: 20px;
 }
 
 .downloadBar {
     width: min(600px, 75vw);
     height: 15px;
 
-    margin-top: 20px;
-
     background: #222;
 
     border: 1px solid #555;
+
+    margin-top: 20px;
 }
 
 #downloadProgress {
     width: 0%;
     height: 100%;
 
-    background: #e60000;
-
-    transition: width .08s linear;
+    background: #d40000;
 }
 
-/* =====================================================
-   ENCRYPTED WARNING
-===================================================== */
+/* =========================================================
+   ENCRYPTED MESSAGE
+========================================================= */
 
-#encryptedScreen {
+#encrypted {
     position: absolute;
     inset: 0;
+
+    background: #030000;
 
     display: none;
 
     justify-content: center;
     align-items: center;
 
-    background: #050000;
-
-    z-index: 100;
+    text-align: center;
 }
 
 #encryptedText {
-    font-size: clamp(30px, 7vw, 80px);
-
+    font-size: clamp(32px, 7vw, 80px);
     font-weight: 900;
 
-    text-align: center;
-
-    color: #fff;
+    color: white;
 
     text-shadow:
         0 0 10px red,
         0 0 30px red;
 
-    animation:
-        warningFlash .12s infinite;
+    animation: encryptedFlash .13s infinite;
 }
 
-@keyframes warningFlash {
+@keyframes encryptedFlash {
 
     0% {
         opacity: 1;
     }
 
     50% {
-        opacity: .35;
+        opacity: .3;
     }
 
     100% {
@@ -451,51 +402,531 @@ body {
     }
 }
 
-/* =====================================================
-   FLASH
-===================================================== */
+/* =========================================================
+   MAIN GAME
+========================================================= */
 
-#redFlash {
-    position: absolute;
+#game {
+    display: none;
+}
+
+header {
+    background: #790000;
+    border-bottom: 3px solid #ff3030;
+
+    text-align: center;
+
+    padding: 24px 12px;
+}
+
+header h1 {
+    margin: 0;
+
+    color: #ff4a4a;
+
+    font-size: clamp(28px, 6vw, 48px);
+}
+
+header p {
+    margin: 12px 0 0;
+}
+
+#timer {
+    text-align: center;
+
+    color: #ff3030;
+
+    font-size: 52px;
+
+    font-weight: bold;
+
+    margin: 22px 0;
+}
+
+main {
+    width: min(1150px, 94%);
+
+    margin: auto;
+}
+
+.card {
+    background: #202020;
+
+    border: 1px solid #505050;
+
+    border-radius: 8px;
+
+    margin: 18px 0;
+
+    overflow: hidden;
+}
+
+.cardHead {
+    background: #292929;
+
+    padding: 17px;
+
+    font-size: 21px;
+
+    font-weight: bold;
+}
+
+.cardBody {
+    padding: 20px;
+}
+
+/* =========================================================
+   PAYMENT
+========================================================= */
+
+.paymentTitle {
+    color: #ffd000;
+
+    font-size: 25px;
+
+    font-weight: bold;
+}
+
+#diamondCount {
+    font-size: 34px;
+
+    font-weight: bold;
+}
+
+.progress {
+    height: 27px;
+
+    background: #454545;
+
+    border-radius: 8px;
+
+    overflow: hidden;
+
+    margin-top: 18px;
+}
+
+#progressBar {
+    width: 0%;
+
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #168cff,
+            #64d5ff
+        );
+
+    transition: width .2s;
+}
+
+/* =========================================================
+   FILES
+========================================================= */
+
+.folderbar {
+    display: flex;
+
+    gap: 8px;
+
+    flex-wrap: wrap;
+
+    padding: 14px;
+
+    background: #151515;
+}
+
+.folderbar button {
+    background: #252525;
+
+    border: 1px solid #555;
+
+    color: white;
+
+    border-radius: 6px;
+
+    padding: 12px 15px;
+
+    cursor: pointer;
+}
+
+.folderbar button:hover,
+.folderbar button.active {
+    background: #414141;
+}
+
+#folderContent {
+    padding: 18px;
+
+    min-height: 170px;
+}
+
+.fileGrid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fill,
+            minmax(175px,1fr)
+        );
+
+    gap: 8px;
+}
+
+.file {
+    background: #181818;
+
+    border: 1px solid #444;
+
+    border-radius: 5px;
+
+    padding: 12px;
+
+    cursor: pointer;
+}
+
+.file:hover {
+    background: #282828;
+}
+
+.file.collected {
+    opacity: .4;
+
+    text-decoration: line-through;
+}
+
+/* =========================================================
+   FACE
+========================================================= */
+
+#faceBox {
+    text-align: center;
+}
+
+#ransomFace {
+    width: min(300px, 75vw);
+
+    max-height: 300px;
+
+    object-fit: contain;
+
+    background: #000;
+
+    border: 2px solid #555;
+
+    border-radius: 10px;
+}
+
+/* =========================================================
+   POPUPS
+========================================================= */
+
+.popupOverlay {
+    position: fixed;
+
     inset: 0;
 
-    background: red;
+    background:
+        rgba(0,0,0,.84);
 
-    opacity: 0;
+    display: none;
 
-    z-index: 150;
+    justify-content: center;
+
+    align-items: center;
+
+    z-index: 40000;
+}
+
+.popup {
+    width: min(620px,90%);
+
+    background: #202020;
+
+    border: 2px solid #ff3333;
+
+    border-radius: 10px;
+
+    padding: 28px;
+
+    text-align: center;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 0 35px
+        rgba(255,0,0,.35);
+}
+
+.popup h2 {
+    margin-top: 0;
+
+    color: #ff4545;
+}
+
+.popup p {
+    line-height: 1.6;
+}
+
+.popup .small {
+    color: #999;
+
+    font-size: 13px;
+}
+
+/* Type 2 */
+
+.popup.type2 {
+    border-color: #ff7925;
+
+    box-shadow:
+        0 0 40px
+        rgba(255,100,20,.4);
+}
+
+.popup.type2 h2 {
+    color: #ff8a3d;
+}
+
+/* Type 3 */
+
+.popup.type3 {
+    border-color: #b33cff;
+
+    box-shadow:
+        0 0 50px
+        rgba(180,50,255,.55);
+}
+
+.popup.type3 h2 {
+    color: #ca5aff;
+}
+
+.type3Warning {
+    color: #ff72ff;
+
+    font-weight: bold;
+}
+
+/* =========================================================
+   MINIGAME
+========================================================= */
+
+#minigame {
+    display: none;
+}
+
+.sequence {
+    display: flex;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin: 20px 0;
+}
+
+.seqButton {
+    min-width: 60px;
+
+    padding: 15px;
+
+    background: #181818;
+
+    border: 2px solid #555;
+
+    border-radius: 8px;
+
+    color: white;
+
+    font-size: 20px;
+
+    cursor: pointer;
+}
+
+.seqButton.good {
+    background: #174f2b;
+
+    border-color: #3ddd75;
+}
+
+.seqButton.bad {
+    background: #5a1010;
+
+    border-color: #ff3030;
+}
+
+#status {
+    min-height: 24px;
+
+    font-weight: bold;
+}
+
+.verify {
+    display: flex;
+
+    gap: 8px;
+
+    flex-wrap: wrap;
+}
+
+.verify input {
+    flex: 1;
+
+    min-width: 220px;
+
+    padding: 13px;
+
+    background: #111;
+
+    color: white;
+
+    border: 1px solid #555;
+
+    border-radius: 6px;
+}
+
+.actionButton {
+    background: #292929;
+
+    color: white;
+
+    border: 1px solid #555;
+
+    border-radius: 6px;
+
+    padding: 12px 18px;
+
+    cursor: pointer;
+}
+
+.actionButton:hover {
+    background: #3c3c3c;
+}
+
+/* =========================================================
+   LAPTOP DRAG DIAMOND
+========================================================= */
+
+#dragDiamond {
+    position: fixed;
+
+    width: 48px;
+    height: 48px;
+
+    display: none;
+
+    z-index: 30000;
+
+    cursor: grab;
+
+    user-select: none;
+
+    touch-action: none;
+}
+
+#dragTarget {
+    position: fixed;
+
+    width: 90px;
+    height: 90px;
+
+    border: 2px dashed #50bfff;
+
+    border-radius: 50%;
+
+    display: none;
+
+    z-index: 29999;
 
     pointer-events: none;
 }
 
-/* =====================================================
+/* =========================================================
+   OUTRO
+========================================================= */
+
+#outro {
+    position: fixed;
+
+    inset: 0;
+
+    background: #050505;
+
+    z-index: 60000;
+
+    display: none;
+
+    justify-content: center;
+
+    align-items: center;
+
+    text-align: center;
+}
+
+.outroBox {
+    width: min(750px,90%);
+}
+
+.outroBox h1 {
+    font-size: clamp(45px,8vw,80px);
+}
+
+.winTitle {
+    color: #45e979;
+}
+
+.loseTitle {
+    color: #ff3333;
+}
+
+.restartButton {
+    padding: 14px 30px;
+
+    background: #970000;
+
+    border: 1px solid #ff4444;
+
+    color: white;
+
+    border-radius: 7px;
+
+    font-size: 18px;
+
+    cursor: pointer;
+}
+
+/* =========================================================
    MOBILE
-===================================================== */
+========================================================= */
 
 @media(max-width:700px) {
 
-    #phase1 {
-        width: 70vw;
-        height: 70vw;
+    .folderbar {
+        flex-wrap: nowrap;
+        overflow-x: auto;
     }
 
-    #phase2 {
-        width: 75vw;
-        height: 75vw;
+    .folderbar button {
+        white-space: nowrap;
     }
 
+    .fileGrid {
+        grid-template-columns: 1fr;
+    }
 }
 </style>
 </head>
 
 <body>
 
-
 <!-- =====================================================
-     CLAIM SCREEN
+     INTRO CLAIM
 ===================================================== -->
 
-<div id="claimScreen">
+<div id="intro">
 
     <div class="claimBox">
 
@@ -520,9 +951,7 @@ body {
 
 <div id="cinematic">
 
-    <div id="redBackground"></div>
-
-    <!-- PHASE 1 -->
+    <div id="redBG"></div>
 
     <img
         id="phase1"
@@ -530,50 +959,37 @@ body {
         alt=""
     >
 
-
-    <!-- PHASE 2 -->
-
-    <div id="phase2Container">
-
-        <img
-            id="phase2"
-            src="https://raw.githubusercontent.com/jameslovechezze-ui/free-cash/main/ransom2.jpg"
-            alt=""
-        >
-
-    </div>
-
-
-    <!-- ARG GLITCH -->
+    <img
+        id="phase2"
+        src="https://raw.githubusercontent.com/jameslovechezze-ui/free-cash/main/ransom2.jpg"
+        alt=""
+    >
 
     <div
         class="glitchLayer"
-        id="glitchLayer"
+        id="scanlines"
     ></div>
 
     <div
         class="glitchLayer"
-        id="glitchRed"
+        id="redGlitch"
     ></div>
 
     <div
         class="glitchLayer"
-        id="glitchWhite"
+        id="whiteGlitch"
     ></div>
 
-
-    <!-- RANDOM GLITCH PIECES -->
-
-    <div class="glitchBlock" id="gb1"></div>
-    <div class="glitchBlock" id="gb2"></div>
-    <div class="glitchBlock" id="gb3"></div>
-    <div class="glitchBlock" id="gb4"></div>
-    <div class="glitchBlock" id="gb5"></div>
+    <div class="glitchBlock" id="g1"></div>
+    <div class="glitchBlock" id="g2"></div>
+    <div class="glitchBlock" id="g3"></div>
+    <div class="glitchBlock" id="g4"></div>
+    <div class="glitchBlock" id="g5"></div>
 
 
     <!-- DOWNLOAD -->
 
-    <div id="downloadScreen">
+    <div id="download">
 
         <div class="downloadLogo"></div>
 
@@ -592,7 +1008,7 @@ body {
 
     <!-- ENCRYPTED -->
 
-    <div id="encryptedScreen">
+    <div id="encrypted">
 
         <div id="encryptedText">
             YOU HAVE BEEN ENCRYPTED.
@@ -600,20 +1016,446 @@ body {
 
     </div>
 
+</div>
 
-    <div id="redFlash"></div>
+
+<!-- =====================================================
+     MAIN GAME
+===================================================== -->
+
+<div id="game">
+
+<header>
+
+    <h1>
+        ⚠ YOUR FILES HAVE BEEN LOCKED ⚠
+    </h1>
+
+    <p>
+        Fictional ARG simulation.
+    </p>
+
+</header>
+
+
+<div id="timer">
+    14:00
+</div>
+
+
+<main>
+
+<!-- PAYMENT -->
+
+<section class="card">
+
+    <div class="cardBody">
+
+        <div class="paymentTitle">
+            💎 PAYMENT REQUIRED
+        </div>
+
+        <p>
+            Collect all 450 diamonds.
+        </p>
+
+        <div style="text-align:center">
+
+            💎
+
+            <span id="diamondCount">
+                0
+            </span>
+
+            / 450
+
+        </div>
+
+        <div class="progress">
+
+            <div id="progressBar"></div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FILE EXPLORER -->
+
+<section class="card">
+
+    <div class="cardHead">
+        📁 File Explorer
+    </div>
+
+    <div
+        class="folderbar"
+        id="folders"
+    ></div>
+
+    <div id="folderContent">
+        Select a folder.
+    </div>
+
+</section>
+
+
+<!-- RANSOM FACE -->
+
+<section class="card" id="faceBox">
+
+    <div class="cardBody">
+
+        <img
+            id="ransomFace"
+            src="https://raw.githubusercontent.com/jameslovechezze-ui/free-cash/main/ransom2.jpg"
+            alt="Ransom"
+        >
+
+    </div>
+
+</section>
+
+
+<!-- MINIGAME -->
+
+<section
+    class="card"
+    id="minigame"
+>
+
+    <div class="cardHead">
+        🔐 RANSOM VERIFICATION
+    </div>
+
+    <div class="cardBody">
+
+        <p>
+            Repeat the sequence.
+        </p>
+
+        <div
+            class="sequence"
+            id="sequence"
+        ></div>
+
+        <div id="status"></div>
+
+    </div>
+
+</section>
+
+
+<!-- VERIFICATION -->
+
+<section class="card">
+
+    <div class="cardHead">
+        🔑 Verification
+    </div>
+
+    <div class="cardBody">
+
+        <div class="verify">
+
+            <input
+                id="verifyInput"
+                placeholder="Enter verification code"
+            >
+
+            <button
+                class="actionButton"
+                id="verifyButton"
+                disabled
+            >
+                VERIFY
+            </button>
+
+        </div>
+
+        <p style="color:#999;font-size:13px;">
+            Verification code:
+            <b>H3-1s-H6m95y</b>
+        </p>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<!-- =====================================================
+     TYPE 1
+===================================================== -->
+
+<div
+    class="popupOverlay"
+    id="type1Popup"
+>
+
+    <div
+        class="popup"
+        onclick="closePopup('type1Popup')"
+    >
+
+        <h2>
+            TYPE 1 — DEMAND
+        </h2>
+
+        <p>
+            You have been given a simple demand.
+        </p>
+
+        <p>
+            Collect the 450 diamonds.
+            Pay the ransom.
+        </p>
+
+        <p class="small">
+            Click anywhere inside this popup to close it.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     TYPE 2
+===================================================== -->
+
+<div
+    class="popupOverlay"
+    id="type2Popup"
+>
+
+    <div
+        class="popup type2"
+        onclick="closePopup('type2Popup')"
+    >
+
+        <h2>
+            TYPE 2 — IMPATIENCE
+        </h2>
+
+        <p>
+            You're taking too long.
+        </p>
+
+        <p>
+            Ransom is becoming impatient.
+        </p>
+
+        <p class="small">
+            Click anywhere inside this popup to close it.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     TYPE 3
+===================================================== -->
+
+<div
+    class="popupOverlay"
+    id="type3Popup"
+>
+
+    <div
+        class="popup type3"
+        onclick="closeType3()"
+    >
+
+        <h2>
+            TYPE 3 — ACCELERATION
+        </h2>
+
+        <p class="type3Warning">
+            THE TIMER IS MOVING FASTER.
+        </p>
+
+        <p>
+            Close this popup to restore
+            normal time.
+        </p>
+
+        <p class="small">
+            Click anywhere inside this popup to close it.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- DRAG DIAMOND -->
+
+<div id="dragTarget"></div>
+
+<img
+    id="dragDiamond"
+    src="https://raw.githubusercontent.com/jameslovechezze-ui/free-cash/main/ransom1.jpg"
+    alt=""
+>
+
+
+<!-- =====================================================
+     OUTRO
+===================================================== -->
+
+<div id="outro">
+
+    <div class="outroBox">
+
+        <h1 id="outroTitle"></h1>
+
+        <p id="outroText"></p>
+
+        <button
+            class="restartButton"
+            onclick="location.reload()"
+        >
+            RESTART
+        </button>
+
+    </div>
+
+</div>
 
 </div>
 
 
 <script>
 
-/* =====================================================
-   ELEMENTS
-===================================================== */
+/* =========================================================
+   SETTINGS
+========================================================= */
 
-const claimScreen =
-    document.getElementById("claimScreen");
+const TOTAL_DIAMONDS = 450;
+
+const NORMAL_TIMER_SPEED = 1000;
+
+/*
+    Type 3 = 2x faster.
+*/
+
+const TYPE3_TIMER_SPEED = 500;
+
+
+/* =========================================================
+   FOLDERS
+========================================================= */
+
+const folders = [
+
+    {
+        name: "Documents",
+        start: 1,
+        end: 100
+    },
+
+    {
+        name: "Downloads",
+        start: 101,
+        end: 200
+    },
+
+    {
+        name: "Pictures",
+        start: 201,
+        end: 300
+    },
+
+    {
+        name: "Games",
+        start: 301,
+        end: 400
+    },
+
+    {
+        name: "System",
+        start: 401,
+        end: 450
+    }
+
+];
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let collected = new Set();
+
+let currentFolder = null;
+
+let secondsLeft = 14 * 60;
+
+let timerInterval = null;
+
+let gameStarted = false;
+
+let finished = false;
+
+let type3Active = false;
+
+let sequence = [];
+
+let sequenceIndex = 0;
+
+let phase2GlitchTimer = null;
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const game =
+    document.getElementById("game");
+
+const timer =
+    document.getElementById("timer");
+
+const diamondCount =
+    document.getElementById("diamondCount");
+
+const progressBar =
+    document.getElementById("progressBar");
+
+const folderBar =
+    document.getElementById("folders");
+
+const folderContent =
+    document.getElementById("folderContent");
+
+const ransomFace =
+    document.getElementById("ransomFace");
+
+const minigame =
+    document.getElementById("minigame");
+
+const verifyButton =
+    document.getElementById("verifyButton");
+
+const verifyInput =
+    document.getElementById("verifyInput");
+
+const dragDiamond =
+    document.getElementById("dragDiamond");
+
+const dragTarget =
+    document.getElementById("dragTarget");
+
+
+/* =========================================================
+   INTRO ELEMENTS
+========================================================= */
 
 const claimButton =
     document.getElementById("claimButton");
@@ -624,50 +1466,43 @@ const cinematic =
 const phase1 =
     document.getElementById("phase1");
 
-const redBackground =
-    document.getElementById("redBackground");
-
-const phase2Container =
-    document.getElementById("phase2Container");
-
 const phase2 =
     document.getElementById("phase2");
 
-const glitchLayer =
-    document.getElementById("glitchLayer");
+const redBG =
+    document.getElementById("redBG");
 
-const glitchRed =
-    document.getElementById("glitchRed");
+const scanlines =
+    document.getElementById("scanlines");
 
-const glitchWhite =
-    document.getElementById("glitchWhite");
+const redGlitch =
+    document.getElementById("redGlitch");
 
-const downloadScreen =
-    document.getElementById("downloadScreen");
+const whiteGlitch =
+    document.getElementById("whiteGlitch");
+
+const download =
+    document.getElementById("download");
 
 const downloadProgress =
     document.getElementById("downloadProgress");
 
-const encryptedScreen =
-    document.getElementById("encryptedScreen");
-
-const redFlash =
-    document.getElementById("redFlash");
+const encrypted =
+    document.getElementById("encrypted");
 
 
-/* =====================================================
-   START INTRO
-===================================================== */
+/* =========================================================
+   INTRO
+========================================================= */
 
-claimButton.addEventListener(
-    "click",
-    startIntro
-);
+claimButton.onclick =
+    startIntro;
 
 
 function startIntro(){
 
-    claimScreen.style.display =
+    document.getElementById("intro")
+        .style.display =
         "none";
 
     cinematic.style.display =
@@ -675,8 +1510,8 @@ function startIntro(){
 
 
     /*
-        PHASE 1
-        Pitch black.
+        Phase 1 is standing
+        in complete darkness.
     */
 
     phase1.style.opacity =
@@ -684,31 +1519,17 @@ function startIntro(){
 
 
     setTimeout(
-        phase1Transition,
+        beginRedTransition,
         2200
     );
 
 }
 
 
-/* =====================================================
-   PHASE 1 → RED
-===================================================== */
+function beginRedTransition(){
 
-function phase1Transition(){
-
-    /*
-        Background begins turning
-        black/red.
-    */
-
-    redBackground.style.opacity =
+    redBG.style.opacity =
         "1";
-
-
-    /*
-        Phase 1 disappears.
-    */
 
     phase1.style.opacity =
         "0";
@@ -722,305 +1543,127 @@ function phase1Transition(){
 }
 
 
-/* =====================================================
-   PHASE 2 CORRUPTION
-===================================================== */
+/* =========================================================
+   PHASE 2 DISTORTION
+========================================================= */
 
 function showPhase2(){
 
-    phase2Container.style.opacity =
+    phase2.style.opacity =
         "1";
 
 
-    /*
-        Start heavily distorted.
-    */
-
     phase2.classList.add(
-        "corrupted"
+        "phase2Distort"
     );
 
 
     /*
-        Windows ARG style
-        corruption.
+        Windows ARG-like
+        visual layers.
     */
 
-    glitchLayer.style.opacity =
+    scanlines.style.opacity =
         ".9";
 
-    glitchRed.style.opacity =
+    redGlitch.style.opacity =
         ".7";
 
-    glitchWhite.style.opacity =
+    whiteGlitch.style.opacity =
         ".5";
 
 
-    startRandomGlitches();
+    startPhase2Glitches();
 
 
     /*
-        Let the corruption happen
-        for a short time.
+        No zoom.
+        The distortion itself
+        is the scare.
     */
 
     setTimeout(
         stabilizePhase2,
-        1800
+        2400
     );
 
 }
 
-
-/* =====================================================
-   STABILIZE → APPROACH
-===================================================== */
 
 function stabilizePhase2(){
 
     phase2.classList.remove(
-        "corrupted"
+        "phase2Distort"
     );
 
 
-    glitchLayer.style.opacity =
+    scanlines.style.opacity =
         ".15";
 
-    glitchRed.style.opacity =
+    redGlitch.style.opacity =
         ".12";
 
-    glitchWhite.style.opacity =
+    whiteGlitch.style.opacity =
         ".08";
 
 
-    stopRandomGlitches();
+    stopPhase2Glitches();
 
 
     /*
-        NOW PHASE 2 STARTS
-        COMING TOWARD THE PLAYER.
-    */
-
-    setTimeout(
-        phase2Approach,
-        300
-    );
-
-}
-
-
-/* =====================================================
-   PHASE 2 APPROACH
-===================================================== */
-
-function phase2Approach(){
-
-    /*
-        Face grows massively,
-        like it is moving toward
-        the screen.
-    */
-
-    phase2.style.transform =
-        "scale(6)";
-
-
-    /*
-        Darken everything around
-        the face.
+        Hold Phase 2 briefly,
+        then remove it.
     */
 
     setTimeout(
         removePhase2,
-        3800
+        900
     );
 
 }
 
-
-/* =====================================================
-   REMOVE FACE
-===================================================== */
 
 function removePhase2(){
 
-    phase2Container.style.opacity =
+    phase2.style.opacity =
+        "0";
+
+    scanlines.style.opacity =
+        "0";
+
+    redGlitch.style.opacity =
+        "0";
+
+    whiteGlitch.style.opacity =
         "0";
 
 
-    /*
-        Immediately transition
-        to fake download.
-    */
-
     setTimeout(
         startDownload,
-        500
+        350
     );
 
 }
 
 
-/* =====================================================
-   DOWNLOAD
-===================================================== */
+/* =========================================================
+   RANDOM GLITCH PIECES
+========================================================= */
 
-function startDownload(){
-
-    downloadScreen.style.display =
-        "flex";
-
-
-    let progress = 0;
-
-
-    /*
-        VERY FAST download.
-    */
-
-    const download =
-        setInterval(
-            ()=>{
-
-                progress +=
-                    Math.random() * 9 + 6;
-
-
-                if(progress >= 100){
-
-                    progress = 100;
-
-                    clearInterval(
-                        download
-                    );
-
-
-                    downloadProgress.style.width =
-                        "100%";
-
-
-                    setTimeout(
-                        encryptionWarning,
-                        250
-                    );
-
-                }
-
-
-                downloadProgress.style.width =
-                    progress + "%";
-
-            },
-            80
-        );
-
-}
-
-
-/* =====================================================
-   ENCRYPTION WARNING
-===================================================== */
-
-function encryptionWarning(){
-
-    downloadScreen.style.display =
-        "none";
-
-
-    encryptedScreen.style.display =
-        "flex";
-
-
-    /*
-        Red screen flash.
-    */
-
-    redFlash.style.opacity =
-        "1";
-
-
-    setTimeout(
-        ()=>{
-            redFlash.style.opacity =
-                "0";
-        },
-        100
-    );
-
-
-    /*
-        Warning stays briefly.
-    */
-
-    setTimeout(
-        finishIntro,
-        1900
-    );
-
-}
-
-
-/* =====================================================
-   FINISH INTRO
-===================================================== */
-
-function finishIntro(){
-
-    encryptedScreen.style.display =
-        "none";
-
-
-    /*
-        THIS IS WHERE YOUR
-        EXISTING MINIGAME STARTS.
-
-        We deliberately don't modify
-        your gameplay here.
-    */
-
-    cinematic.style.display =
-        "none";
-
-
-    /*
-        Replace this comment with
-        your existing minigame's
-        start function.
-
-        Example:
-
-        startGame();
-
-        or
-
-        document.getElementById("game")
-            .style.display = "block";
-    */
-
-}
-
-
-/* =====================================================
-   RANDOM WINDOWS ARG GLITCHES
-===================================================== */
-
-let glitchTimer = null;
-
-
-function startRandomGlitches(){
+function startPhase2Glitches(){
 
     const blocks = [
 
-        document.getElementById("gb1"),
-        document.getElementById("gb2"),
-        document.getElementById("gb3"),
-        document.getElementById("gb4"),
-        document.getElementById("gb5")
+        document.getElementById("g1"),
+        document.getElementById("g2"),
+        document.getElementById("g3"),
+        document.getElementById("g4"),
+        document.getElementById("g5")
 
     ];
 
 
-    glitchTimer =
+    phase2GlitchTimer =
         setInterval(
             ()=>{
 
@@ -1040,24 +1683,18 @@ function startRandomGlitches(){
                     Math.random()*100 + "%";
 
                 block.style.width =
-                    Math.random()*35 + 5 + "%";
+                    Math.random()*40 + 5 + "%";
 
                 block.style.height =
-                    Math.random()*8 + 2 + "px";
-
-                block.style.opacity =
-                    Math.random()*.8 + .2;
-
-
-                /*
-                    Random red/white
-                    corruption.
-                */
+                    Math.random()*12 + 2 + "px";
 
                 block.style.background =
                     Math.random() > .5
                     ? "#fff"
                     : "#ff0000";
+
+                block.style.opacity =
+                    Math.random()*.8 + .2;
 
 
                 setTimeout(
@@ -1065,20 +1702,20 @@ function startRandomGlitches(){
                         block.style.opacity =
                             "0";
                     },
-                    Math.random()*130 + 50
+                    50 + Math.random()*130
                 );
 
             },
-            90
+            80
         );
 
 }
 
 
-function stopRandomGlitches(){
+function stopPhase2Glitches(){
 
     clearInterval(
-        glitchTimer
+        phase2GlitchTimer
     );
 
 
@@ -1092,6 +1729,958 @@ function stopRandomGlitches(){
         );
 
 }
+
+
+/* =========================================================
+   DOWNLOAD
+========================================================= */
+
+function startDownload(){
+
+    download.style.display =
+        "flex";
+
+
+    let amount = 0;
+
+
+    const interval =
+        setInterval(
+            ()=>{
+
+                amount +=
+                    Math.random()*12 + 8;
+
+
+                if(amount >= 100){
+
+                    amount = 100;
+
+                    clearInterval(
+                        interval
+                    );
+
+
+                    setTimeout(
+                        showEncrypted,
+                        250
+                    );
+
+                }
+
+
+                downloadProgress.style.width =
+                    amount + "%";
+
+            },
+            70
+        );
+
+}
+
+
+/* =========================================================
+   ENCRYPTED
+========================================================= */
+
+function showEncrypted(){
+
+    download.style.display =
+        "none";
+
+    encrypted.style.display =
+        "flex";
+
+
+    setTimeout(
+        finishIntro,
+        1900
+    );
+
+}
+
+
+/* =========================================================
+   START ACTUAL GAME
+========================================================= */
+
+function finishIntro(){
+
+    encrypted.style.display =
+        "none";
+
+    cinematic.style.display =
+        "none";
+
+    game.style.display =
+        "block";
+
+
+    gameStarted = true;
+
+
+    /*
+        Timer starts HERE.
+        The cinematic does not consume
+        the 14 minutes.
+    */
+
+    secondsLeft =
+        14 * 60;
+
+    updateTimer();
+
+    startTimer();
+
+
+    /*
+        Phase 2 is the face used
+        during gameplay.
+    */
+
+    ransomFace.src =
+        "https://raw.githubusercontent.com/jameslovechezze-ui/free-cash/main/ransom2.jpg";
+
+
+    /*
+        Type 1 covers the
+        14:00 → 8:00 phase.
+    */
+
+    showType1();
+
+
+    enableDragDiamond();
+
+}
+
+
+/* =========================================================
+   FOLDERS
+========================================================= */
+
+function createFolders(){
+
+    folderBar.innerHTML = "";
+
+
+    folders.forEach(
+        (folder,index)=>{
+
+            const button =
+                document.createElement("button");
+
+            button.textContent =
+                "📁 " + folder.name;
+
+            button.id =
+                "folder-" + index;
+
+            button.onclick =
+                ()=>openFolder(index);
+
+            folderBar.appendChild(
+                button
+            );
+
+        }
+    );
+
+}
+
+createFolders();
+
+
+/* =========================================================
+   OPEN FOLDER
+========================================================= */
+
+function openFolder(index){
+
+    currentFolder =
+        index;
+
+
+    document
+        .querySelectorAll(".folderbar button")
+        .forEach(
+            button=>{
+                button.classList.remove(
+                    "active"
+                );
+            }
+        );
+
+
+    document
+        .getElementById(
+            "folder-" + index
+        )
+        .classList.add(
+            "active"
+        );
+
+
+    const folder =
+        folders[index];
+
+
+    let html = `
+        <p>
+            📁 <b>${folder.name}</b>
+        </p>
+
+        <div class="fileGrid">
+    `;
+
+
+    for(
+        let n=folder.start;
+        n<=folder.end;
+        n++
+    ){
+
+        const id =
+            folder.name + "-" + n;
+
+
+        html += `
+            <div
+                class="file ${
+                    collected.has(id)
+                    ? "collected"
+                    : ""
+                }"
+                onclick="collectDiamond('${id}')"
+            >
+                💎 Diamond ${n}
+            </div>
+        `;
+
+    }
+
+
+    html += `
+        </div>
+    `;
+
+
+    folderContent.innerHTML =
+        html;
+
+}
+
+
+/* =========================================================
+   COLLECT DIAMOND
+========================================================= */
+
+function collectDiamond(id){
+
+    if(collected.has(id))
+        return;
+
+
+    collected.add(id);
+
+    updatePayment();
+
+
+    if(currentFolder !== null)
+        openFolder(currentFolder);
+
+}
+
+
+/* =========================================================
+   PAYMENT
+========================================================= */
+
+function updatePayment(){
+
+    const amount =
+        collected.size;
+
+
+    diamondCount.textContent =
+        amount;
+
+
+    progressBar.style.width =
+        (amount / TOTAL_DIAMONDS * 100)
+        + "%";
+
+
+    if(amount >= TOTAL_DIAMONDS){
+
+        verifyButton.disabled =
+            false;
+
+        startMinigame();
+
+    }
+
+}
+
+
+/* =========================================================
+   MINIGAME
+========================================================= */
+
+function startMinigame(){
+
+    if(
+        minigame.style.display ===
+        "block"
+    )
+        return;
+
+
+    minigame.style.display =
+        "block";
+
+
+    makeSequence();
+
+}
+
+
+function makeSequence(){
+
+    sequence =
+        Array.from(
+            {length:8},
+            ()=>Math.floor(
+                Math.random()*4
+            )+1
+        );
+
+
+    sequenceIndex =
+        0;
+
+
+    const box =
+        document.getElementById(
+            "sequence"
+        );
+
+
+    box.innerHTML =
+        "";
+
+
+    sequence.forEach(
+        number=>{
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+
+            button.className =
+                "seqButton";
+
+
+            button.textContent =
+                number;
+
+
+            button.onclick =
+                ()=>{
+                    pressSequence(
+                        button,
+                        number
+                    );
+                };
+
+
+            box.appendChild(
+                button
+            );
+
+        }
+    );
+
+
+    document.getElementById(
+        "status"
+    ).textContent =
+        "Repeat: " +
+        sequence.join(" ");
+
+}
+
+
+function pressSequence(
+    button,
+    number
+){
+
+    if(
+        number ===
+        sequence[sequenceIndex]
+    ){
+
+        button.classList.add(
+            "good"
+        );
+
+
+        sequenceIndex++;
+
+
+        if(
+            sequenceIndex ===
+            sequence.length
+        ){
+
+            document.getElementById(
+                "status"
+            ).textContent =
+                "Sequence complete.";
+
+        }
+
+    } else {
+
+        button.classList.add(
+            "bad"
+        );
+
+
+        document.getElementById(
+            "status"
+        ).textContent =
+            "Wrong sequence.";
+
+        setTimeout(
+            makeSequence,
+            500
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   VERIFY
+========================================================= */
+
+verifyButton.onclick =
+    ()=>{
+
+        if(
+            collected.size <
+            TOTAL_DIAMONDS
+        )
+            return;
+
+
+        if(
+            verifyInput.value.trim()
+            ===
+            "H3-1s-H6m95y"
+        ){
+
+            winGame();
+
+        } else {
+
+            document.getElementById(
+                "status"
+            ).textContent =
+                "Invalid verification code.";
+
+        }
+
+    };
+
+
+/* =========================================================
+   POPUP SYSTEM
+========================================================= */
+
+/*
+    TYPE 1
+    14:00 → 8:00
+*/
+
+function showType1(){
+
+    document.getElementById(
+        "type1Popup"
+    ).style.display =
+        "flex";
+
+}
+
+
+/*
+    TYPE 2
+    8:00 → 3:00
+*/
+
+function showType2(){
+
+    document.getElementById(
+        "type2Popup"
+    ).style.display =
+        "flex";
+
+}
+
+
+/*
+    TYPE 3
+    3:00 → 0:00
+
+    Timer becomes faster
+    while popup is active.
+*/
+
+function showType3(){
+
+    if(type3Active)
+        return;
+
+
+    type3Active =
+        true;
+
+
+    document.getElementById(
+        "type3Popup"
+    ).style.display =
+        "flex";
+
+
+    restartTimer();
+
+}
+
+
+/*
+    Type 1 / Type 2:
+    clicking anywhere inside
+    the popup closes it.
+*/
+
+function closePopup(id){
+
+    document.getElementById(
+        id
+    ).style.display =
+        "none";
+
+}
+
+
+/*
+    Type 3:
+    close anywhere inside,
+    then return timer to normal.
+*/
+
+function closeType3(){
+
+    type3Active =
+        false;
+
+
+    document.getElementById(
+        "type3Popup"
+    ).style.display =
+        "none";
+
+
+    restartTimer();
+
+}
+
+
+/* =========================================================
+   TIMER
+========================================================= */
+
+function startTimer(){
+
+    restartTimer();
+
+}
+
+
+function restartTimer(){
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    timerInterval =
+        setInterval(
+            timerTick,
+            type3Active
+                ? TYPE3_TIMER_SPEED
+                : NORMAL_TIMER_SPEED
+        );
+
+}
+
+
+function timerTick(){
+
+    if(
+        !gameStarted ||
+        finished
+    )
+        return;
+
+
+    secondsLeft--;
+
+
+    if(secondsLeft <= 0){
+
+        secondsLeft =
+            0;
+
+        updateTimer();
+
+        loseGame();
+
+        return;
+
+    }
+
+
+    updateTimer();
+
+
+    /*
+        8:00
+        Type 1 → Type 2
+    */
+
+    if(
+        secondsLeft ===
+        8 * 60
+    ){
+
+        showType2();
+
+    }
+
+
+    /*
+        3:00
+        Type 2 → Type 3
+    */
+
+    if(
+        secondsLeft ===
+        3 * 60
+    ){
+
+        showType3();
+
+    }
+
+}
+
+
+function updateTimer(){
+
+    const minutes =
+        Math.floor(
+            secondsLeft / 60
+        );
+
+
+    const seconds =
+        String(
+            secondsLeft % 60
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    timer.textContent =
+        minutes + ":" + seconds;
+
+}
+
+
+/* =========================================================
+   LAPTOP-ONLY DRAG
+========================================================= */
+
+function isLaptop(){
+
+    return window.matchMedia(
+        "(min-width:701px) and (pointer:fine)"
+    ).matches;
+
+}
+
+
+function enableDragDiamond(){
+
+    if(!isLaptop())
+        return;
+
+
+    dragDiamond.style.display =
+        "block";
+
+
+    dragTarget.style.display =
+        "block";
+
+
+    dragDiamond.style.left =
+        "70px";
+
+
+    dragDiamond.style.top =
+        "500px";
+
+
+    dragTarget.style.right =
+        "80px";
+
+
+    dragTarget.style.bottom =
+        "100px";
+
+}
+
+
+let dragging =
+    false;
+
+let offsetX =
+    0;
+
+let offsetY =
+    0;
+
+
+dragDiamond.addEventListener(
+    "pointerdown",
+    event=>{
+
+        if(!isLaptop())
+            return;
+
+
+        dragging =
+            true;
+
+
+        const rect =
+            dragDiamond.getBoundingClientRect();
+
+
+        offsetX =
+            event.clientX -
+            rect.left;
+
+
+        offsetY =
+            event.clientY -
+            rect.top;
+
+
+        dragDiamond.setPointerCapture(
+            event.pointerId
+        );
+
+    }
+);
+
+
+dragDiamond.addEventListener(
+    "pointermove",
+    event=>{
+
+        if(!dragging)
+            return;
+
+
+        dragDiamond.style.left =
+            (
+                event.clientX -
+                offsetX
+            ) + "px";
+
+
+        dragDiamond.style.top =
+            (
+                event.clientY -
+                offsetY
+            ) + "px";
+
+    }
+);
+
+
+dragDiamond.addEventListener(
+    "pointerup",
+    ()=>{
+
+        if(!dragging)
+            return;
+
+
+        dragging =
+            false;
+
+
+        const diamondRect =
+            dragDiamond.getBoundingClientRect();
+
+
+        const targetRect =
+            dragTarget.getBoundingClientRect();
+
+
+        const overlap =
+            diamondRect.left <
+                targetRect.right &&
+            diamondRect.right >
+                targetRect.left &&
+            diamondRect.top <
+                targetRect.bottom &&
+            diamondRect.bottom >
+                targetRect.top;
+
+
+        if(overlap){
+
+            dragDiamond.style.display =
+                "none";
+
+
+            dragTarget.style.display =
+                "none";
+
+
+            const id =
+                "LaptopDrag-" +
+                Date.now();
+
+
+            collected.add(id);
+
+            updatePayment();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   WIN
+========================================================= */
+
+function winGame(){
+
+    finished =
+        true;
+
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    document.getElementById(
+        "outro"
+    ).style.display =
+        "flex";
+
+
+    document.getElementById(
+        "outroTitle"
+    ).textContent =
+        "YOU WIN";
+
+
+    document.getElementById(
+        "outroTitle"
+    ).className =
+        "winTitle";
+
+
+    document.getElementById(
+        "outroText"
+    ).innerHTML = `
+        The ransom has been paid.
+        <br><br>
+        The system has been restored.
+    `;
+
+}
+
+
+/* =========================================================
+   LOSS
+========================================================= */
+
+function loseGame(){
+
+    if(finished)
+        return;
+
+
+    finished =
+        true;
+
+
+    clearInterval(
+        timerInterval
+    );
+
+
+    document.getElementById(
+        "outro"
+    ).style.display =
+        "flex";
+
+
+    document.getElementById(
+        "outroTitle"
+    ).textContent =
+        "YOU LOST";
+
+
+    document.getElementById(
+        "outroTitle"
+    ).className =
+        "loseTitle";
+
+
+    document.getElementById(
+        "outroText"
+    ).innerHTML = `
+        The timer reached zero.
+        <br><br>
+        Ransom wins.
+    `;
+
+}
+
+
+/* =========================================================
+   INITIAL
+========================================================= */
+
+updateTimer();
 
 </script>
 
