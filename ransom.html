@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Encrypted</title>
+<title>YOU HAVE BEEN ENCRYPTED</title>
 
 <style>
 * {
@@ -17,19 +17,19 @@ html, body {
     width: 100%;
     height: 100%;
     background: #000;
-    color: #eee;
+    color: white;
     font-family: Arial, Helvetica, sans-serif;
     overflow: hidden;
 }
 
-/* =========================
+/* =========================================================
    INTRO
-========================= */
+========================================================= */
 
 #intro {
     position: fixed;
     inset: 0;
-    background: #050505;
+    background: #000;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -37,29 +37,28 @@ html, body {
 }
 
 .claim-button {
-    padding: 20px 55px;
     background: #111;
-    color: white;
-    border: 2px solid #777;
-    font-size: 24px;
+    color: #eee;
+    border: 1px solid #777;
+    padding: 18px 55px;
+    font-size: 22px;
     cursor: pointer;
-    transition: .2s;
 }
 
 .claim-button:hover {
-    background: #1d1d1d;
-    border-color: #fff;
+    background: #222;
+    border-color: #aaa;
 }
 
-/* =========================
+/* =========================================================
    CINEMATIC
-========================= */
+========================================================= */
 
 #cinematic {
     position: fixed;
     inset: 0;
-    background: #000;
     display: none;
+    background: #000;
     z-index: 9000;
 }
 
@@ -71,166 +70,192 @@ html, body {
     justify-content: center;
 }
 
-#phase1 {
+#introPhase1 {
     background: #000;
 }
 
-#phase2 {
+#introPhase2 {
     background:
-        radial-gradient(circle at center, #260000 0%, #090000 40%, #000 100%);
+        radial-gradient(
+            circle at center,
+            #310000 0%,
+            #120000 45%,
+            #000 100%
+        );
 }
 
 .face {
-    width: min(420px, 65vw);
-    max-height: 70vh;
+    width: min(430px, 70vw);
+    max-height: 75vh;
     object-fit: contain;
-    filter: brightness(.75) contrast(1.5);
+    filter:
+        brightness(.7)
+        contrast(1.5);
 }
 
 #introPhase2 .face {
-    animation: argDistort .12s infinite;
+    animation: argGlitch .09s infinite;
 }
 
-@keyframes argDistort {
+@keyframes argGlitch {
+
     0% {
         transform: translate(0,0) skewX(0deg);
         filter: brightness(.7) contrast(1.5);
     }
+
     20% {
-        transform: translate(-5px,2px) skewX(2deg);
-        filter: brightness(.9) contrast(2);
+        transform: translate(-7px,2px) skewX(2deg);
+        filter: brightness(.95) contrast(2);
     }
+
     40% {
-        transform: translate(6px,-2px) skewX(-3deg);
+        transform: translate(5px,-3px) skewX(-3deg);
         filter: brightness(.5) contrast(2.5);
     }
+
     60% {
-        transform: translate(-3px,3px) skewX(1deg);
+        transform: translate(-4px,3px) skewX(1deg);
         filter: brightness(1.1) contrast(1.8);
     }
+
     80% {
-        transform: translate(4px,-3px) skewX(-2deg);
-        filter: brightness(.6) contrast(3);
+        transform: translate(6px,-2px) skewX(-2deg);
+        filter: brightness(.55) contrast(3);
     }
+
     100% {
         transform: translate(0,0) skewX(0deg);
     }
 }
 
 #downloadScreen {
-    background: #000;
     flex-direction: column;
-    gap: 20px;
+    gap: 18px;
 }
 
-.download-title {
-    font-size: 18px;
+.download-text {
     color: #aaa;
+    font-family: monospace;
 }
 
 .download-bar {
     width: min(500px, 75vw);
     height: 18px;
-    border: 1px solid #555;
     background: #111;
+    border: 1px solid #555;
 }
 
 .download-progress {
     width: 0%;
     height: 100%;
-    background: #d00000;
+    background: #c00000;
 }
 
 #encryptedScreen {
-    background: #000;
     flex-direction: column;
 }
 
 .encrypted-title {
-    color: #f00;
-    font-size: clamp(26px, 5vw, 60px);
+    color: red;
+    font-size: clamp(28px, 5vw, 62px);
     font-weight: bold;
     text-align: center;
-    animation: flashRed .7s infinite;
+    animation: encryptedFlash .6s infinite;
 }
 
-@keyframes flashRed {
+@keyframes encryptedFlash {
+
     0%, 100% {
         opacity: 1;
     }
+
     50% {
-        opacity: .25;
+        opacity: .15;
     }
 }
 
-/* =========================
+/* =========================================================
    GAME
-========================= */
+========================================================= */
 
 #game {
     position: fixed;
     inset: 0;
     display: none;
     background:
-        radial-gradient(circle at center, #171717 0%, #090909 70%);
-    z-index: 100;
+        radial-gradient(
+            circle at center,
+            #181818 0%,
+            #080808 75%
+        );
 }
 
 .header {
     height: 65px;
+    background: #080808;
     border-bottom: 1px solid #333;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 22px;
-    background: #080808;
+
+    padding: 0 20px;
 }
 
 .logo {
-    font-size: 20px;
-    font-weight: bold;
-    color: #ddd;
+    font-family: monospace;
+    font-size: 19px;
+    color: #aaa;
 }
 
 .timer {
+    color: #ff2222;
     font-family: monospace;
     font-size: 30px;
-    color: #f33;
     letter-spacing: 2px;
 }
 
 .main {
     height: calc(100% - 65px);
+
     display: grid;
-    grid-template-columns: 1fr 360px;
+    grid-template-columns: 1fr 350px;
+
     gap: 15px;
     padding: 15px;
 }
 
-/* =========================
+/* =========================================================
    FILE EXPLORER
-========================= */
+========================================================= */
 
 .file-explorer {
+    min-width: 0;
+
     background: #101010;
     border: 1px solid #333;
+
     display: flex;
     flex-direction: column;
-    min-width: 0;
 }
 
 .explorer-header {
-    height: 48px;
-    background: #181818;
+    height: 52px;
+
+    background: #171717;
     border-bottom: 1px solid #333;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 14px;
+
+    padding: 0 13px;
 }
 
 .explorer-title {
-    font-weight: bold;
+    font-family: monospace;
+    color: #ccc;
 }
 
 .page-controls {
@@ -243,7 +268,8 @@ html, body {
     background: #222;
     border: 1px solid #555;
     color: #ddd;
-    padding: 6px 10px;
+
+    padding: 6px 11px;
     cursor: pointer;
 }
 
@@ -258,33 +284,40 @@ html, body {
 }
 
 #pageIndicator {
+    color: #888;
     font-family: monospace;
-    min-width: 55px;
+    min-width: 85px;
     text-align: center;
-    color: #aaa;
 }
 
 .file-grid {
     flex: 1;
+
     padding: 15px;
+
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    grid-auto-rows: 1fr;
+    grid-template-rows: repeat(5, 1fr);
+
     gap: 10px;
+
     overflow: hidden;
 }
 
 .file-card {
-    position: relative;
-    background: #151515;
+    background: #141414;
     border: 1px solid #303030;
+
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+
     cursor: grab;
-    transition: .15s;
-    min-width: 0;
+
+    transition:
+        background .1s,
+        border .1s;
 }
 
 .file-card:hover {
@@ -299,28 +332,32 @@ html, body {
 .file-icon {
     width: 30px;
     height: 30px;
+
     transform: rotate(45deg);
-    border: 2px solid #aaa;
-    background: #080808;
+
+    background: #070707;
+    border: 2px solid #999;
+
     margin-bottom: 12px;
 }
 
 .file-name {
-    font-size: 11px;
-    color: #aaa;
-    max-width: 90%;
+    width: 90%;
+
+    text-align: center;
+
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+
+    font-family: monospace;
+    font-size: 10px;
+    color: #888;
 }
 
-.file-card.collected {
-    display: none;
-}
-
-/* =========================
+/* =========================================================
    RIGHT PANEL
-========================= */
+========================================================= */
 
 .right-panel {
     display: flex;
@@ -331,214 +368,398 @@ html, body {
 .face-panel {
     flex: 1;
     min-height: 0;
-    background: #080808;
+
+    background: #050505;
     border: 1px solid #333;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     overflow: hidden;
 }
 
 .face-panel img {
     width: 100%;
     height: 100%;
+
     object-fit: contain;
-    filter: brightness(.8) contrast(1.4);
+
+    filter:
+        brightness(.75)
+        contrast(1.4);
 }
 
 .payment-area {
     height: 160px;
+
+    background: #080808;
+
     border: 2px dashed #555;
-    background: #0b0b0b;
+
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+
     gap: 8px;
+
     transition: .15s;
 }
 
 .payment-area.dragover {
-    border-color: #f00;
-    background: #180000;
+    border-color: red;
+    background: #190000;
 }
 
 .payment-title {
-    color: #aaa;
-    font-size: 14px;
-}
-
-.payment-count {
-    font-size: 24px;
+    color: #888;
     font-family: monospace;
 }
 
-.payment-value {
-    color: #777;
-    font-size: 12px;
+.payment-count {
+    font-size: 25px;
+    font-family: monospace;
 }
 
-/* =========================
-   POPUPS
-========================= */
+.payment-hint {
+    color: #555;
+    font-size: 11px;
+}
+
+/* =========================================================
+   OLD-STYLE POPUP
+========================================================= */
 
 .popup-layer {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,.72);
+
     display: none;
+
     align-items: center;
     justify-content: center;
+
     z-index: 5000;
+
+    background:
+        rgba(0,0,0,.58);
 }
 
-.popup {
-    width: min(560px, 90vw);
-    background: #0b0b0b;
-    border: 2px solid #8d0000;
+.popup-window {
+    width: min(570px, 90vw);
+
+    background: #111;
+
+    border: 1px solid #666;
+
     box-shadow:
-        0 0 10px rgba(255,0,0,.35),
-        inset 0 0 25px rgba(100,0,0,.12);
+        0 0 0 1px #050505,
+        0 0 30px rgba(0,0,0,.9);
+
+    animation: popupOpen .12s ease-out;
+
     cursor: pointer;
-    animation: popupAppear .15s ease-out;
 }
 
-@keyframes popupAppear {
+@keyframes popupOpen {
+
     from {
         transform: scale(.96);
         opacity: 0;
     }
+
     to {
         transform: scale(1);
         opacity: 1;
     }
 }
 
-.popup-top {
-    height: 42px;
-    background: #170000;
-    border-bottom: 1px solid #650000;
+/*
+    This is deliberately styled more like an
+    old desktop warning/ransom popup rather than
+    a modern modal.
+*/
+
+.popup-titlebar {
+    height: 34px;
+
+    background:
+        linear-gradient(
+            #292929,
+            #171717
+        );
+
+    border-bottom: 1px solid #555;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 14px;
+
+    padding-left: 10px;
+    padding-right: 6px;
+
+    font-family: monospace;
+    font-size: 12px;
+
+    color: #ddd;
 }
 
-.popup-warning {
-    color: #ff2020;
+.popup-titlebar-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.popup-app-icon {
+    width: 14px;
+    height: 14px;
+
+    background: #8b0000;
+
+    border: 1px solid #d00000;
+}
+
+.popup-close {
+    width: 23px;
+    height: 22px;
+
+    background: #222;
+
+    border: 1px solid #555;
+
+    color: #aaa;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 13px;
+}
+
+.popup-content {
+    padding: 22px;
+
+    background:
+        linear-gradient(
+            rgba(255,0,0,.025),
+            rgba(255,0,0,.025)
+        ),
+        #0d0d0d;
+}
+
+.popup-warning-row {
+    display: flex;
+    align-items: center;
+
+    gap: 17px;
+
+    margin-bottom: 18px;
+}
+
+.popup-warning-symbol {
+    width: 45px;
+    height: 45px;
+
+    border: 2px solid #c00000;
+
+    color: red;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 27px;
     font-weight: bold;
-    font-family: monospace;
 }
 
-.popup-symbol {
-    color: #800000;
-    font-size: 20px;
+.popup-heading {
+    color: #eee;
+
+    font-size: 18px;
+    font-weight: bold;
 }
 
-.popup-body {
-    padding: 25px;
+.popup-message {
+    color: #aaa;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 13px;
+
+    line-height: 1.55;
 }
 
-.popup-body h2 {
-    margin: 0 0 15px;
-    color: #f22;
-    font-size: 21px;
-}
-
-.popup-body p {
-    margin: 8px 0;
-    color: #bbb;
-    line-height: 1.5;
-    font-size: 14px;
-}
-
-.popup-code {
+.popup-status {
     margin-top: 18px;
-    padding: 12px;
-    background: #050505;
+
+    padding: 11px;
+
+    background: #070707;
+
     border: 1px solid #333;
-    color: #f33;
+
+    color: #e22;
+
     font-family: monospace;
+
+    font-size: 12px;
 }
 
-.popup-footer {
-    padding: 10px 14px;
-    border-top: 1px solid #252525;
+.popup-bottom {
+    height: 34px;
+
+    border-top: 1px solid #292929;
+
+    background: #0a0a0a;
+
+    display: flex;
+    align-items: center;
+
+    padding-left: 12px;
+
     color: #555;
-    font-size: 11px;
+
     font-family: monospace;
+
+    font-size: 10px;
 }
 
-/* =========================
-   MINIGAME
-========================= */
+/* =========================================================
+   TYPE 3 SPECIAL
+========================================================= */
+
+#popup3 .popup-window {
+    border-color: #9b0000;
+
+    box-shadow:
+        0 0 0 1px #280000,
+        0 0 35px rgba(180,0,0,.25);
+}
+
+#popup3 .popup-titlebar {
+    background:
+        linear-gradient(
+            #380000,
+            #190000
+        );
+
+    border-color: #7b0000;
+}
+
+#popup3 .popup-heading {
+    color: #ff2222;
+}
+
+#popup3 .popup-warning-symbol {
+    animation: warningPulse .35s infinite;
+}
+
+@keyframes warningPulse {
+
+    0%, 100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: .25;
+    }
+}
+
+/* =========================================================
+   VERIFICATION
+========================================================= */
 
 #minigame {
     position: fixed;
     inset: 0;
-    background: #050505;
+
     display: none;
+
+    background: #050505;
+
     z-index: 3000;
+
     padding: 25px;
 }
 
 .minigame-box {
-    max-width: 700px;
+    width: min(700px, 90vw);
+
     margin: 70px auto;
+
     background: #101010;
+
     border: 1px solid #444;
+
     padding: 30px;
 }
 
 .minigame-box h2 {
-    margin-top: 0;
     color: #e22;
+    margin-top: 0;
 }
 
 .progress-track {
     height: 15px;
+
     background: #222;
+
     border: 1px solid #444;
+
     margin: 20px 0;
 }
 
 .progress-fill {
     width: 0%;
     height: 100%;
-    background: #c00;
+    background: #c00000;
 }
 
 .verify-button {
     padding: 12px 25px;
+
     background: #111;
+
     color: white;
+
     border: 1px solid #777;
+
     cursor: pointer;
 }
 
-.verify-button:hover {
-    background: #222;
+.verify-button:disabled {
+    opacity: .3;
+    cursor: default;
 }
 
-/* =========================
+/* =========================================================
    FINAL
-========================= */
+========================================================= */
 
 #finalVerification {
     position: fixed;
     inset: 0;
+
     display: none;
-    z-index: 7000;
-    background: #000;
+
     align-items: center;
     justify-content: center;
+
+    background: #000;
+
+    z-index: 7000;
 }
 
 .final-box {
     width: min(500px, 90vw);
-    background: #101010;
-    border: 1px solid #555;
+
     padding: 30px;
+
+    background: #101010;
+
+    border: 1px solid #555;
+
     text-align: center;
 }
 
@@ -547,19 +768,23 @@ html, body {
 }
 
 .final-code {
-    margin: 20px 0;
     padding: 15px;
+
+    margin: 20px 0;
+
     background: #050505;
+
     border: 1px solid #333;
+
     font-family: monospace;
-    color: #fff;
 }
 
-/* =========================
+/* =========================================================
    MOBILE
-========================= */
+========================================================= */
 
 @media (max-width: 700px) {
+
     .main {
         grid-template-columns: 1fr;
     }
@@ -570,304 +795,492 @@ html, body {
 
     .file-grid {
         grid-template-columns: repeat(3, 1fr);
-        grid-auto-rows: 1fr;
+        grid-template-rows: repeat(6, 1fr);
     }
 
     .timer {
-        font-size: 23px;
+        font-size: 22px;
     }
 
     .logo {
-        font-size: 14px;
+        font-size: 13px;
     }
+
+    .popup-window {
+        width: 92vw;
+    }
+
 }
 </style>
 </head>
 
 <body>
 
-<!-- =========================
+<!-- =========================================================
      INTRO
-========================= -->
+========================================================= -->
 
 <div id="intro">
-    <button class="claim-button" onclick="startIntro()">
+
+    <button
+        class="claim-button"
+        onclick="startIntro()"
+    >
         CLAIM $500
     </button>
+
 </div>
 
-<!-- =========================
+
+<!-- =========================================================
      CINEMATIC
-========================= -->
+========================================================= -->
 
 <div id="cinematic">
 
-    <div id="introPhase1" class="cinema-screen">
+    <div
+        id="introPhase1"
+        class="cinema-screen"
+    >
+
         <img
             class="face"
             src="https://raw.githubusercontent.com/jameslovechezze-ui/free-cash/main/ransom1.jpg"
-            alt=""
         >
+
     </div>
 
-    <div id="introPhase2" class="cinema-screen">
+
+    <div
+        id="introPhase2"
+        class="cinema-screen"
+    >
+
         <img
             class="face"
             src="https://raw.githubusercontent.com/jameslovechezze-ui/free-cash/main/ransom2.jpg"
-            alt=""
         >
+
     </div>
 
-    <div id="downloadScreen" class="cinema-screen">
-        <div class="download-title">
+
+    <div
+        id="downloadScreen"
+        class="cinema-screen"
+    >
+
+        <div class="download-text">
             DOWNLOADING...
         </div>
 
         <div class="download-bar">
-            <div id="downloadProgress" class="download-progress"></div>
+
+            <div
+                id="downloadProgress"
+                class="download-progress"
+            ></div>
+
         </div>
+
     </div>
 
-    <div id="encryptedScreen" class="cinema-screen">
+
+    <div
+        id="encryptedScreen"
+        class="cinema-screen"
+    >
+
         <div class="encrypted-title">
             YOU HAVE BEEN ENCRYPTED.
         </div>
+
     </div>
 
 </div>
 
-<!-- =========================
+
+<!-- =========================================================
      GAME
-========================= -->
+========================================================= -->
 
 <div id="game">
 
     <div class="header">
+
         <div class="logo">
             ENCRYPTED_SYSTEM
         </div>
 
-        <div id="timer" class="timer">
+        <div
+            id="timer"
+            class="timer"
+        >
             14:00
         </div>
+
     </div>
 
+
     <div class="main">
+
+        <!-- FILE EXPLORER -->
 
         <div class="file-explorer">
 
             <div class="explorer-header">
+
                 <div class="explorer-title">
                     FILE EXPLORER
                 </div>
 
                 <div class="page-controls">
-                    <button id="prevPage" onclick="previousFilePage()">
-                        ◀
+
+                    <button
+                        id="prevPage"
+                        onclick="previousFilePage()"
+                    >
+                        ◀ Prev
                     </button>
 
                     <div id="pageIndicator">
-                        1 / 18
+                        Page 1 / 18
                     </div>
 
-                    <button id="nextPage" onclick="nextFilePage()">
-                        ▶
+                    <button
+                        id="nextPage"
+                        onclick="nextFilePage()"
+                    >
+                        Next ▶
                     </button>
+
                 </div>
+
             </div>
 
-            <div id="fileGrid" class="file-grid"></div>
+
+            <div
+                id="fileGrid"
+                class="file-grid"
+            ></div>
 
         </div>
+
+
+        <!-- RIGHT SIDE -->
 
         <div class="right-panel">
 
             <div class="face-panel">
+
                 <img
                     src="https://raw.githubusercontent.com/jameslovechezze-ui/free-cash/main/ransom2.jpg"
-                    alt=""
                 >
+
             </div>
+
 
             <div
                 id="paymentArea"
                 class="payment-area"
             >
+
                 <div class="payment-title">
                     PAYMENT AREA
                 </div>
 
-                <div id="paymentCount" class="payment-count">
+                <div
+                    id="paymentCount"
+                    class="payment-count"
+                >
                     0 / 450
                 </div>
 
-                <div class="payment-value">
-                    MOVE THE FILE HERE
+                <div class="payment-hint">
+                    DRAG FILE HERE
                 </div>
+
             </div>
 
         </div>
 
     </div>
+
 </div>
 
-<!-- =========================
+
+<!-- =========================================================
      POPUP 1
-========================= -->
+     14:00 -> 8:00
+========================================================= -->
 
-<div id="popup1" class="popup-layer">
-    <div class="popup" onclick="closePopup('popup1')">
+<div
+    id="popup1"
+    class="popup-layer"
+>
 
-        <div class="popup-top">
-            <div class="popup-warning">
-                !!! SYSTEM WARNING !!!
+    <div
+        class="popup-window"
+        onclick="closePopup('popup1')"
+    >
+
+        <div class="popup-titlebar">
+
+            <div class="popup-titlebar-left">
+
+                <div class="popup-app-icon"></div>
+
+                <span>
+                    Windows Security Notification
+                </span>
+
             </div>
 
-            <div class="popup-symbol">
-                ⚠
+            <div class="popup-close">
+                ×
             </div>
+
         </div>
 
-        <div class="popup-body">
 
-            <h2>
-                YOUR FILES ARE NO LONGER SAFE.
-            </h2>
+        <div class="popup-content">
 
-            <p>
-                Your files have been processed by an unknown system.
-            </p>
+            <div class="popup-warning-row">
 
-            <p>
-                You have been given a limited amount of time.
-            </p>
+                <div class="popup-warning-symbol">
+                    !
+                </div>
 
-            <div class="popup-code">
+                <div class="popup-heading">
+                    YOUR FILES ARE NO LONGER SAFE.
+                </div>
+
+            </div>
+
+
+            <div class="popup-message">
+
+                Your files have been encrypted by an
+                unknown process.
+
+                <br><br>
+
+                Do not close this window if you want
+                to continue the recovery process.
+
+                <br><br>
+
+                A limited amount of time remains.
+
+            </div>
+
+
+            <div class="popup-status">
                 STATUS: ENCRYPTION_ACTIVE
             </div>
 
         </div>
 
-        <div class="popup-footer">
-            CLICK ANYWHERE INSIDE THIS WINDOW TO CONTINUE
+
+        <div class="popup-bottom">
+            CLICK ANYWHERE IN THIS WINDOW TO CONTINUE
         </div>
 
     </div>
+
 </div>
 
-<!-- =========================
+
+<!-- =========================================================
      POPUP 2
-========================= -->
+     8:00 -> 3:00
+========================================================= -->
 
-<div id="popup2" class="popup-layer">
-    <div class="popup" onclick="closePopup('popup2')">
+<div
+    id="popup2"
+    class="popup-layer"
+>
 
-        <div class="popup-top">
-            <div class="popup-warning">
-                !!! WARNING !!!
+    <div
+        class="popup-window"
+        onclick="closePopup('popup2')"
+    >
+
+        <div class="popup-titlebar">
+
+            <div class="popup-titlebar-left">
+
+                <div class="popup-app-icon"></div>
+
+                <span>
+                    System Warning
+                </span>
+
             </div>
 
-            <div class="popup-symbol">
-                ⚠
+            <div class="popup-close">
+                ×
             </div>
+
         </div>
 
-        <div class="popup-body">
 
-            <h2>
-                YOU ARE RUNNING OUT OF TIME.
-            </h2>
+        <div class="popup-content">
 
-            <p>
-                More files have been affected.
-            </p>
+            <div class="popup-warning-row">
 
-            <p>
-                Whatever you are doing, you should probably do it faster.
-            </p>
+                <div class="popup-warning-symbol">
+                    !
+                </div>
 
-            <div class="popup-code">
+                <div class="popup-heading">
+                    YOU ARE RUNNING OUT OF TIME.
+                </div>
+
+            </div>
+
+
+            <div class="popup-message">
+
+                The recovery process has detected
+                additional encrypted files.
+
+                <br><br>
+
+                Your remaining recovery window
+                is becoming significantly shorter.
+
+                <br><br>
+
+                Continue immediately.
+
+            </div>
+
+
+            <div class="popup-status">
                 SYSTEM_STATUS: CRITICAL
             </div>
 
         </div>
 
-        <div class="popup-footer">
-            CLICK ANYWHERE INSIDE THIS WINDOW TO CONTINUE
+
+        <div class="popup-bottom">
+            CLICK ANYWHERE IN THIS WINDOW TO CONTINUE
         </div>
 
     </div>
+
 </div>
 
-<!-- =========================
+
+<!-- =========================================================
      POPUP 3
-========================= -->
+     3:00 -> 0:00
+========================================================= -->
 
-<div id="popup3" class="popup-layer">
-    <div class="popup" onclick="closePopup('popup3')">
+<div
+    id="popup3"
+    class="popup-layer"
+>
 
-        <div class="popup-top">
-            <div class="popup-warning">
-                !!! FINAL WARNING !!!
+    <div
+        class="popup-window"
+        onclick="closePopup('popup3')"
+    >
+
+        <div class="popup-titlebar">
+
+            <div class="popup-titlebar-left">
+
+                <div class="popup-app-icon"></div>
+
+                <span>
+                    FINAL SYSTEM WARNING
+                </span>
+
             </div>
 
-            <div class="popup-symbol">
-                ⚠
+            <div class="popup-close">
+                ×
             </div>
+
         </div>
 
-        <div class="popup-body">
 
-            <h2>
-                FINAL COUNTDOWN.
-            </h2>
+        <div class="popup-content">
 
-            <p>
-                The system has entered its final stage.
-            </p>
+            <div class="popup-warning-row">
 
-            <p>
-                The remaining time is now extremely limited.
-            </p>
+                <div class="popup-warning-symbol">
+                    !
+                </div>
 
-            <div class="popup-code">
+                <div class="popup-heading">
+                    FINAL COUNTDOWN.
+                </div>
+
+            </div>
+
+
+            <div class="popup-message">
+
+                The system has entered its final
+                recovery stage.
+
+                <br><br>
+
+                The remaining time is extremely limited.
+
+                <br><br>
+
+                The system timer has entered
+                accelerated mode.
+
+            </div>
+
+
+            <div class="popup-status">
                 TIMER_MODE: ACCELERATED
             </div>
 
         </div>
 
-        <div class="popup-footer">
-            CLICK ANYWHERE INSIDE THIS WINDOW TO CONTINUE
+
+        <div class="popup-bottom">
+            CLICK ANYWHERE IN THIS WINDOW TO CONTINUE
         </div>
 
     </div>
+
 </div>
 
-<!-- =========================
-     MINIGAME
-========================= -->
+
+<!-- =========================================================
+     VERIFICATION
+========================================================= -->
 
 <div id="minigame">
 
     <div class="minigame-box">
 
         <h2>
-            VERIFICATION REQUIRED
+            FINAL VERIFICATION
         </h2>
 
         <p>
-            All files have been collected.
+            All 450 encrypted files have been collected.
         </p>
 
         <p>
-            Running final verification...
+            Verifying recovery data...
         </p>
 
         <div class="progress-track">
+
             <div
                 id="verificationProgress"
                 class="progress-fill"
             ></div>
+
         </div>
 
         <button
@@ -883,9 +1296,10 @@ html, body {
 
 </div>
 
-<!-- =========================
+
+<!-- =========================================================
      FINAL
-========================= -->
+========================================================= -->
 
 <div id="finalVerification">
 
@@ -914,6 +1328,7 @@ html, body {
 
 </div>
 
+
 <script>
 
 /* =========================================================
@@ -921,19 +1336,31 @@ html, body {
 ========================================================= */
 
 function showCinema(id) {
-    document.querySelectorAll(".cinema-screen").forEach(screen => {
-        screen.style.display = "none";
-    });
+
+    document
+        .querySelectorAll(".cinema-screen")
+        .forEach(screen => {
+
+            screen.style.display = "none";
+
+        });
 
     document.getElementById(id).style.display = "flex";
+
 }
+
 
 function startIntro() {
 
-    document.getElementById("intro").style.display = "none";
-    document.getElementById("cinematic").style.display = "block";
+    document.getElementById("intro").style.display =
+        "none";
+
+    document.getElementById("cinematic").style.display =
+        "block";
+
 
     showCinema("introPhase1");
+
 
     setTimeout(() => {
 
@@ -941,13 +1368,17 @@ function startIntro() {
 
     }, 2200);
 
+
     setTimeout(() => {
 
         showCinema("downloadScreen");
+
         startDownload();
 
     }, 5200);
+
 }
+
 
 function startDownload() {
 
@@ -955,341 +1386,628 @@ function startDownload() {
 
     const interval = setInterval(() => {
 
-        progress += Math.random() * 5 + 2;
+        progress +=
+            Math.random() * 5 + 2;
+
 
         if (progress >= 100) {
+
             progress = 100;
+
             clearInterval(interval);
+
 
             setTimeout(() => {
 
                 showCinema("encryptedScreen");
 
+
                 setTimeout(() => {
 
-                    document.getElementById("cinematic").style.display = "none";
-                    document.getElementById("game").style.display = "block";
+                    document.getElementById(
+                        "cinematic"
+                    ).style.display = "none";
+
+
+                    document.getElementById(
+                        "game"
+                    ).style.display = "block";
+
 
                     startGame();
 
                 }, 2500);
 
             }, 500);
+
         }
 
-        document.getElementById("downloadProgress").style.width =
+
+        document.getElementById(
+            "downloadProgress"
+        ).style.width =
             progress + "%";
 
     }, 120);
 
 }
 
+
 /* =========================================================
-   FILE SYSTEM
+   FILES
 ========================================================= */
 
 const TOTAL_FILES = 450;
+
 const FILES_PER_PAGE = 25;
+
 const TOTAL_PAGES = 18;
 
 let currentPage = 1;
+
 let collected = new Set();
 
+
 const folders = [
+
     {
         name: "Documents",
         start: 1,
         end: 100
     },
+
     {
         name: "Downloads",
         start: 101,
         end: 200
     },
+
     {
         name: "Pictures",
         start: 201,
         end: 300
     },
+
     {
         name: "Games",
         start: 301,
         end: 400
     },
+
     {
         name: "System",
         start: 401,
         end: 450
     }
+
 ];
 
-function getAllFiles() {
 
-    const files = [];
+const allFiles = [];
 
-    folders.forEach(folder => {
 
-        for (let i = folder.start; i <= folder.end; i++) {
+folders.forEach(folder => {
 
-            files.push({
-                id: i,
-                folder: folder.name,
-                name: `Diamond_${String(i).padStart(3, "0")}.dat`
-            });
+    for (
+        let i = folder.start;
+        i <= folder.end;
+        i++
+    ) {
 
+        allFiles.push({
+
+            id: i,
+
+            folder: folder.name,
+
+            name:
+                `Diamond_${String(i).padStart(3,"0")}.dat`
+
+        });
+
+    }
+
+});
+
+
+/* =========================================================
+   FIXED PAGE
+========================================================= */
+
+function getFilesForPage(page) {
+
+    const start =
+        (page - 1) * FILES_PER_PAGE;
+
+    const end =
+        start + FILES_PER_PAGE;
+
+    return allFiles.slice(start, end);
+
+}
+
+
+function pageHasUnpaidFiles(page) {
+
+    return getFilesForPage(page)
+        .some(file =>
+            !collected.has(file.id)
+        );
+
+}
+
+
+function findNearestValidPage() {
+
+    if (
+        pageHasUnpaidFiles(currentPage)
+    ) {
+
+        return currentPage;
+
+    }
+
+
+    for (
+        let page = currentPage + 1;
+        page <= TOTAL_PAGES;
+        page++
+    ) {
+
+        if (pageHasUnpaidFiles(page)) {
+            return page;
         }
 
-    });
+    }
 
-    return files;
+
+    for (
+        let page = currentPage - 1;
+        page >= 1;
+        page--
+    ) {
+
+        if (pageHasUnpaidFiles(page)) {
+            return page;
+        }
+
+    }
+
+
+    return null;
+
 }
 
-const allFiles = getAllFiles();
 
-function getUnpaidFiles() {
-    return allFiles.filter(file => !collected.has(file.id));
-}
+/* =========================================================
+   RENDER FILE PAGE
+========================================================= */
 
 function renderFilePage() {
 
-    const grid = document.getElementById("fileGrid");
+    const grid =
+        document.getElementById(
+            "fileGrid"
+        );
+
     grid.innerHTML = "";
 
-    const unpaid = getUnpaidFiles();
 
-    const start = (currentPage - 1) * FILES_PER_PAGE;
-    const pageFiles = unpaid.slice(start, start + FILES_PER_PAGE);
+    const files =
+        getFilesForPage(currentPage);
 
-    pageFiles.forEach(file => {
 
-        const card = document.createElement("div");
+    files.forEach(file => {
 
-        card.className = "file-card";
-        card.dataset.id = file.id;
+        if (
+            collected.has(file.id)
+        ) {
+            return;
+        }
 
-        card.draggable = isPC();
+
+        const card =
+            document.createElement("div");
+
+
+        card.className =
+            "file-card";
+
+
+        card.dataset.id =
+            file.id;
+
+
+        card.draggable =
+            isPC();
+
 
         card.innerHTML = `
+
             <div class="file-icon"></div>
-            <div class="file-name">${file.name}</div>
+
+            <div class="file-name">
+                ${file.name}
+            </div>
+
         `;
 
-        /* PC */
 
-        card.addEventListener("dragstart", event => {
+        /*
+            PC = drag the actual file.
+        */
 
-            if (!isPC()) return;
+        card.addEventListener(
+            "dragstart",
+            event => {
 
-            event.dataTransfer.setData(
-                "text/plain",
-                String(file.id)
-            );
+                if (!isPC()) return;
 
-        });
 
-        /* MOBILE */
+                event.dataTransfer.setData(
+                    "text/plain",
+                    String(file.id)
+                );
 
-        card.addEventListener("click", () => {
-
-            if (!isPC()) {
-                collectDiamond(file.id);
             }
+        );
 
-        });
+
+        /*
+            Mobile = tap file.
+        */
+
+        card.addEventListener(
+            "click",
+            () => {
+
+                if (!isPC()) {
+
+                    collectDiamond(file.id);
+
+                }
+
+            }
+        );
+
 
         grid.appendChild(card);
 
     });
 
+
     updatePageControls();
+
 }
+
+
+/* =========================================================
+   PAGE CONTROLS
+========================================================= */
 
 function updatePageControls() {
 
-    const unpaid = getUnpaidFiles();
+    document.getElementById(
+        "pageIndicator"
+    ).textContent =
+        `Page ${currentPage} / ${TOTAL_PAGES}`;
 
-    const maxPage = Math.max(
-        1,
-        Math.ceil(unpaid.length / FILES_PER_PAGE)
-    );
 
-    if (currentPage > maxPage) {
-        currentPage = maxPage;
-    }
-
-    document.getElementById("pageIndicator").textContent =
-        `${currentPage} / ${maxPage}`;
-
-    document.getElementById("prevPage").disabled =
+    document.getElementById(
+        "prevPage"
+    ).disabled =
         currentPage <= 1;
 
-    document.getElementById("nextPage").disabled =
-        currentPage >= maxPage;
+
+    document.getElementById(
+        "nextPage"
+    ).disabled =
+        currentPage >= TOTAL_PAGES;
+
 }
+
 
 function previousFilePage() {
 
-    if (currentPage > 1) {
-
-        currentPage--;
-
-        renderFilePage();
-
+    if (currentPage <= 1) {
+        return;
     }
+
+
+    currentPage--;
+
+    renderFilePage();
+
 }
+
 
 function nextFilePage() {
 
-    const unpaid = getUnpaidFiles();
-
-    const maxPage = Math.max(
-        1,
-        Math.ceil(unpaid.length / FILES_PER_PAGE)
-    );
-
-    if (currentPage < maxPage) {
-
-        currentPage++;
-
-        renderFilePage();
-
+    if (
+        currentPage >= TOTAL_PAGES
+    ) {
+        return;
     }
+
+
+    currentPage++;
+
+    renderFilePage();
+
 }
 
+
 /* =========================================================
-   DRAG AND DROP
+   DRAG & DROP
 ========================================================= */
 
-const paymentArea = document.getElementById("paymentArea");
-
-paymentArea.addEventListener("dragover", event => {
-
-    if (!isPC()) return;
-
-    event.preventDefault();
-
-    paymentArea.classList.add("dragover");
-
-});
-
-paymentArea.addEventListener("dragleave", () => {
-
-    paymentArea.classList.remove("dragover");
-
-});
-
-paymentArea.addEventListener("drop", event => {
-
-    if (!isPC()) return;
-
-    event.preventDefault();
-
-    paymentArea.classList.remove("dragover");
-
-    const id = Number(
-        event.dataTransfer.getData("text/plain")
+const paymentArea =
+    document.getElementById(
+        "paymentArea"
     );
 
-    if (id) {
-        collectDiamond(id);
-    }
 
-});
+paymentArea.addEventListener(
+    "dragover",
+    event => {
+
+        if (!isPC()) return;
+
+        event.preventDefault();
+
+        paymentArea.classList.add(
+            "dragover"
+        );
+
+    }
+);
+
+
+paymentArea.addEventListener(
+    "dragleave",
+    () => {
+
+        paymentArea.classList.remove(
+            "dragover"
+        );
+
+    }
+);
+
+
+paymentArea.addEventListener(
+    "drop",
+    event => {
+
+        if (!isPC()) return;
+
+        event.preventDefault();
+
+
+        paymentArea.classList.remove(
+            "dragover"
+        );
+
+
+        const id =
+            Number(
+                event.dataTransfer.getData(
+                    "text/plain"
+                )
+            );
+
+
+        if (id) {
+
+            collectDiamond(id);
+
+        }
+
+    }
+);
+
 
 /* =========================================================
-   COLLECTION
+   COLLECT
 ========================================================= */
 
 function collectDiamond(id) {
 
-    if (collected.has(id)) return;
+    if (
+        collected.has(id)
+    ) {
+        return;
+    }
+
 
     collected.add(id);
 
-    document.getElementById("paymentCount").textContent =
+
+    document.getElementById(
+        "paymentCount"
+    ).textContent =
         `${collected.size} / ${TOTAL_FILES}`;
 
-    const unpaid = getUnpaidFiles();
 
-    const maxPage = Math.max(
-        1,
-        Math.ceil(unpaid.length / FILES_PER_PAGE)
-    );
+    /*
+        If this page became empty,
+        automatically jump to another
+        page with unpaid files.
+    */
 
-    if (currentPage > maxPage) {
-        currentPage = maxPage;
+    if (
+        !pageHasUnpaidFiles(currentPage)
+    ) {
+
+        const nextValidPage =
+            findNearestValidPage();
+
+
+        if (
+            nextValidPage !== null
+        ) {
+
+            currentPage =
+                nextValidPage;
+
+        }
+
     }
+
 
     renderFilePage();
 
-    if (collected.size >= TOTAL_FILES) {
+
+    if (
+        collected.size >= TOTAL_FILES
+    ) {
+
         unlockMinigame();
+
     }
+
 }
 
-function isPC() {
-    return window.innerWidth > 700 &&
-           window.matchMedia("(pointer:fine)").matches;
-}
 
 /* =========================================================
-   GAME / TIMER
+   DEVICE
+========================================================= */
+
+function isPC() {
+
+    return (
+        window.innerWidth > 700 &&
+        window.matchMedia(
+            "(pointer:fine)"
+        ).matches
+    );
+
+}
+
+
+/* =========================================================
+   TIMER
 ========================================================= */
 
 let secondsLeft = 14 * 60;
+
 let timerInterval = null;
+
 let popup3Open = false;
+
 let popup1Shown = false;
+
 let popup2Shown = false;
+
 let popup3Shown = false;
+
 
 function startGame() {
 
     currentPage = 1;
-    secondsLeft = 14 * 60;
+
+    secondsLeft =
+        14 * 60;
+
 
     renderFilePage();
+
     updateTimer();
 
-    timerInterval = setInterval(() => {
 
-        secondsLeft--;
-
-        updateTimer();
-        checkPopupPhase();
-
-        if (secondsLeft <= 0) {
-
-            clearInterval(timerInterval);
-
-            loseGame();
-
-        }
-
-    }, 1000);
+    timerInterval =
+        setInterval(
+            normalTimerTick,
+            1000
+        );
 
 }
+
+
+function normalTimerTick() {
+
+    secondsLeft--;
+
+    updateTimer();
+
+    checkPopupPhase();
+
+
+    if (
+        secondsLeft <= 0
+    ) {
+
+        clearInterval(
+            timerInterval
+        );
+
+        loseGame();
+
+    }
+
+}
+
+
+function acceleratedTimerTick() {
+
+    secondsLeft--;
+
+    updateTimer();
+
+
+    if (
+        secondsLeft <= 0
+    ) {
+
+        clearInterval(
+            timerInterval
+        );
+
+        loseGame();
+
+    }
+
+}
+
 
 function updateTimer() {
 
-    const minutes = Math.floor(secondsLeft / 60);
-    const seconds = secondsLeft % 60;
+    const minutes =
+        Math.floor(
+            secondsLeft / 60
+        );
 
-    document.getElementById("timer").textContent =
-        `${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`;
+
+    const seconds =
+        secondsLeft % 60;
+
+
+    document.getElementById(
+        "timer"
+    ).textContent =
+
+        `${String(minutes).padStart(2,"0")}:` +
+        `${String(seconds).padStart(2,"0")}`;
 
 }
+
 
 /* =========================================================
    POPUP PHASES
 ========================================================= */
 
-function checkPopupPhase() {
+/*
+    Type 1:
+    14:00 -> 8:00
 
-    /*
-        TYPE 1:
-        14:00 -> 8:00
-    */
+    Type 2:
+    8:00 -> 3:00
+
+    Type 3:
+    3:00 -> 0:00
+*/
+
+function checkPopupPhase() {
 
     if (
         secondsLeft <= 14 * 60 &&
@@ -1303,10 +2021,6 @@ function checkPopupPhase() {
 
     }
 
-    /*
-        TYPE 2:
-        8:00 -> 3:00
-    */
 
     if (
         secondsLeft <= 8 * 60 &&
@@ -1320,10 +2034,6 @@ function checkPopupPhase() {
 
     }
 
-    /*
-        TYPE 3:
-        3:00 -> 0:00
-    */
 
     if (
         secondsLeft <= 3 * 60 &&
@@ -1338,135 +2048,186 @@ function checkPopupPhase() {
 
 }
 
+
+/* =========================================================
+   OPEN POPUP
+========================================================= */
+
 function openPopup(id) {
 
-    document.getElementById(id).style.display = "flex";
+    document.getElementById(
+        id
+    ).style.display = "flex";
 
-    if (id === "popup3") {
+
+    /*
+        Type 3 accelerates the timer
+        while the popup is open.
+    */
+
+    if (
+        id === "popup3"
+    ) {
 
         popup3Open = true;
 
-        /*
-            Stop the normal timer.
-            Replace it with the accelerated timer.
-        */
 
         if (timerInterval) {
-            clearInterval(timerInterval);
+
+            clearInterval(
+                timerInterval
+            );
+
         }
 
-        timerInterval = setInterval(() => {
 
-            secondsLeft--;
-
-            updateTimer();
-
-            if (secondsLeft <= 0) {
-
-                clearInterval(timerInterval);
-
-                loseGame();
-
-            }
-
-        }, 500);
+        timerInterval =
+            setInterval(
+                acceleratedTimerTick,
+                500
+            );
 
     }
 
 }
+
+
+/* =========================================================
+   CLOSE POPUP
+========================================================= */
 
 function closePopup(id) {
 
-    document.getElementById(id).style.display = "none";
+    document.getElementById(
+        id
+    ).style.display = "none";
 
-    if (id === "popup3" && popup3Open) {
+
+    /*
+        Type 1 & Type 2:
+        Simply disappear.
+
+        Type 3:
+        Restore normal timer speed.
+    */
+
+    if (
+        id === "popup3" &&
+        popup3Open
+    ) {
 
         popup3Open = false;
 
+
         if (timerInterval) {
-            clearInterval(timerInterval);
+
+            clearInterval(
+                timerInterval
+            );
+
         }
 
-        /*
-            Restores normal speed after popup 3
-            is closed.
-        */
 
-        timerInterval = setInterval(() => {
-
-            secondsLeft--;
-
-            updateTimer();
-
-            if (secondsLeft <= 0) {
-
-                clearInterval(timerInterval);
-
-                loseGame();
-
-            }
-
-        }, 1000);
+        timerInterval =
+            setInterval(
+                normalTimerTick,
+                1000
+            );
 
     }
 
 }
 
+
 /* =========================================================
-   MINIGAME
+   VERIFICATION
 ========================================================= */
 
 function unlockMinigame() {
 
     if (timerInterval) {
-        clearInterval(timerInterval);
+
+        clearInterval(
+            timerInterval
+        );
+
     }
 
-    document.getElementById("minigame").style.display = "block";
 
-    runVerificationProgress();
+    document.getElementById(
+        "minigame"
+    ).style.display =
+        "block";
+
+
+    runVerification();
 
 }
 
-function runVerificationProgress() {
+
+function runVerification() {
 
     let progress = 0;
 
+
     const bar =
-        document.getElementById("verificationProgress");
+        document.getElementById(
+            "verificationProgress"
+        );
+
 
     const button =
-        document.getElementById("verifyButton");
+        document.getElementById(
+            "verifyButton"
+        );
 
-    const interval = setInterval(() => {
 
-        progress += 2;
+    const interval =
+        setInterval(() => {
 
-        if (progress >= 100) {
+            progress += 2;
 
-            progress = 100;
 
-            clearInterval(interval);
+            if (
+                progress >= 100
+            ) {
 
-            button.disabled = false;
+                progress = 100;
 
-        }
+                clearInterval(
+                    interval
+                );
 
-        bar.style.width = progress + "%";
+                button.disabled =
+                    false;
 
-    }, 80);
+            }
+
+
+            bar.style.width =
+                progress + "%";
+
+
+        }, 80);
 
 }
+
 
 function finishVerification() {
 
-    document.getElementById("minigame").style.display =
+    document.getElementById(
+        "minigame"
+    ).style.display =
         "none";
 
-    document.getElementById("finalVerification").style.display =
+
+    document.getElementById(
+        "finalVerification"
+    ).style.display =
         "flex";
 
 }
+
 
 /* =========================================================
    LOSS
@@ -1475,6 +2236,7 @@ function finishVerification() {
 function loseGame() {
 
     document.body.innerHTML = `
+
         <div style="
             position:fixed;
             inset:0;
@@ -1487,8 +2249,12 @@ function loseGame() {
             font-family:monospace;
             text-align:center;
         ">
-            <h1>TIME EXPIRED.</h1>
-            <p style="color:#777;">
+
+            <h1>
+                TIME EXPIRED.
+            </h1>
+
+            <p style="color:#555;">
                 THE SYSTEM HAS SHUT DOWN.
             </p>
 
@@ -1505,20 +2271,26 @@ function loseGame() {
             >
                 RESTART
             </button>
+
         </div>
+
     `;
 
 }
+
 
 /* =========================================================
    RESIZE
 ========================================================= */
 
-window.addEventListener("resize", () => {
+window.addEventListener(
+    "resize",
+    () => {
 
-    renderFilePage();
+        renderFilePage();
 
-});
+    }
+);
 
 </script>
 
